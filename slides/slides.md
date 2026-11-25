@@ -134,7 +134,7 @@ Alta: osa di più, più creativa e più errori.
 
 Un nome preso dalla fisica: freddo = ordinato e prevedibile, caldo = agitato e imprevedibile.
 
-*Il gatto dorme sul …* <span class="muted">(percentuali ricalcolate sulle sole tre parole)</span>
+*Il gatto dorme sul …* <span class="muted">(stesse proporzioni della slide precedente, riportate su 100)</span>
 
 | | Bassa (0,5) | Normale (1) | Alta (2) |
 |---|---|---|---|
