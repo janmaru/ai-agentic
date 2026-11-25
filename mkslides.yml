@@ -1,7 +1,7 @@
 slides:
   title: Agentic AI
-  theme: black
-  highlight_theme: monokai
+  theme: white
+  highlight_theme: github
   # Separatore con righe vuote intorno: il frontmatter YAML (---) nei blocchi di codice non spezza la slide
   separator: '\r?\n\r?\n---\r?\n\r?\n'
 
@@ -14,35 +14,45 @@ revealjs:
   height: 720
   mermaid:
     theme: base   # solo 'base' accetta themeVariables
+    flowchart:
+      padding: 24   # margine interno dei riquadri: evita etichette tagliate
+    sequence:   # più basso = più grande una volta scalato nella slide
+      mirrorActors: false
+      messageMargin: 28
+      actorMargin: 30
+      actorFontSize: 22
+      messageFontSize: 22
+      noteFontSize: 22
     themeVariables:
-      fontSize: 20px
-      # Palette del deck (vedi slides/theme.css)
-      darkMode: true
-      fontFamily: 'Manrope, system-ui, sans-serif'
-      background: '#0F2A33'
-      primaryColor: '#163944'
-      mainBkg: '#163944'
-      primaryBorderColor: '#d97757'
-      nodeBorder: '#d97757'
-      primaryTextColor: '#F4F7F8'
-      textColor: '#F4F7F8'
-      secondaryColor: '#0A1E25'
-      tertiaryColor: '#0A1E25'
-      clusterBkg: '#0A1E25'
-      lineColor: '#93A6AA'
-      edgeLabelBackground: '#0F2A33'
-      actorBkg: '#163944'
-      actorBorder: '#d97757'
-      actorTextColor: '#F4F7F8'
-      actorLineColor: '#93A6AA'
-      signalColor: '#93A6AA'
-      signalTextColor: '#F4F7F8'
-      labelBoxBkgColor: '#0A1E25'
-      labelBoxBorderColor: '#93A6AA'
-      labelTextColor: '#F4F7F8'
-      loopTextColor: '#F4F7F8'
-      noteBkgColor: '#0A1E25'
-      noteTextColor: '#F4F7F8'
+      fontSize: 24px
+      # Palette del deck (vedi slides/theme.css): famiglia del blu, accento arancio
+      darkMode: false
+      # Font di sistema: Mermaid misura le etichette prima che i web font siano caricati
+      fontFamily: 'Arial, Helvetica, sans-serif'
+      background: '#FFFFFF'
+      primaryColor: '#F5F8FD'
+      mainBkg: '#F5F8FD'
+      primaryBorderColor: '#C2410C'
+      nodeBorder: '#C2410C'
+      primaryTextColor: '#1E3A8A'
+      textColor: '#1E3A8A'
+      secondaryColor: '#EEF3FA'
+      tertiaryColor: '#EEF3FA'
+      clusterBkg: '#EEF3FA'
+      lineColor: '#475569'
+      edgeLabelBackground: '#FFFFFF'
+      actorBkg: '#F5F8FD'
+      actorBorder: '#C2410C'
+      actorTextColor: '#1E3A8A'
+      actorLineColor: '#475569'
+      signalColor: '#475569'
+      signalTextColor: '#1E3A8A'
+      labelBoxBkgColor: '#EEF3FA'
+      labelBoxBorderColor: '#475569'
+      labelTextColor: '#1E3A8A'
+      loopTextColor: '#1E3A8A'
+      noteBkgColor: '#EEF3FA'
+      noteTextColor: '#1E3A8A'
 
 plugins:
   - name: RevealMermaid

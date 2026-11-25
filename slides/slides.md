@@ -2,7 +2,7 @@
 
 ### Che cosa abbiamo imparato
 
-<span class="muted">Blexin · 2026</span>
+<span class="muted">Roundtable sull'uso dell'AI in azienda</span>
 
 Note: Obiettivo: capire cos'è un agente, come funziona dentro, quali trappole ha e vederne uno dal vivo.
 
@@ -80,7 +80,7 @@ In media un token è circa ¾ di parola.
 </div>
 
 <div class="card solo">
-  <div class="card-title">Ogni modello ha il suo</div>
+  <div class="card-title">Ogni modello ha il suo <span class="muted">· esempi indicativi</span></div>
   <div class="tok-pair"><span class="tok-who">Modello A</span><div class="tok-chips"><span>get</span><span>User</span><span>ById</span></div><b>3</b></div>
   <div class="tok-pair"><span class="tok-who">Modello B</span><div class="tok-chips"><span>get</span><span>Us</span><span>er</span><span>By</span><span>Id</span></div><b>5</b></div>
   <div class="card-title sep">L'inglese costa meno</div>
@@ -89,8 +89,6 @@ In media un token è circa ¾ di parola.
 </div>
 
 Cambiare tokenizer = riaddestrare il modello.
-
-<span class="muted">Esempio indicativo.</span>
 
 ---
 
@@ -244,20 +242,17 @@ flowchart LR
 
 ## Il ciclo: pensa, agisce, osserva
 
-```mermaid
-sequenceDiagram
-    participant App as Il nostro codice
-    participant LLM as Claude
-    participant Tool as Strumento
-    App->>LLM: obiettivo + definizione strumenti
-    loop finché stop_reason == end_turn
-        LLM-->>App: tool_use (nome, input)
-        App->>Tool: esegue
-        Tool-->>App: risultato
-        App->>LLM: tool_result
-    end
-    LLM-->>App: risposta finale
-```
+<div class="seq">
+  <div class="seq-row"><span class="who">Il nostro codice</span><span class="arr">→</span><span class="who ai">Claude</span><span class="msg">obiettivo + definizione strumenti</span></div>
+  <div class="seq-loop">
+    <div class="seq-label">ciclo, finché Claude chiede strumenti (<code>stop_reason: tool_use</code>)</div>
+    <div class="seq-row"><span class="who ai">Claude</span><span class="arr">→</span><span class="who">Il nostro codice</span><span class="msg"><code>tool_use</code> (nome, input)</span></div>
+    <div class="seq-row"><span class="who">Il nostro codice</span><span class="arr">→</span><span class="who">Strumento</span><span class="msg">esegue</span></div>
+    <div class="seq-row"><span class="who">Strumento</span><span class="arr">→</span><span class="who">Il nostro codice</span><span class="msg">risultato</span></div>
+    <div class="seq-row"><span class="who">Il nostro codice</span><span class="arr">→</span><span class="who ai">Claude</span><span class="msg"><code>tool_result</code></span></div>
+  </div>
+  <div class="seq-row"><span class="who ai">Claude</span><span class="arr">→</span><span class="who">Il nostro codice</span><span class="msg">risposta finale</span></div>
+</div>
 
 ---
 
@@ -339,8 +334,7 @@ flowchart LR
     A -- MCP --> S3[Server API interne]
 ```
 
-**Model Context Protocol**: uno standard aperto per collegare strumenti e dati a qualsiasi agente.<br>
-<span class="muted">Si scrive l'integrazione una volta, la si usa da ogni client compatibile.</span>
+**MCP**: un'integrazione, ogni client.
 
 ---
 
@@ -412,15 +406,14 @@ Una risposta che conferma quello che pensavi già.
 
 Kaoru Ishikawa, controllo qualità, anni '60: prima tutte le cause possibili, poi si verifica.
 
-```mermaid
-flowchart TB
-    Codice --> E([Effetto:<br/>il login fallisce])
-    Configurazione --> E
-    Dipendenze --> E
-    Dati --> E
-    Ambiente --> E
-    S[Servizi esterni] --> E
-```
+<div class="fish">
+  <div class="fish-causes">
+    <div>Codice</div><div>Configurazione</div><div>Dipendenze</div>
+    <div>Dati</div><div>Ambiente</div><div>Servizi esterni</div>
+  </div>
+  <div class="pipe-arrow">→</div>
+  <div class="fish-effect">Effetto:<br>il login fallisce</div>
+</div>
 
 La nostra ipotesi diventa una lisca tra le altre, non la risposta.
 

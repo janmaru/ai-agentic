@@ -1,18 +1,20 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Manrope:wght@400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Manrope:wght@500;600;700&display=swap");
 /* Overrides on top of the reveal.js "black" theme. */
-/* Palette del deck (intersezione con ellycode.com): usare solo queste variabili.
+/* Palette del deck: sfondo bianco, famiglia del blu.
+   Testo blu scuro; grigi e superfici sono grigio-blu della stessa famiglia; arancio come accento.
+   Usare solo queste variabili.
    accent pieno = scelta giusta / focus · muted tratteggiato = scartato / fuori
-   accent-2 = elementi tecnici (codice inline, strumenti) */
+   accent-2 = elementi tecnici (codice inline, numeri, strumenti) */
 :root {
-  --bg: #0F2A33;          /* sfondo, blu-petrolio */
-  --text: #F4F7F8;        /* testo principale */
-  --accent: #d97757;      /* titoli, enfasi, elemento giusto */
-  --accent-soft: rgba(217, 119, 87, 0.18); /* riempimento degli elementi accent */
-  --accent-2: #10B0E0;    /* azzurro: codice inline, strumenti */
-  --accent-2-soft: rgba(16, 176, 224, 0.18);
-  --muted: #93A6AA;       /* testo secondario, elemento scartato */
-  --surface: #0A1E25;     /* codice e prompt */
-  --node: #163944;        /* riquadri dei diagrammi */
+  --bg: #FFFFFF;          /* sfondo bianco */
+  --text: #1E3A8A;        /* testo principale: blu scuro (contrasto 10.4) */
+  --accent: #C2410C;      /* titoli, enfasi, elemento giusto: arancio, complementare al blu (5.2) */
+  --accent-soft: rgba(194, 65, 12, 0.10); /* riempimento degli elementi accent */
+  --accent-2: #2563EB;    /* blu medio, stessa tinta del testo: codice inline, numeri (5.2) */
+  --accent-2-soft: rgba(37, 99, 235, 0.10);
+  --muted: #475569;       /* grigio-blu: testo secondario, elemento scartato (7.6) */
+  --surface: #EEF3FA;     /* grigio-blu chiaro: codice e prompt */
+  --node: #F5F8FD;        /* grigio-blu chiarissimo: riquadri dei diagrammi */
 
   --r-background-color: var(--bg);
   --r-main-color: var(--text);
@@ -21,23 +23,25 @@
   --r-heading-color: var(--text);
   --r-heading-text-transform: none;
   --r-heading-font-weight: 700;
-  --r-main-font-size: 34px;
+  --r-main-font-size: 38px;
+  --r-main-font-weight: 500;
   --r-link-color: var(--accent);
 }
 
 .reveal h1, .reveal h2 { letter-spacing: -0.02em; }
 .reveal h2 { color: var(--accent); }
-.reveal .muted { color: var(--muted); font-size: 0.7em; }
-.reveal pre { width: 100%; font-size: 0.5em; box-shadow: none; }
-.reveal pre code { max-height: 560px; border-radius: 8px; }
+.reveal { font-weight: 500; }
+.reveal .muted { color: var(--muted); font-size: 0.8em; }
+.reveal pre { width: 100%; font-size: 0.6em; box-shadow: none; }
+.reveal pre code { max-height: 560px; border-radius: 8px; white-space: pre-wrap; overflow-wrap: anywhere; } /* a capo invece di tagliare a destra */
 .reveal .mermaid { background: transparent; display: flex; justify-content: center; }
 .reveal .mermaid svg { width: 100%; max-width: 1000px !important; max-height: 520px; height: auto; }
-.reveal table { font-size: 0.7em; }
-.reveal .cols { display: flex; gap: 2em; text-align: left; }
+.reveal table { font-size: 0.9em; }
+.reveal .cols { display: flex; gap: 1.5em; text-align: left; font-size: 0.85em; }
 .reveal .cols > div { flex: 1; }
 .reveal .tag {
   display: inline-block; padding: 0.1em 0.6em; border-radius: 999px;
-  border: 1px solid var(--accent); color: var(--accent); font-size: 0.6em;
+  border: 2px solid var(--accent); color: var(--accent); font-size: 0.7em;
 }
 .reveal .cols pre { font-size: 0.8em; }
 .reveal .prompt {
@@ -92,3 +96,21 @@
 .reveal .card.solo .tok-pair .tok-chips span { font-size: 0.85em; }
 .reveal .card.solo .tok-pair b { font-size: 1em; }
 .reveal .card-title.sep { margin-top: 0.5em; padding-top: 0.4em; border-top: 1px solid var(--node); }
+/* Slide #/6: righe della card più compatte */
+.reveal .card.solo .tok-pair { margin: 0.12em 0; }
+.reveal .card.solo .card-title.sep { margin-top: 0.3em; padding-top: 0.3em; }
+/* highlight.js imposta lo scroll orizzontale: il codice lungo va a capo */
+.reveal pre code.hljs { white-space: pre-wrap !important; overflow-x: hidden !important; }
+/* Lisca di pesce (#/33): cause su due righe, effetto a destra */
+.reveal .fish { display: flex; align-items: center; justify-content: center; gap: 0.6em; margin: 0.6em 0; }
+.reveal .fish-causes { display: grid; grid-template-columns: repeat(3, auto); gap: 0.4em; }
+.reveal .fish-causes > div { padding: 0.3em 0.7em; border-radius: 10px; background: var(--node); border: 2px solid var(--muted); font-size: 0.8em; }
+.reveal .fish-effect { padding: 0.5em 0.9em; border-radius: 999px; background: var(--accent-soft); border: 2px solid var(--accent); font-size: 0.85em; }
+/* Il ciclo (#/20): sequenza di messaggi in HTML, leggibile da lontano */
+.reveal .seq { display: flex; flex-direction: column; gap: 0.3em; width: 92%; margin: 0.4em auto; font-size: 0.7em; text-align: left; }
+.reveal .seq-row { display: grid; grid-template-columns: 8.5em 1.2em 8.5em 1fr; align-items: center; gap: 0.4em; }
+.reveal .seq .who { padding: 0.15em 0.5em; border-radius: 8px; background: var(--node); border: 2px solid var(--muted); text-align: center; white-space: nowrap; }
+.reveal .seq .who.ai { border-color: var(--accent); background: var(--accent-soft); }
+.reveal .seq .arr { color: var(--muted); text-align: center; }
+.reveal .seq-loop { border: 2px dashed var(--accent-2); border-radius: 12px; padding: 0.4em 0.6em; display: flex; flex-direction: column; gap: 0.3em; }
+.reveal .seq-label { color: var(--accent-2); font-weight: 700; font-size: 0.9em; }
