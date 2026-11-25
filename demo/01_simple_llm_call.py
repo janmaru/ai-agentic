@@ -5,14 +5,14 @@ from rich.panel import Panel
 
 from common import REQUEST_DEFAULTS, check_refusal, console, get_client
 
-PROMPT = "In three short bullet points: what is the difference between a chatbot and an AI agent?"
+PROMPT = "In tre brevi punti: qual è la differenza tra un chatbot e un agente AI?"
 
 def main() -> None:
     client = get_client()
 
-    console.print(Panel(PROMPT, title="User", border_style="cyan"))
+    console.print(Panel(PROMPT, title="Utente", border_style="cyan"))
 
-    with console.status("Thinking..."):
+    with console.status("Sto pensando..."):
         response = client.beta.messages.create(
             **REQUEST_DEFAULTS,
             output_config={"effort": "low"},

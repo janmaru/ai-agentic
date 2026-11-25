@@ -1,18 +1,20 @@
 """Demo 1 (Claude Code CLI) - a plain LLM call: no tools, no loop."""
 
+import tempfile
 from pathlib import Path
 
 from rich.panel import Panel
 
 from claude_cli import console, run_claude, show_answer
 
-PROMPT = "In three short bullet points: what is the difference between a chatbot and an AI agent?"
+PROMPT = "In tre brevi punti: qual è la differenza tra un chatbot e un agente AI?"
 
 
 def main() -> None:
-    console.print(Panel(PROMPT, title="User", border_style="cyan"))
-    with console.status("Thinking..."):
-        answer = run_claude(PROMPT, cwd=Path(__file__).parent, tools=[""])
+    console.print(Panel(PROMPT, title="Utente", border_style="cyan"))
+    # Cartella vuota: Claude Code non vede il nostro repository e risponde solo alla domanda.
+    with tempfile.TemporaryDirectory() as empty, console.status("Sto pensando..."):
+        answer = run_claude(PROMPT, cwd=Path(empty), tools=[""])
     show_answer(answer, title="Claude")
 
 

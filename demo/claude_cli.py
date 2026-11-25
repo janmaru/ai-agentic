@@ -23,7 +23,7 @@ def run_claude(prompt: str, cwd: Path, tools: list[str], allowed: list[str] | No
                system: str | None = None) -> str:
     """Run one headless Claude Code session, print each step, return the final text."""
     if shutil.which("claude") is None:
-        console.print("[red]Claude Code CLI not found.[/red] Install it and run `claude` once to log in.")
+        console.print("[red]Claude Code CLI non trovato.[/red] Installalo ed esegui `claude` una volta per il login.")
         sys.exit(1)
 
     cmd = [
@@ -51,7 +51,7 @@ def run_claude(prompt: str, cwd: Path, tools: list[str], allowed: list[str] | No
                         for text in pending:
                             console.print(Markdown(text), style="dim")
                         pending.clear()
-                        console.print(f"[yellow]→ tool[/yellow] [bold]{block['name']}[/bold] {json.dumps(block['input'])}")
+                        console.print(f"[yellow]→ strumento[/yellow] [bold]{block['name']}[/bold] {json.dumps(block['input'])}")
                     elif block["type"] == "text" and block["text"].strip():
                         pending.append(block["text"])
             elif kind == "user":
@@ -60,18 +60,18 @@ def run_claude(prompt: str, cwd: Path, tools: list[str], allowed: list[str] | No
                         content = block["content"]
                         text = content if isinstance(content, str) else json.dumps(content)
                         style = "red" if block.get("is_error") else "magenta"
-                        console.print(f"[{style}]← result[/{style}] {text[:160].replace(chr(10), ' ')}…")
+                        console.print(f"[{style}]← risultato[/{style}] {text[:160].replace(chr(10), ' ')}…")
             elif kind == "result":
                 final = event.get("result", "")
                 console.print(
-                    f"[dim]turns: {event.get('num_turns')}  time: {event.get('duration_ms', 0) / 1000:.1f}s  "
+                    f"[dim]turni: {event.get('num_turns')}  tempo: {event.get('duration_ms', 0) / 1000:.1f}s  "
                     f"stop: {event.get('stop_reason') or event.get('subtype')}[/dim]"
                 )
     if proc.returncode:
-        console.print(f"[red]claude exited with code {proc.returncode}[/red]")
+        console.print(f"[red]claude è terminato con codice {proc.returncode}[/red]")
         sys.exit(proc.returncode)
     return final
 
 
-def show_answer(text: str, title: str = "Claude - final answer") -> None:
+def show_answer(text: str, title: str = "Claude - risposta finale") -> None:
     console.print(Panel(Markdown(text), title=title, border_style="green"))

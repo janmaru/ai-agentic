@@ -1,8 +1,8 @@
-# Request from the sales director
+# Richiesta del direttore commerciale
 
-Please prepare a short report on October sales:
-- total revenue per region and per product
-- which region performed best and by how much
-- one recommendation for November
+Per favore prepara un breve report sulle vendite di ottobre:
+- ricavi totali per regione e per prodotto
+- quale regione è andata meglio e di quanto
+- una raccomandazione per novembre
 
-Save it as report.md in this folder.
+Salvalo come report.md in questa cartella.

@@ -14,28 +14,41 @@ from claude_cli import console, run_claude, show_answer
 
 WORKSPACE = Path(__file__).parent / "workspace"
 
-GOAL = "Check this folder for a request from the sales director and complete it."
+
+class Conferma(Confirm):
+    """Domanda sì/no che accetta s/n."""
+
+    choices = ["s", "n"]
+    validate_error_message = "[prompt.invalid]Rispondi s oppure n"
+
+GOAL = "Cerca in questa cartella una richiesta del direttore commerciale e portala a termine."
 
 SYSTEM = (
-    "You are an analyst agent with read-only access to the current folder. "
-    "Explore it with your tools, compute the numbers carefully from the data, "
-    "and before each tool call say in one short sentence what you are about to do. "
-    "You cannot write files: reply with the full content of the requested deliverable "
-    "as Markdown and nothing else, and it will be saved for you after review."
+    "Sei un agente analista con accesso in sola lettura alla cartella corrente. "
+    "Esplorala con i tuoi strumenti, calcola i numeri con attenzione a partire dai dati "
+    "e prima di ogni chiamata a uno strumento di' in una breve frase cosa stai per fare. "
+    "Non puoi scrivere file: la tua risposta finale viene salvata così com'è dopo la revisione. "
+    "Deve essere solo il documento richiesto, in Markdown e in italiano, "
+    "a partire dal titolo (# ...), senza introduzioni né commenti. "
+    "Nel documento non parlare di file, permessi o salvataggio: scrivi per il direttore commerciale."
 )
 
 
 def main() -> None:
-    console.print(Panel(GOAL, title="Goal", border_style="cyan"))
+    console.print(Panel(GOAL, title="Obiettivo", border_style="cyan"))
     report = run_claude(GOAL, cwd=WORKSPACE, tools=["Read", "Glob", "Grep"],
                         allowed=["Read(./**)", "Glob", "Grep"], system=SYSTEM)
-    show_answer(report, title="Proposed report.md")
+    # Per sicurezza: tutto quello che precede il primo titolo non fa parte del documento.
+    lines = report.splitlines()
+    first_heading = next((i for i, line in enumerate(lines) if line.startswith("# ")), 0)
+    report = "\n".join(lines[first_heading:]).strip() + "\n"
+    show_answer(report, title="report.md proposto")
 
-    if Confirm.ask("Allow the agent's report to be saved as [bold]report.md[/bold]?", default=True):
+    if Conferma.ask("Salvare il report dell'agente come [bold]report.md[/bold]?", default=True):
         (WORKSPACE / "report.md").write_text(report, encoding="utf-8")
-        console.print("[bold green]Saved demo/workspace/report.md[/bold green]")
+        console.print("[bold green]Salvato demo/workspace/report.md[/bold green]")
     else:
-        console.print("[yellow]Declined - nothing written.[/yellow]")
+        console.print("[yellow]Rifiutato: nessun file scritto.[/yellow]")
 
 
 if __name__ == "__main__":

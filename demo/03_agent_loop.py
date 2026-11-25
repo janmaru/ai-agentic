@@ -20,6 +20,13 @@ from common import REQUEST_DEFAULTS, check_refusal, console, get_client
 WORKSPACE = (Path(__file__).parent / "workspace").resolve()
 
 
+class Conferma(Confirm):
+    """Domanda sì/no che accetta s/n."""
+
+    choices = ["s", "n"]
+    validate_error_message = "[prompt.invalid]Rispondi s oppure n"
+
+
 def safe_path(name: str) -> Path:
     """Resolve a file name inside the workspace; refuse anything outside it."""
     path = (WORKSPACE / name).resolve()
@@ -34,17 +41,17 @@ def log_tool(name: str, args: dict) -> None:
 
 @beta_tool
 def list_files() -> str:
-    """List the files available in the workspace folder."""
+    """Elenca i file disponibili nella cartella di lavoro."""
     log_tool("list_files", {})
     return "\n".join(sorted(p.name for p in WORKSPACE.iterdir() if p.is_file()))
 
 
 @beta_tool
 def read_file(name: str) -> str:
-    """Read a text file from the workspace.
+    """Legge un file di testo dalla cartella di lavoro.
 
     Args:
-        name: File name relative to the workspace, e.g. sales.csv.
+        name: nome del file relativo alla cartella di lavoro, es. sales.csv.
     """
     log_tool("read_file", {"name": name})
     return safe_path(name).read_text(encoding="utf-8")
@@ -52,12 +59,12 @@ def read_file(name: str) -> str:
 
 @beta_tool
 def aggregate_csv(name: str, group_by: str, value_column: str) -> str:
-    """Sum a numeric column of a CSV file, grouped by another column. Use this for exact totals.
+    """Somma una colonna numerica di un CSV, raggruppando per un'altra colonna. Usalo per totali esatti.
 
     Args:
-        name: CSV file name in the workspace.
-        group_by: Column to group rows by, e.g. region.
-        value_column: Numeric column to sum, e.g. revenue_eur.
+        name: nome del file CSV nella cartella di lavoro.
+        group_by: colonna per cui raggruppare, es. regione.
+        value_column: colonna numerica da sommare, es. ricavi_eur.
     """
     log_tool("aggregate_csv", {"name": name, "group_by": group_by, "value_column": value_column})
     totals: dict[str, float] = defaultdict(float)
@@ -69,32 +76,32 @@ def aggregate_csv(name: str, group_by: str, value_column: str) -> str:
 
 @beta_tool
 def write_file(name: str, content: str) -> str:
-    """Write a text file to the workspace. A human must approve each write.
+    """Scrive un file di testo nella cartella di lavoro. Ogni scrittura va approvata da una persona.
 
     Args:
-        name: File name relative to the workspace, e.g. report.md.
-        content: Full text content of the file.
+        name: nome del file relativo alla cartella di lavoro, es. report.md.
+        content: contenuto completo del file.
     """
     log_tool("write_file", {"name": name, "chars": len(content)})
-    console.print(Panel(Markdown(content), title=f"Proposed {name}", border_style="magenta"))
-    if not Confirm.ask(f"Allow the agent to write [bold]{name}[/bold]?", default=True):
-        return "The user declined this write. Ask what to change instead."
+    console.print(Panel(Markdown(content), title=f"{name} proposto", border_style="magenta"))
+    if not Conferma.ask(f"Permettere all'agente di scrivere [bold]{name}[/bold]?", default=True):
+        return "L'utente ha rifiutato questa scrittura. Chiedi cosa cambiare."
     safe_path(name).write_text(content, encoding="utf-8")
-    return f"Wrote {len(content)} characters to {name}."
+    return f"Scritti {len(content)} caratteri in {name}."
 
 
 SYSTEM = (
-    "You are an analyst agent working in a sandboxed folder. "
-    "Use the tools to inspect files, compute exact numbers with aggregate_csv rather than "
-    "doing arithmetic yourself, and save deliverables with write_file. "
-    "Before each tool call, say in one short sentence what you are about to do."
+    "Sei un agente analista che lavora in una cartella isolata. "
+    "Usa gli strumenti per esaminare i file, calcola i numeri esatti con aggregate_csv invece di "
+    "fare i conti da solo, e salva i documenti con write_file. Scrivi in italiano. "
+    "Prima di ogni chiamata a uno strumento, di' in una breve frase cosa stai per fare."
 )
 
-GOAL = "Check the workspace for a request from the sales director and complete it."
+GOAL = "Cerca nella cartella di lavoro una richiesta del direttore commerciale e portala a termine."
 
 def main() -> None:
     client = get_client()
-    console.print(Panel(GOAL, title="Goal", border_style="cyan"))
+    console.print(Panel(GOAL, title="Obiettivo", border_style="cyan"))
 
     runner = client.beta.messages.tool_runner(
         **REQUEST_DEFAULTS,
@@ -107,7 +114,7 @@ def main() -> None:
     turn = 0
     for message in runner:
         turn += 1
-        console.rule(f"[dim]turn {turn} · stop_reason={message.stop_reason}[/dim]")
+        console.rule(f"[dim]turno {turn} · stop_reason={message.stop_reason}[/dim]")
         if check_refusal(message):
             break
         for block in message.content:
@@ -115,7 +122,7 @@ def main() -> None:
                 style = "green" if message.stop_reason == "end_turn" else "white"
                 console.print(Markdown(block.text), style=style)
 
-    console.print(f"\n[bold green]Done in {turn} model turns.[/bold green]")
+    console.print(f"\n[bold green]Fatto in {turn} turni del modello.[/bold green]")
 
 
 if __name__ == "__main__":

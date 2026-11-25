@@ -3,7 +3,7 @@
 A talk on agentic AI: what an agent is, how the agent loop works, design patterns,
 risks — plus three live demos built on Claude.
 
-- **Slides:** Markdown rendered with reveal.js via [MkSlides](https://github.com/MartenBE/mkslides), diagrams in Mermaid.
+- **Slides (in Italian):** Markdown rendered with reveal.js via [MkSlides](https://github.com/MartenBE/mkslides), diagrams in Mermaid.
 - **Demos:** run Claude Code headless (`claude -p`) with your Claude Code login — no API credit needed.
   The same demos also exist on the [`anthropic`](https://github.com/anthropics/anthropic-sdk-python) Python SDK.
 
