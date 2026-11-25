@@ -1,13 +1,22 @@
 /* Overrides on top of the reveal.js "black" theme. */
+/* Palette del deck: usare solo queste variabili.
+   accent pieno = scelta giusta / focus · muted tratteggiato = scartato / fuori */
 :root {
+  --bg: #191919;          /* sfondo */
+  --text: #ffffff;        /* testo principale */
+  --accent: #d97757;      /* titoli, enfasi, elemento giusto */
+  --accent-soft: rgba(217, 119, 87, 0.18); /* riempimento degli elementi accent */
+  --muted: #9aa0a6;       /* testo secondario, elemento scartato */
+  --surface: #272822;     /* codice e prompt */
+
+  --r-background-color: var(--bg);
+  --r-main-color: var(--text);
   --r-main-font: "Inter", system-ui, sans-serif;
   --r-heading-font: "Inter", system-ui, sans-serif;
   --r-heading-text-transform: none;
   --r-heading-font-weight: 700;
   --r-main-font-size: 34px;
-  --r-link-color: #d97757;
-  --accent: #d97757;
-  --muted: #9aa0a6;
+  --r-link-color: var(--accent);
 }
 
 .reveal h1, .reveal h2 { letter-spacing: -0.02em; }
@@ -27,26 +36,26 @@
 .reveal .cols pre { font-size: 0.8em; }
 .reveal .prompt {
   text-align: left; font-size: 0.8em; padding: 0.6em 1em;
-  background: #272822; border-radius: 8px; font-family: ui-monospace, monospace;
+  background: var(--surface); border-radius: 8px; font-family: ui-monospace, monospace;
 }
 .reveal .ctx { display: flex; align-items: stretch; justify-content: center; gap: 0.6em; margin: 0.8em 0; }
 .reveal .ctx-window {
   display: flex; gap: 0.4em; padding: 0.4em; border: 3px solid var(--accent); border-radius: 12px;
 }
 .reveal .ctx-window > div {
-  padding: 0.5em 0.8em; border-radius: 8px; background: rgba(217, 119, 87, 0.18); font-size: 0.8em;
+  padding: 0.5em 0.8em; border-radius: 8px; background: var(--accent-soft); font-size: 0.8em;
 }
 .reveal .ctx-outside {
   display: flex; align-items: center; padding: 0 1em; border: 2px dashed var(--muted);
   border-radius: 12px; color: var(--muted); opacity: 0.6;
 }
 .reveal .tok { display: flex; flex-direction: column; gap: 0.7em; margin: 0.8em auto; width: 92%; }
-.reveal .tok-row { display: grid; grid-template-columns: 6.5em 1fr 9.5em; align-items: center; gap: 0.8em; text-align: left; }
+.reveal .tok-row { display: grid; grid-template-columns: 6.5em 1fr 11.5em; align-items: center; gap: 0.8em; text-align: left; }
 .reveal .tok-label { font-weight: 700; font-size: 0.8em; }
 .reveal .tok-chips { display: flex; flex-wrap: wrap; gap: 0.25em; }
 .reveal .tok-chips span {
   padding: 0.15em 0.5em; border-radius: 8px; font-family: ui-monospace, monospace; font-size: 0.8em;
-  background: rgba(217, 119, 87, 0.18); border: 2px solid var(--accent);
+  background: var(--accent-soft); border: 2px solid var(--accent);
 }
 .reveal .tok-chips.small span { padding: 0.15em 0.3em; }
 .reveal .tok-row.bad .tok-chips span { background: transparent; border: 2px dashed var(--muted); color: var(--muted); }

@@ -13,9 +13,35 @@ revealjs:
   width: 1280
   height: 720
   mermaid:
-    theme: dark
+    theme: base   # solo 'base' accetta themeVariables
     themeVariables:
       fontSize: 20px
+      # Palette del deck (vedi slides/theme.css)
+      darkMode: true
+      background: '#191919'
+      mainBkg: '#3c2a24'
+      nodeBorder: '#d97757'
+      clusterBkg: '#272822'
+      actorBkg: '#3c2a24'
+      actorBorder: '#d97757'
+      actorTextColor: '#ffffff'
+      actorLineColor: '#9aa0a6'
+      signalColor: '#9aa0a6'
+      signalTextColor: '#ffffff'
+      labelBoxBkgColor: '#272822'
+      labelBoxBorderColor: '#9aa0a6'
+      labelTextColor: '#ffffff'
+      loopTextColor: '#ffffff'
+      noteBkgColor: '#272822'
+      noteTextColor: '#ffffff'
+      edgeLabelBackground: '#191919'
+      primaryColor: '#3c2a24'
+      primaryBorderColor: '#d97757'
+      primaryTextColor: '#ffffff'
+      secondaryColor: '#272822'
+      tertiaryColor: '#272822'
+      lineColor: '#9aa0a6'
+      textColor: '#ffffff'
 
 plugins:
   - name: RevealMermaid
