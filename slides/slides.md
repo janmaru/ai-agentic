@@ -150,6 +150,12 @@ Un nome preso dalla fisica: freddo = ordinato e prevedibile, caldo = agitato e i
 
 Una risposta convincente ma falsa.
 
+```csharp
+if (string.IsNullOrBlank(nome)) return;   // non esiste in .NET
+```
+
+<span class="muted">Esempio: il metodo vero è `string.IsNullOrWhiteSpace`. Il nome inventato è plausibile, quindi convince.</span>
+
 ---
 
 ## Perché succede
@@ -183,6 +189,8 @@ Quello che non ci sta, il modello non lo vede.
 Ogni chat riparte da zero.
 
 Salvo strumenti che gli ridanno il contesto.
+
+<span class="muted">Esempio: Claude Code carica `CLAUDE.md` all'inizio di ogni sessione.</span>
 
 ---
 
@@ -548,6 +556,42 @@ Un file che spiega all'agente il progetto.
 
 ---
 
+## CLAUDE.md: un esempio
+
+```markdown
+# Agentic AI – presentazione
+
+Slide reveal.js in italiano generate da `slides/slides.md` con mkslides;
+demo live in `demo/`.
+Regole di dettaglio in `.claude/rules/` (slide e demo).
+
+- `make build` e `make test` devono passare prima di ogni commit.
+- `.env` non va mai committato.
+```
+
+<span class="muted">Il CLAUDE.md di questo progetto. Altri file si importano con `@percorso`. Meglio restare sotto le 200 righe.</span>
+
+---
+
+## Regole per percorso: .claude/rules/
+
+```markdown
+---
+paths:
+  - "slides/**"
+---
+
+# Regole per le slide
+
+- Chiare, brevi e concise. Un solo messaggio per slide.
+- Esempi concreti, sempre.
+```
+
+Si carica solo quando Claude lavora su file che corrispondono a `paths`.<br>
+<span class="muted">Senza `paths`, la regola si carica a ogni sessione come CLAUDE.md.</span>
+
+---
+
 ## La cartella .claude
 
 | | |
@@ -559,6 +603,61 @@ Un file che spiega all'agente il progetto.
 
 ---
 
+## La cartella .claude nella documentazione
+
+```text
+progetto/
+├── CLAUDE.md
+└── .claude/
+    ├── settings.json          # permessi e hook, condiviso nel repo
+    ├── settings.local.json    # preferenze personali, fuori da git
+    ├── rules/*.md             # regole, anche per percorso
+    ├── skills/<nome>/SKILL.md # procedure, si lanciano con /nome
+    ├── agents/<nome>.md       # sotto-agenti specializzati
+    └── commands/<nome>.md     # formato precedente delle skill
+```
+
+<span class="muted">Le stesse cartelle esistono in `~/.claude/` per le impostazioni personali.</span>
+
+---
+
+## Una skill: .claude/skills/release-notes/SKILL.md
+
+```markdown
+---
+name: release-notes
+description: Scrive le note di rilascio dai commit dall'ultimo tag
+disable-model-invocation: true
+---
+
+1. Elenca i commit dall'ultimo tag con `git log`.
+2. Raggruppa in: Novità, Correzioni, Breaking change.
+3. Una riga per voce, con il riferimento al ticket.
+```
+
+Si lancia con `/release-notes`.<br>
+<span class="muted">`disable-model-invocation: true`: parte solo se la chiamiamo noi.</span>
+
+---
+
+## Un sotto-agente: .claude/agents/code-reviewer.md
+
+```markdown
+---
+name: code-reviewer
+description: Revisiona il codice per qualità e buone pratiche
+tools: Read, Glob, Grep
+model: sonnet
+---
+
+Sei un revisore di codice. Analizza il codice e dai indicazioni
+precise e concrete su qualità, sicurezza e buone pratiche.
+```
+
+Lavora in un contesto separato, con i suoi strumenti: qui solo lettura.
+
+---
+
 ## Permessi
 
 L'agente chiede prima di fare azioni importanti.
@@ -566,6 +665,48 @@ L'agente chiede prima di fare azioni importanti.
 Siamo noi a decidere cosa può fare da solo.
 
 <span class="muted">Nelle demo: `--tools Read,Glob,Grep --allowedTools "Read(./**)"`</span>
+
+---
+
+## Permessi: .claude/settings.json
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(make build)",
+      "Bash(make test)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)"
+    ]
+  }
+}
+```
+
+`allow`: senza chiedere · `ask`: chiede sempre · `deny`: mai.
+
+---
+
+## Hook: azioni che avvengono sempre
+
+```json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [{ "type": "command",
+          "command": "f=$(jq -r '.tool_input.file_path') && npx prettier --write --ignore-unknown \"$f\"" }]
+      }
+    ]
+  }
+}
+```
+
+Dopo ogni modifica a un file, Claude Code lancia il formattatore.<br>
+<span class="muted">Non decide il modello: lo garantisce il programma.</span>
 
 ---
 

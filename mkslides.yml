@@ -2,6 +2,8 @@ slides:
   title: Agentic AI
   theme: black
   highlight_theme: monokai
+  # Separatore con righe vuote intorno: il frontmatter YAML (---) nei blocchi di codice non spezza la slide
+  separator: '\r?\n\r?\n---\r?\n\r?\n'
 
 revealjs:
   history: true
