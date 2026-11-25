@@ -1,0 +1,19 @@
+slides:
+  title: Agentic AI
+  theme: black
+  highlight_theme: monokai
+
+revealjs:
+  history: true
+  slideNumber: c/t
+  hash: true
+  transition: slide
+  width: 1280
+  height: 720
+
+plugins:
+  - name: RevealMermaid
+    extra_javascript:
+      - https://cdn.jsdelivr.net/npm/reveal.js-mermaid-plugin@11.6.0/plugin/mermaid/mermaid.js
+  - extra_css:
+      - theme.css

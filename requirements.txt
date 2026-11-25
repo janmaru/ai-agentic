@@ -1,0 +1,7 @@
+# Slides: Markdown -> reveal.js
+mkslides==2.0.24
+
+# Live agentic demo
+anthropic==2.14.0
+python-dotenv==1.2.4
+rich==15.0.0

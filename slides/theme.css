@@ -1,0 +1,25 @@
+/* Overrides on top of the reveal.js "black" theme. */
+:root {
+  --r-main-font: "Inter", system-ui, sans-serif;
+  --r-heading-font: "Inter", system-ui, sans-serif;
+  --r-heading-text-transform: none;
+  --r-heading-font-weight: 700;
+  --r-main-font-size: 34px;
+  --r-link-color: #d97757;
+  --accent: #d97757;
+  --muted: #9aa0a6;
+}
+
+.reveal h1, .reveal h2 { letter-spacing: -0.02em; }
+.reveal h2 { color: var(--accent); }
+.reveal .muted { color: var(--muted); font-size: 0.7em; }
+.reveal pre { width: 100%; font-size: 0.5em; box-shadow: none; }
+.reveal pre code { max-height: 560px; border-radius: 8px; }
+.reveal .mermaid { background: transparent; font-size: 0.6em; }
+.reveal table { font-size: 0.7em; }
+.reveal .cols { display: flex; gap: 2em; text-align: left; }
+.reveal .cols > div { flex: 1; }
+.reveal .tag {
+  display: inline-block; padding: 0.1em 0.6em; border-radius: 999px;
+  border: 1px solid var(--accent); color: var(--accent); font-size: 0.6em;
+}
