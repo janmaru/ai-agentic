@@ -406,14 +406,24 @@ Una risposta che conferma quello che pensavi già.
 
 Kaoru Ishikawa, controllo qualità, anni '60: prima tutte le cause possibili, poi si verifica.
 
-<div class="fish">
-  <div class="fish-causes">
-    <div>Codice</div><div>Configurazione</div><div>Dipendenze</div>
-    <div>Dati</div><div>Ambiente</div><div>Servizi esterni</div>
-  </div>
-  <div class="pipe-arrow">→</div>
-  <div class="fish-effect">Effetto:<br>il login fallisce</div>
-</div>
+<svg class="fishbone" viewBox="0 0 1100 400" role="img" aria-label="Lisca di pesce: sei cause portano all'effetto">
+  <defs><marker id="fb-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path class="arrowhead" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+  <path class="tail" d="M20,140 L80,200 L20,260 z"/>
+  <line class="spine" x1="80" y1="200" x2="835" y2="200" marker-end="url(#fb-arrow)"/>
+  <line class="bone" x1="185" y1="70" x2="280" y2="200"/>
+  <g class="cause"><rect x="125" y="20" width="120" height="50" rx="10"/><text x="185" y="54" text-anchor="middle">Codice</text></g>
+  <line class="bone" x1="185" y1="330" x2="280" y2="200"/>
+  <g class="cause"><rect x="140" y="330" width="90" height="50" rx="10"/><text x="185" y="364" text-anchor="middle">Dati</text></g>
+  <line class="bone" x1="425" y1="70" x2="520" y2="200"/>
+  <g class="cause"><rect x="305" y="20" width="240" height="50" rx="10"/><text x="425" y="54" text-anchor="middle">Configurazione</text></g>
+  <line class="bone" x1="425" y1="330" x2="520" y2="200"/>
+  <g class="cause"><rect x="350" y="330" width="150" height="50" rx="10"/><text x="425" y="364" text-anchor="middle">Ambiente</text></g>
+  <line class="bone" x1="665" y1="70" x2="760" y2="200"/>
+  <g class="cause"><rect x="575" y="20" width="180" height="50" rx="10"/><text x="665" y="54" text-anchor="middle">Dipendenze</text></g>
+  <line class="bone" x1="665" y1="330" x2="760" y2="200"/>
+  <g class="cause"><rect x="538" y="330" width="255" height="50" rx="10"/><text x="665" y="364" text-anchor="middle">Servizi esterni</text></g>
+  <g class="head"><rect x="845" y="140" width="240" height="120" rx="16"/><text x="965" y="192" text-anchor="middle">Effetto:</text><text x="965" y="230" text-anchor="middle">il login fallisce</text></g>
+</svg>
 
 La nostra ipotesi diventa una lisca tra le altre, non la risposta.
 

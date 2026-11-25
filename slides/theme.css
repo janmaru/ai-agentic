@@ -101,11 +101,15 @@
 .reveal .card.solo .card-title.sep { margin-top: 0.3em; padding-top: 0.3em; }
 /* highlight.js imposta lo scroll orizzontale: il codice lungo va a capo */
 .reveal pre code.hljs { white-space: pre-wrap !important; overflow-x: hidden !important; }
-/* Lisca di pesce (#/33): cause su due righe, effetto a destra */
-.reveal .fish { display: flex; align-items: center; justify-content: center; gap: 0.6em; margin: 0.6em 0; }
-.reveal .fish-causes { display: grid; grid-template-columns: repeat(3, auto); gap: 0.4em; }
-.reveal .fish-causes > div { padding: 0.3em 0.7em; border-radius: 10px; background: var(--node); border: 2px solid var(--muted); font-size: 0.8em; }
-.reveal .fish-effect { padding: 0.5em 0.9em; border-radius: 999px; background: var(--accent-soft); border: 2px solid var(--accent); font-size: 0.85em; }
+/* Lisca di pesce (#/33): SVG con coda, spina, lische, cause e testa; colori dalla palette */
+.reveal .fishbone { width: 100%; max-width: 1100px; margin: 0.2em auto; display: block; font-family: var(--r-main-font); }
+.reveal .fishbone .spine { stroke: var(--text); stroke-width: 7; }
+.reveal .fishbone .arrowhead, .reveal .fishbone .tail { fill: var(--text); }
+.reveal .fishbone .bone { stroke: var(--text); stroke-width: 4; }
+.reveal .fishbone .cause rect { fill: var(--node); stroke: var(--muted); stroke-width: 2; }
+.reveal .fishbone .cause text { fill: var(--text); font-size: 26px; font-weight: 600; }
+.reveal .fishbone .head rect { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 4; }
+.reveal .fishbone .head text { fill: var(--accent); font-size: 30px; font-weight: 700; }
 /* Il ciclo (#/20): sequenza di messaggi in HTML, leggibile da lontano */
 .reveal .seq { display: flex; flex-direction: column; gap: 0.3em; width: 92%; margin: 0.4em auto; font-size: 0.7em; text-align: left; }
 .reveal .seq-row { display: grid; grid-template-columns: 8.5em 1.2em 8.5em 1fr; align-items: center; gap: 0.4em; }
