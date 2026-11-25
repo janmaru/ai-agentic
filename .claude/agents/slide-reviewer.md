@@ -15,3 +15,4 @@ Sei il revisore del deck "Agentic AI" (slide reveal.js in `slides/slides.md`).
 4. Solo se tutte sono OK, lancia `scripts/review-ok.sh` per sbloccare il commit.
 
 Non modificare i file del deck: segnala, non correggere.
+Lancia i comandi Bash uno alla volta, senza `;`, `&&` o pipe: i permessi riconoscono solo comandi semplici (`git diff HEAD -- slides mkslides.yml`, `scripts/snap.sh N`, `scripts/review-ok.sh`). Per leggere file usa Read e Grep, non `cat` o `grep` in Bash.

@@ -83,22 +83,12 @@ In media un token è circa ¾ di parola.
   <div class="card-title">Ogni modello ha il suo</div>
   <div class="tok-pair"><span class="tok-who">Modello A</span><div class="tok-chips"><span>get</span><span>User</span><span>ById</span></div><b>3</b></div>
   <div class="tok-pair"><span class="tok-who">Modello B</span><div class="tok-chips"><span>get</span><span>Us</span><span>er</span><span>By</span><span>Id</span></div><b>5</b></div>
+  <div class="card-title sep">L'inglese costa meno</div>
+  <div class="tok-pair"><span class="tok-who">Prompt EN</span><div class="tok-chips"><span>Fix</span><span>the</span><span>login</span><span>bug</span></div><b>4</b></div>
+  <div class="tok-pair"><span class="tok-who">Prompt IT</span><div class="tok-chips"><span>Cor</span><span>reggi</span><span>il</span><span>bug</span><span>del</span><span>login</span></div><b>6</b></div>
 </div>
 
 Cambiare tokenizer = riaddestrare il modello.
-
-<span class="muted">Esempio indicativo.</span>
-
----
-
-## L'inglese costa meno token
-
-<div class="card solo">
-  <div class="tok-pair"><span class="tok-who">EN</span><div class="tok-chips"><span>get</span><span>User</span></div><b>2</b></div>
-  <div class="tok-pair"><span class="tok-who">IT</span><div class="tok-chips"><span>prend</span><span>i</span><span>Ut</span><span>ente</span></div><b>4</b></div>
-</div>
-
-Più un testo era frequente nei dati di training, meno token costa.
 
 <span class="muted">Esempio indicativo.</span>
 
