@@ -21,6 +21,9 @@ class Conferma(Confirm):
     choices = ["s", "n"]
     validate_error_message = "[prompt.invalid]Rispondi s oppure n"
 
+TOOLS = ["Read", "Glob", "Grep"]
+ALLOWED = ["Read(./**)", "Glob", "Grep"]
+
 GOAL = "Cerca in questa cartella una richiesta del direttore commerciale e portala a termine."
 
 SYSTEM = (
@@ -34,14 +37,17 @@ SYSTEM = (
 )
 
 
+def clean_report(text: str) -> str:
+    """Per sicurezza: tutto quello che precede il primo titolo non fa parte del documento."""
+    lines = text.splitlines()
+    first_heading = next((i for i, line in enumerate(lines) if line.startswith("# ")), 0)
+    return "\n".join(lines[first_heading:]).strip() + "\n"
+
+
 def main() -> None:
     console.print(Panel(GOAL, title="Obiettivo", border_style="cyan"))
-    report = run_claude(GOAL, cwd=WORKSPACE, tools=["Read", "Glob", "Grep"],
-                        allowed=["Read(./**)", "Glob", "Grep"], system=SYSTEM)
-    # Per sicurezza: tutto quello che precede il primo titolo non fa parte del documento.
-    lines = report.splitlines()
-    first_heading = next((i for i, line in enumerate(lines) if line.startswith("# ")), 0)
-    report = "\n".join(lines[first_heading:]).strip() + "\n"
+    report = run_claude(GOAL, cwd=WORKSPACE, tools=TOOLS, allowed=ALLOWED, system=SYSTEM)
+    report = clean_report(report)
     show_answer(report, title="report.md proposto")
 
     if Conferma.ask("Salvare il report dell'agente come [bold]report.md[/bold]?", default=True):

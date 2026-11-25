@@ -60,3 +60,6 @@ plugins:
       - https://cdn.jsdelivr.net/npm/reveal.js-mermaid-plugin@11.6.0/plugin/mermaid/mermaid.js
   - extra_css:
       - theme.css
+  - name: LiveDemo   # finestre demo live (slides/live.js + demo/live_server.py)
+    extra_javascript:
+      - live.js

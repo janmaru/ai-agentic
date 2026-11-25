@@ -1,7 +1,7 @@
 PY := .venv/bin/python
 BIN := .venv/bin
 
-.PHONY: setup serve build test demo1 demo2 demo3 api-demo1 api-demo2 api-demo3 clean
+.PHONY: setup serve live build test demo1 demo2 demo3 api-demo1 api-demo2 api-demo3 clean
 
 setup:
 	python3 -m venv .venv
@@ -9,8 +9,11 @@ setup:
 	$(BIN)/pip install -r requirements.txt
 	@test -f .env || cp .env.example .env
 
-serve:            ## live-reload slides at http://localhost:8000
-	$(BIN)/mkslides serve slides
+serve:            ## live-reload slides at http://localhost:8000 + live demo server on :8765
+	trap 'kill 0' EXIT; $(PY) demo/live_server.py & $(BIN)/mkslides serve slides
+
+live:             ## only the live demo server (for slides already served elsewhere)
+	$(PY) demo/live_server.py
 
 build:            ## static HTML into ./site
 	$(BIN)/mkslides build slides

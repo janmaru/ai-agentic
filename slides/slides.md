@@ -717,10 +717,7 @@ Dopo ogni modifica a un file, Claude Code lancia il formattatore.<br>
 
 ## Demo 1 — una singola chiamata
 
-```bash
-claude -p "Spiega in tre punti cos'è la finestra di contesto di un LLM." \
-       --tools ""
-```
+<div class="live" data-demo="1"><code class="live-cmd-src">claude -p "…" --tools ""</code><span class="live-prompt-src">Spiega in tre brevi punti cos'è la finestra di contesto di un LLM.</span></div>
 
 Un prompt entra, una risposta esce. **Nessuno strumento, nessun ciclo.**
 
@@ -728,15 +725,9 @@ Un prompt entra, una risposta esce. **Nessuno strumento, nessun ciclo.**
 
 ## Demo 2 — l'uso di uno strumento
 
-```bash
-cd demo/store
-claude -p "Sono il signor Rossi. Dove sono i miei ordini? Il database è orders.json." \
-       --tools Read --allowedTools "Read(./**)"
-```
+<div class="live" data-demo="2"><code class="live-cmd-src">cd demo/store &amp;&amp; claude -p "…" --tools Read --allowedTools "Read(./**)"</code><span class="live-prompt-src">Buongiorno, sono il signor Rossi. Dove sono i miei ordini e quando arriveranno? Il database degli ordini è orders.json.</span></div>
 
-Claude non vede i dati: **chiede** lo strumento `Read`, il programma lo **esegue**
-e gli ridà il risultato.<br>
-<span class="muted">`Read(./**)`: le letture fuori da questa cartella vengono negate.</span>
+Claude **chiede** lo strumento `Read`, il programma lo **esegue** e gli ridà il risultato.
 
 ---
 
@@ -761,15 +752,9 @@ while True:
 
 ## Demo 3 — un agente autonomo
 
-```bash
-cd demo/workspace
-claude -p "Cerca in questa cartella una richiesta del direttore commerciale e portala a termine." \
-       --tools Read,Glob,Grep --allowedTools "Read(./**)" Glob Grep \
-       --output-format stream-json --verbose
-```
+<div class="live" data-demo="3"><code class="live-cmd-src">cd demo/workspace &amp;&amp; claude -p "…" --tools Read,Glob,Grep --allowedTools "Read(./**)" Glob Grep</code><span class="live-prompt-src">Cerca in questa cartella una richiesta del direttore commerciale e portala a termine.</span></div>
 
-L'agente trova la richiesta, legge i dati, calcola i totali e prepara il report.<br>
-<span class="muted">Solo lettura per scelta: il nostro codice salva report.md solo dopo l'approvazione di una persona.</span>
+<span class="muted">Solo lettura: `report.md` si salva solo se una persona approva.</span>
 
 ---
 

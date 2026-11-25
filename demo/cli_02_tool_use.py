@@ -11,12 +11,14 @@ from rich.panel import Panel
 from claude_cli import console, run_claude, show_answer
 
 STORE = Path(__file__).parent / "store"
+TOOLS = ["Read"]
+ALLOWED = ["Read(./**)"]
 PROMPT = "Buongiorno, sono il signor Rossi. Dove sono i miei ordini e quando arriveranno? Il database degli ordini è orders.json."
 
 
 def main() -> None:
     console.print(Panel(PROMPT, title="Utente", border_style="cyan"))
-    answer = run_claude(PROMPT, cwd=STORE, tools=["Read"], allowed=["Read(./**)"])
+    answer = run_claude(PROMPT, cwd=STORE, tools=TOOLS, allowed=ALLOWED)
     show_answer(answer)
 
 

@@ -11,7 +11,8 @@ EVENTS = [
                                                   {"type": "tool_use", "name": "Read", "input": {"file_path": "x"}}]}},
     {"type": "user", "message": {"content": [{"type": "tool_result", "content": "file body"}]}},
     {"type": "assistant", "message": {"content": [{"type": "text", "text": "FINAL ANSWER"}]}},
-    {"type": "result", "result": "FINAL ANSWER", "num_turns": 2, "duration_ms": 1200, "stop_reason": "end_turn"},
+    {"type": "result", "result": "FINAL ANSWER", "num_turns": 2, "duration_ms": 1200, "stop_reason": "end_turn",
+     "session_id": "sess-123"},
 ]
 
 
@@ -20,6 +21,12 @@ class FakePopen:
         FakePopen.cmd, FakePopen.kwargs = cmd, kwargs
         self.stdout = io.StringIO("".join(json.dumps(e) + "\n" for e in EVENTS))
         self.returncode = 0
+
+    def poll(self):
+        return self.returncode
+
+    def kill(self):
+        pass
 
     def __enter__(self):
         return self

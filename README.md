@@ -33,7 +33,7 @@ ANTHROPIC_WORKSPACE_ID=      # only if the key is not scoped to a workspace
 ## Slides
 
 ```bash
-make serve                 # live-reload at http://localhost:8000
+make serve                 # live-reload at http://localhost:8000 + live demo server on :8765
 make build                 # static HTML in ./site (open site/index.html)
 ```
 
@@ -46,10 +46,21 @@ make build                 # static HTML in ./site (open site/index.html)
 
 - **Content:** `slides/slides.md` — `---` separates slides, `Note:` starts speaker notes.
 - **Diagrams:** fenced ```` ```mermaid ```` blocks.
-- **Styling:** `slides/theme.css` on top of the reveal.js `black` theme; deck settings in `mkslides.yml`.
+- **Styling:** `slides/theme.css` on top of the reveal.js `white` theme; deck settings in `mkslides.yml`.
 - **PDF export:** open the deck with `?print-pdf` at the end of the URL and print to PDF from the browser.
 
 ## Live demos
+
+**In the slides.** The three demo slides contain a live window: edit the prompt, press **▶ Esegui** and
+the agent's steps stream in as Claude Code works. `make serve` starts the small server behind them
+(`demo/live_server.py`, `127.0.0.1:8765`).
+
+- The server runs only the three predefined demos, with their folder, tools and permissions: the slide
+  can change the prompt, not the command.
+- It answers only pages from `http://localhost:8000` and runs one demo at a time.
+- In demo 3, **Salva report** writes `report.md` — only the report the agent just produced.
+
+**In the terminal.**
 
 | Command | What it shows |
 |---|---|
@@ -77,6 +88,7 @@ Runs offline, with no API key and no cost:
 
 - the demo tools (exact CSV totals, sandbox path checks, approval on writes, order lookup)
 - the `claude -p` stream renderer, with a fake CLI process
+- the live demo server (streaming, origin check, saving the report), with the same fake process
 - a full build of the slides
 
 The Claude calls themselves are not tested automatically — they need a key, cost money and
@@ -87,9 +99,11 @@ their answers change between runs. Do a manual run of the demos before presentin
 ```
 ├── slides/
 │   ├── slides.md          deck content and speaker notes
-│   └── theme.css          style overrides
+│   ├── theme.css          style overrides
+│   └── live.js            live demo windows in the slides
 ├── demo/
 │   ├── claude_cli.py      runs `claude -p` and renders the agent loop live
+│   ├── live_server.py     server behind the live demo windows
 │   ├── cli_01_simple_call.py, cli_02_tool_use.py, cli_03_agent.py
 │   ├── common.py          API client and request defaults (API variants)
 │   ├── 01_simple_llm_call.py, 02_tool_use.py, 03_agent_loop.py
