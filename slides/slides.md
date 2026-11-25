@@ -25,72 +25,102 @@ Note: Obiettivo: capire cos'è un agente, come funziona dentro, quali trappole h
 
 ---
 
-## Un LLM prevede il token successivo
+## Che cos'è un LLM
 
-<div class="cols">
-<div>
+Un modello che prevede la parola successiva.
+
+Tutto qui.
+
+---
+
+## Token: i pezzi del testo
+
+Il modello non vede parole ma token.
+
+`Il` · `gatto` · `dorm` · `e` · `sul` · `div` · `ano`
+
+In media un token è circa ¾ di parola.
+
+---
+
+## Prevedere il token successivo
 
 *Il gatto dorme sul …*
 
-| Token | Probabilità |
+| | |
 |---|---|
 | divano | 41% |
 | letto | 23% |
 | tetto | 12% |
+| … | |
 
-</div>
-<div>
+---
 
-- Il modello vede **token**, non parole (≈ ¾ di parola)
-- Genera ripetendo: prevede un token, lo aggiunge, ricomincia
-- **Temperatura**: bassa = prevedibile, alta = creativa e più errori
+## Generare = ripetere
 
-</div>
-</div>
+```mermaid
+flowchart LR
+    T[Testo] --> P[Prevedi un token] --> A[Aggiungilo al testo] --> T
+```
 
-Note: Tutto qui: un LLM è un modello statistico del testo. L'agente è costruito sopra questo meccanismo.
+fino alla fine della risposta
+
+---
+
+## Temperatura
+
+Bassa: sceglie sempre la parola più probabile.
+
+Alta: osa di più, più creativa e più errori.
 
 ---
 
 ## Allucinazioni
 
-> Il modello cerca ciò che è **probabile**, non ciò che è **vero**.
-
-Una risposta convincente ma falsa.<br>
-<span class="muted">In un chatbot è una frase sbagliata. In un agente può diventare un'azione sbagliata.</span>
+Una risposta convincente ma falsa.
 
 ---
 
-## La finestra di contesto
+## Perché succede
+
+Il modello cerca ciò che è probabile,
+
+non ciò che è vero.
+
+---
+
+## Finestra di contesto
+
+La memoria di lavoro del modello.
 
 <div class="cols">
-<div>
-
-La **memoria di lavoro** del modello:
-
-- istruzioni
-- documenti
-- conversazione
-- risultati degli strumenti
-
-Quello che non ci sta, il modello **non lo vede**.<br>
-Ogni nuova sessione riparte da zero.
-
+<div><span class="tag">istruzioni</span></div>
+<div><span class="tag">documenti</span></div>
+<div><span class="tag">conversazione</span></div>
+<div><span class="tag">risposta</span></div>
 </div>
-<div>
 
-**Il contesto costa** (attention: ogni token contro ogni token)
+Quello che non ci sta, il modello non lo vede.
 
-| Token | Confronti |
+---
+
+## Niente memoria tra conversazioni
+
+Ogni chat riparte da zero.
+
+Salvo strumenti che gli ridanno il contesto.
+
+---
+
+## Il contesto costa
+
+| | |
 |---|---|
-| 1.000 | 1 milione |
-| 10.000 | 100 milioni |
-| 100.000 | 10 miliardi |
+| 1.000 token | 1 milione di confronti |
+| 10.000 token | 100 milioni |
+| 100.000 token | 10 miliardi |
 
-</div>
-</div>
-
-Note: Per un agente è cruciale: ogni giro del ciclo aggiunge risultati al contesto. Scegliere cosa farci entrare è metà del lavoro.
+Raddoppi il testo, quadruplichi il lavoro.
 
 ---
 
@@ -153,31 +183,25 @@ sequenceDiagram
 
 ---
 
-## Un esempio
-
-<div class="cols">
-<div>
+## Esempio
 
 **"Quanti ordini aperti ci sono?"**
 
-1. **Pensa**: serve una query sul DB
-2. **Agisce**: `SELECT COUNT(*) …`
-3. **Osserva**: `42`
-4. **Risponde**: "Ci sono 42 ordini aperti."
+Pensa: serve una query sul DB
 
-</div>
-<div>
+Agisce: `SELECT COUNT(*) …`
 
-### L'LLM non esegue niente
+Osserva: 42
 
-Scrive **quale strumento** usare e con quali parametri.
+**"Ci sono 42 ordini aperti."**
 
-Il **nostro programma** lo esegue e gli ridà il risultato.
+---
 
-<span class="muted">È qui che si mettono i controlli: nel codice che esegue, non nel prompt.</span>
+## L'LLM non esegue niente
 
-</div>
-</div>
+Scrive quale strumento usare.
+
+Il programma lo esegue e gli ridà il risultato.
 
 ---
 
@@ -250,123 +274,177 @@ flowchart LR
 
 ## Razionalità limitata
 
-> Non possiamo elaborare tutte le informazioni, né prevedere tutti i risultati.<br>
-> <span class="muted">— Herbert Simon, Nobel per l'economia 1978</span>
+Non possiamo elaborare tutte le informazioni.
 
-<div class="cols">
-<div><span class="tag">Risorse scarse</span><br>vede solo il suo contesto</div>
-<div><span class="tag">Euristiche</span><br>regole pratiche per decidere</div>
-<div><span class="tag">Satisficing</span><br>"va bene così"</div>
-</div>
+Non possiamo prevedere tutti i risultati.
 
-Come noi, un LLM decide con regole pratiche e **eredita i pregiudizi dai dati**.
+<span class="muted">Herbert Simon – Nobel per l'economia 1978</span>
 
 ---
 
-## Ancoraggio: "il problema è nel login"
+## Come si progetta un sistema AI?
+
+<div class="cols">
+<div><span class="tag">Risorse scarse</span><br>Un sistema AI lavora quasi sempre con dati limitati. Non vede tutto quello che succede.</div>
+<div><span class="tag">Euristiche</span><br>Regole pratiche per decidere senza sapere tutto.</div>
+<div><span class="tag">Satisficing</span><br>Una soluzione sufficiente invece della migliore.</div>
+</div>
+
+---
+
+## Bug Fix
+
+Una variante dell'ancoraggio: l'ancora è la nostra opinione.
+
+> "Penso che il problema nel mio codice sia nella funzione di login, puoi controllare?"
+
+Il modello rischia di concentrarsi lì e trovare "conferme", anche se il bug è altrove.
+
+---
+
+## Dove guarda il modello
 
 ```mermaid
 flowchart LR
-    P["Prompt:<br/>'il bug è nel login'"] --> G[L'agente guarda<br/>solo il login]
+    P["Prompt:<br/>'il problema è nel login'"] --> G[Il modello guarda<br/>solo il login]
     G --> C[Trova 'conferme']
-    C --> F[Modifica il login]
-    B[Il bug vero:<br/>altrove, mai controllato]
+    B[Il bug vero: altrove,<br/>mai controllato]
 ```
-
-L'ancora pericolosa non è quella assurda, che il modello smaschera:<br>
-è quella **credibile**, che sposta la risposta senza che nessuno se ne accorga.<br>
-<span class="muted">Ancoraggio + compiacenza: una risposta che conferma quello che pensavi già.</span>
-
-Note: In un chatbot l'ancoraggio produce una risposta sbagliata. In un agente produce una modifica al codice sbagliato, con i test che magari passano.
 
 ---
 
-## Contro l'ancoraggio: prima i fatti, poi le cause
+## Ancoraggio + compiacenza
 
 <div class="cols">
-<div>
+<div><span class="tag">Ancoraggio</span><br>parte dalla tua ipotesi</div>
+<div><span class="tag">Compiacenza</span><br>tende a darti ragione</div>
+</div>
 
-**Passo 1 — Estrazione**
+Una risposta che conferma quello che pensavi già.
 
-Dal ticket separa:
-- **fatti osservati** (cosa, quando, a chi, errori)
-- **ipotesi** di chi ha scritto il ticket
+---
+
+## L'ancora pericolosa non è quella assurda, che il modello smaschera.
+
+È quella credibile, che sposta la risposta senza che nessuno se ne accorga.
+
+---
+
+## Lisca di pesce (Ishikawa)
+
+Kaoru Ishikawa, controllo qualità, anni '60: prima tutte le cause possibili, poi si verifica.
+
+```mermaid
+flowchart TB
+    Codice --> E([Effetto:<br/>il login fallisce])
+    Configurazione --> E
+    Dipendenze --> E
+    Dati --> E
+    Ambiente --> E
+    S[Servizi esterni] --> E
+```
+
+La nostra ipotesi diventa una lisca tra le altre, non la risposta.
+
+---
+
+## Passo 1 – Estrazione
+
+<div class="prompt">
+
+Dal ticket seguente separa:
+
+- FATTI OSSERVATI (cosa è successo, quando, a chi, messaggi d'errore)
+- IPOTESI O VALUTAZIONI di chi ha scritto il ticket
 
 Non proporre ancora cause né soluzioni.
 
-</div>
-<div>
-
-**Passo 2 — Diagnosi**
-
-Partendo **solo dai fatti**, elenca almeno 4 cause indipendenti (codice, configurazione, dati, dipendenze, ambiente, servizi esterni).
-
-Per ciascuna: quale verifica (log, query, test) la conferma o la esclude.
-
-Solo alla fine confronta con l'ipotesi iniziale.
+[testo del ticket]
 
 </div>
-</div>
-
-<span class="muted">Il diagramma a lisca di pesce (Ishikawa) applicato al prompt: la nostra ipotesi diventa una causa tra le altre.</span>
 
 ---
 
-## Familiarità: "uso quello che conosco"
+## Passo 2 – Diagnosi
+
+<div class="prompt">
+
+Partendo solo dai fatti osservati qui sotto, elenca almeno 4 cause possibili, indipendenti tra loro. Per ciascuna indica quale verifica concreta (log, query, test) la confermerebbe o la escluderebbe.
+Solo alla fine confronta le cause con l'ipotesi del service desk.
+
+[fatti estratti]<br>
+[log / stack trace / diff dell'ultimo deploy]
+
+</div>
+
+---
+
+## Euristica della familiarità
+
+> "Ne ho già sentito parlare, quindi è migliore."
 
 <div class="cols">
 <div>
 
-Prompt: *"Serializza l'ordine in JSON."*
+Prompt: "Serializza l'ordine in JSON."
 
 ```csharp
 using Newtonsoft.Json;
 JsonConvert.SerializeObject(ordine);
 ```
 
-Il modello propone la libreria **vista più spesso** durante l'addestramento, non quella **del progetto**.
+✓ La più vista in addestramento
 
 </div>
 <div>
 
-Il repository usa già `System.Text.Json`:<br>
-ora ci sono **due librerie** per la stessa cosa.
+Scegliamo quello che riconosciamo.
 
-**Antidoto per gli agenti:** dichiarare le convenzioni del progetto in un file che l'agente legge sempre (`CLAUDE.md`).
+Nel codice: il modello propone la libreria che ha visto più spesso, non quella del progetto.
+
+Il repo usa già System.Text.Json: ora ci sono due librerie per la stessa cosa.
 
 </div>
 </div>
-
-Note: Variante: l'euristica dell'affetto. "Usa il mio vecchio SqlHelper, funziona da anni" e l'agente ti dà ragione senza chiedersi se il repo usa già EF Core o Dapper.
 
 ---
 
-## Satisficing: "la build è verde, va bene così"
+## Satisficing
+
+> "Va bene così."
 
 <div class="cols">
 <div>
 
-Test rosso: `NullReferenceException` in `CalcolaGiacenza`
+✗ Test rosso<br>
+NullReferenceException in CalcolaGiacenza
 
 ```csharp
 try { CalcolaGiacenza(udc); }
 catch { }
 ```
 
-✓ Build verde.
+✓ Build verde: va bene così
 
 </div>
 <div>
 
-La domanda mai fatta: **perché `udc` è null?**<br>
-La causa è nella query che lo carica.
+Una soluzione sufficiente invece della migliore.
 
-Un agente premiato da "test verdi" trova la strada più corta per farli diventare verdi.
+Nel codice: il test diventa verde, la causa resta.
 
-**Antidoto:** chiedere la causa, non solo la correzione, e rileggere il diff.
+La soluzione migliore, mai cercata: perché udc è null? La causa è nella query che la carica.
 
 </div>
 </div>
+
+---
+
+## Anche l'AI usa euristiche
+
+Decide con regole pratiche, come noi.
+
+E come noi eredita i pregiudizi dai dati.
 
 ---
 
@@ -378,44 +456,42 @@ Un agente premiato da "test verdi" trova la strada più corta per farli diventar
 
 ## Claude Code
 
-Un agente che lavora su codice e file: **legge, cerca, modifica, esegue test**.
+Un agente che lavora sul codice e sui file.
 
-<div class="cols">
-<div>
-
-**Il contesto del progetto: `CLAUDE.md`**
-- com'è fatto il progetto
-- regole e convenzioni
-- come si compila e si testa
-
-</div>
-<div>
-
-**La cartella `.claude/`**
-- `agents/` — agenti specializzati
-- `commands/` — comandi personalizzati
-- `skills/` — procedure riutilizzabili
-- `settings.json` — permessi e regole
-
-</div>
-</div>
+Legge, cerca, modifica, esegue test.
 
 <span class="muted">Le demo di oggi usano Claude Code in modalità non interattiva: `claude -p`.</span>
 
 ---
 
+## Il contesto del progetto: CLAUDE.md
+
+Un file che spiega all'agente il progetto.
+
+- com'è fatto il progetto
+- regole e convenzioni
+- come si compila e si testa
+
+---
+
+## La cartella .claude
+
+| | |
+|---|---|
+| `agents/` | agenti specializzati |
+| `commands/` | comandi personalizzati |
+| `skills/` | procedure riutilizzabili |
+| `settings.json` | permessi e regole |
+
+---
+
 ## Permessi
 
-L'agente **chiede prima** di fare azioni importanti.<br>
-Siamo **noi** a decidere cosa può fare da solo.
+L'agente chiede prima di fare azioni importanti.
 
-```bash
-claude -p "…" --tools Read,Glob,Grep --allowedTools "Read(./**)"
-```
+Siamo noi a decidere cosa può fare da solo.
 
-- Solo gli strumenti elencati esistono per l'agente
-- `Read(./**)`: legge solo dentro la cartella del progetto
-- Il minimo privilegio è un guardrail che **non dipende dal prompt**
+<span class="muted">Nelle demo: `--tools Read,Glob,Grep --allowedTools "Read(./**)"`</span>
 
 ---
 
@@ -511,27 +587,29 @@ L'agente trova la richiesta, legge i dati, calcola i totali e prepara il report.
 
 ---
 
+## I limiti
+
+Sbaglia, a volte con sicurezza.
+
+Costa: ogni token si paga.
+
+I dati che gli diamo escono dall'azienda.
+
+---
+
 ## Cosa non delegare
 
-<div class="cols">
-<div>
+Decisioni e responsabilità.
 
-- Decisioni e responsabilità
-- Rilasci senza controllo
-- Dati dei clienti senza verifica
+Rilasci senza controllo.
 
-</div>
-<div>
+Dati dei clienti senza verifica.
 
-**I limiti**
-- Sbaglia, a volte con sicurezza
-- Costa: ogni token si paga
-- I dati che gli diamo escono dall'azienda
+---
 
-</div>
-</div>
+## La responsabilità resta nostra
 
-> L'agente propone, la persona decide.
+L'agente propone, la persona decide.
 
 ---
 

@@ -25,3 +25,7 @@
   border: 1px solid var(--accent); color: var(--accent); font-size: 0.6em;
 }
 .reveal .cols pre { font-size: 0.8em; }
+.reveal .prompt {
+  text-align: left; font-size: 0.8em; padding: 0.6em 1em;
+  background: #272822; border-radius: 8px; font-family: ui-monospace, monospace;
+}
