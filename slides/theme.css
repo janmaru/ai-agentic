@@ -141,3 +141,8 @@
 .reveal .live-answer { font-family: var(--r-main-font); color: var(--text); border-top: 2px solid var(--accent); padding-top: 0.4em; margin-top: 0.4em; }
 .reveal .live-answer h1, .reveal .live-answer h2, .reveal .live-answer h3 { font-size: 1.2em; margin: 0.3em 0; color: var(--accent); }
 .reveal .live-answer table { font-size: 1em; }
+/* Decorazioni delle slide (slides/decor.js): disegni in fil di ferro, tutti con la stessa
+   area (calcolata in decor.js), in alto a destra e in basso a sinistra (le frecce sono in basso a destra). */
+.reveal .backgrounds .decor { position: absolute; opacity: 0.35; pointer-events: none; mix-blend-mode: multiply; } /* multiply: il fondo quasi bianco delle immagini sparisce */
+.reveal .backgrounds .decor-top-right { top: 1.5vw; right: 1.5vw; }
+.reveal .backgrounds .decor-bottom-left { bottom: 1.5vw; left: 1.5vw; }
