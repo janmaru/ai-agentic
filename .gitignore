@@ -4,3 +4,4 @@ site/
 __pycache__/
 demo/workspace/report.md
 .pytest_cache/
+.claude/review/

@@ -71,18 +71,36 @@ In media un token è circa ¾ di parola.
 
 ## Tokenizer e training: un legame stretto
 
-```mermaid
-flowchart LR
-    A[Tanti testi<br/>di esempio] --> B[Costruzione del vocabolario<br/>unisce le coppie<br/>di pezzi più frequenti]
-    B --> C[Vocabolario fisso<br/>di token]
-    C --> D[Training del modello<br/>impara una lista di numeri<br/>per ogni token e prevede<br/>il token successivo]
-```
+<div class="pipe">
+  <div class="pipe-step">Tanti testi<br><span class="muted">di esempio</span></div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-step focus">Vocabolario fisso<div class="tok-chips"><span>the</span><span>ing</span><span>gatto</span><span>ando</span><span>…</span></div></div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-step">Training<br><span class="muted">del modello</span></div>
+</div>
 
-- Ogni modello (Claude, ChatGPT…) ha **il suo tokenizer**, fissato **prima** del training: cambiarlo vuol dire riaddestrare il modello.
-- Lo stesso testo dà un **numero di token diverso** da modello a modello: costi e limiti di contesto non si confrontano 1 a 1.
-- Quello che era frequente nei testi di esempio (inglese, codice) costa meno token; l'italiano di solito ne richiede di più.
+<div class="card solo">
+  <div class="card-title">Ogni modello ha il suo</div>
+  <div class="tok-pair"><span class="tok-who">Modello A</span><div class="tok-chips"><span>get</span><span>User</span><span>ById</span></div><b>3</b></div>
+  <div class="tok-pair"><span class="tok-who">Modello B</span><div class="tok-chips"><span>get</span><span>Us</span><span>er</span><span>By</span><span>Id</span></div><b>5</b></div>
+</div>
 
-<span class="muted">Effetto curioso: il modello vede token, non lettere, per questo contare le lettere di una parola gli riesce male.</span>
+Cambiare tokenizer = riaddestrare il modello.
+
+<span class="muted">Esempio indicativo.</span>
+
+---
+
+## L'inglese costa meno token
+
+<div class="card solo">
+  <div class="tok-pair"><span class="tok-who">EN</span><div class="tok-chips"><span>get</span><span>User</span></div><b>2</b></div>
+  <div class="tok-pair"><span class="tok-who">IT</span><div class="tok-chips"><span>prend</span><span>i</span><span>Ut</span><span>ente</span></div><b>4</b></div>
+</div>
+
+Più un testo era frequente nei dati di training, meno token costa.
+
+<span class="muted">Esempio indicativo.</span>
 
 ---
 

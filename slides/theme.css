@@ -71,3 +71,20 @@
 .reveal .tok-row.good .tok-note { color: var(--accent); font-weight: 700; }
 .reveal pre code { background: var(--surface); color: var(--text); }
 .reveal :not(pre) > code { color: var(--accent-2); }
+.reveal .pipe { display: flex; align-items: center; justify-content: center; gap: 0.5em; margin: 0.4em 0 0.6em; }
+.reveal .pipe-step { padding: 0.4em 0.8em; border-radius: 10px; background: var(--node); border: 2px solid var(--muted); font-size: 0.75em; }
+.reveal .pipe-step.focus { border-color: var(--accent); }
+.reveal .pipe-step .tok-chips { margin-top: 0.3em; justify-content: center; }
+.reveal .pipe-step .tok-chips span { font-size: 0.75em; }
+.reveal .pipe-arrow { color: var(--muted); font-size: 1.2em; }
+.reveal .card { flex: 1; padding: 0.5em 0.8em; border-radius: 12px; background: var(--surface); }
+.reveal .card-title { color: var(--accent); font-weight: 700; font-size: 0.8em; margin-bottom: 0.3em; }
+.reveal .tok-pair { display: flex; align-items: center; gap: 0.5em; margin: 0.25em 0; }
+.reveal .tok-pair .tok-chips span { font-size: 0.65em; white-space: pre; }
+.reveal .tok-pair b { color: var(--accent-2); font-size: 0.8em; }
+.reveal .tok-who { width: 5.2em; font-size: 0.6em; color: var(--muted); }
+.reveal .card.solo { flex: none; display: block; max-width: 640px; margin: 0.4em auto 0.6em !important; padding: 0.6em 1.2em; text-align: left; }
+.reveal .card.solo .card-title { font-size: 0.9em; }
+.reveal .card.solo .tok-who { font-size: 0.75em; }
+.reveal .card.solo .tok-pair .tok-chips span { font-size: 0.85em; }
+.reveal .card.solo .tok-pair b { font-size: 1em; }
