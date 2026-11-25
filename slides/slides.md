@@ -81,6 +81,23 @@ Nessuna parola è mai sconosciuta.
 
 ---
 
+## Tokenizer e training: un legame stretto
+
+```mermaid
+flowchart LR
+    A[Tanti testi<br/>di esempio] --> B[Costruzione del vocabolario<br/>unisce le coppie<br/>di pezzi più frequenti]
+    B --> C[Vocabolario fisso<br/>di token]
+    C --> D[Training del modello<br/>impara una lista di numeri<br/>per ogni token e prevede<br/>il token successivo]
+```
+
+- Ogni modello (Claude, ChatGPT…) ha **il suo tokenizer**, fissato **prima** del training: cambiarlo vuol dire riaddestrare il modello.
+- Lo stesso testo dà un **numero di token diverso** da modello a modello: costi e limiti di contesto non si confrontano 1 a 1.
+- Quello che era frequente nei testi di esempio (inglese, codice) costa meno token; l'italiano di solito ne richiede di più.
+
+<span class="muted">Effetto curioso: il modello vede token, non lettere, per questo contare le lettere di una parola gli riesce male.</span>
+
+---
+
 ## Prevedere il token successivo
 
 *Il gatto dorme sul …*
