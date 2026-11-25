@@ -1,7 +1,7 @@
 PY := .venv/bin/python
 BIN := .venv/bin
 
-.PHONY: setup serve build demo1 demo2 demo3 clean
+.PHONY: setup serve build test demo1 demo2 demo3 clean
 
 setup:
 	python3 -m venv .venv
@@ -14,6 +14,9 @@ serve:            ## live-reload slides at http://localhost:8000
 
 build:            ## static HTML into ./site
 	$(BIN)/mkslides build slides
+
+test:             ## offline tests: demo tools + slide build
+	$(PY) -m pytest -q tests
 
 demo1:
 	$(PY) demo/01_simple_llm_call.py

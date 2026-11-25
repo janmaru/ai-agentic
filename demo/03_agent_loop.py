@@ -92,26 +92,31 @@ SYSTEM = (
 
 GOAL = "Check the workspace for a request from the sales director and complete it."
 
-client = get_client()
-console.print(Panel(GOAL, title="Goal", border_style="cyan"))
+def main() -> None:
+    client = get_client()
+    console.print(Panel(GOAL, title="Goal", border_style="cyan"))
 
-runner = client.beta.messages.tool_runner(
-    **REQUEST_DEFAULTS,
-    output_config={"effort": "medium"},
-    system=SYSTEM,
-    tools=[list_files, read_file, aggregate_csv, write_file],
-    messages=[{"role": "user", "content": GOAL}],
-)
+    runner = client.beta.messages.tool_runner(
+        **REQUEST_DEFAULTS,
+        output_config={"effort": "medium"},
+        system=SYSTEM,
+        tools=[list_files, read_file, aggregate_csv, write_file],
+        messages=[{"role": "user", "content": GOAL}],
+    )
 
-turn = 0
-for message in runner:
-    turn += 1
-    console.rule(f"[dim]turn {turn} · stop_reason={message.stop_reason}[/dim]")
-    if check_refusal(message):
-        break
-    for block in message.content:
-        if block.type == "text" and block.text.strip():
-            style = "green" if message.stop_reason == "end_turn" else "white"
-            console.print(Markdown(block.text), style=style)
+    turn = 0
+    for message in runner:
+        turn += 1
+        console.rule(f"[dim]turn {turn} · stop_reason={message.stop_reason}[/dim]")
+        if check_refusal(message):
+            break
+        for block in message.content:
+            if block.type == "text" and block.text.strip():
+                style = "green" if message.stop_reason == "end_turn" else "white"
+                console.print(Markdown(block.text), style=style)
 
-console.print(f"\n[bold green]Done in {turn} model turns.[/bold green]")
+    console.print(f"\n[bold green]Done in {turn} model turns.[/bold green]")
+
+
+if __name__ == "__main__":
+    main()
