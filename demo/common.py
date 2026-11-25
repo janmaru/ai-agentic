@@ -34,7 +34,10 @@ def get_client() -> anthropic.Anthropic:
     if not (has_env or has_profile):
         console.print("[red]No Anthropic credentials found.[/red] Set ANTHROPIC_API_KEY in .env.")
         sys.exit(1)
-    return anthropic.Anthropic()
+    # Keys not scoped to a workspace must name one on every request.
+    workspace_id = os.getenv("ANTHROPIC_WORKSPACE_ID")
+    headers = {"anthropic-workspace-id": workspace_id} if workspace_id else None
+    return anthropic.Anthropic(default_headers=headers)
 
 
 def check_refusal(message) -> bool:

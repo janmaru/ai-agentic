@@ -145,23 +145,34 @@ flowchart LR
 
 ## Demo 1 — a single call
 
-```python
-response = client.beta.messages.create(
-    model="claude-opus-5-5",
-    max_tokens=16000,
-    messages=[{"role": "user", "content": PROMPT}],
-)
+```bash
+claude -p "What is the difference between a chatbot and an AI agent?" \
+       --tools ""
 ```
 
 One prompt in, one answer out. **No tools, no loop.**
 
 ---
 
-## Demo 2 — tool use, step by step
+## Demo 2 — tool use
+
+```bash
+cd demo/store
+claude -p "I'm Mr Rossi. Where are my orders? The database is orders.json." \
+       --tools Read --allowedTools "Read(./**)"
+```
+
+Claude can't see the data: it **asks** for the `Read` tool, the harness **executes** it
+and sends the result back.<br>
+<span class="muted">`Read(./**)` — reads outside this folder are denied.</span>
+
+---
+
+## Under the hood — the loop in code
 
 ```python
 while True:
-    response = client.beta.messages.create(..., tools=TOOLS, messages=messages)
+    response = client.messages.create(..., tools=TOOLS, messages=messages)
     tool_calls = [b for b in response.content if b.type == "tool_use"]
     if not tool_calls:
         break                                   # final answer
@@ -172,25 +183,21 @@ while True:
     ]})
 ```
 
-The model **asks**, your code **executes**.
+This is what Claude Code (or the SDK tool runner) does for you.
 
 ---
 
 ## Demo 3 — an autonomous agent
 
-```python
-runner = client.beta.messages.tool_runner(
-    model="claude-opus-5-5",
-    system=SYSTEM,
-    tools=[list_files, read_file, aggregate_csv, write_file],
-    messages=[{"role": "user", "content": GOAL}],
-)
-for message in runner:   # the SDK runs the loop
-    show(message)
+```bash
+cd demo/workspace
+claude -p "Check this folder for a request from the sales director and complete it." \
+       --tools Read,Glob,Grep --allowedTools "Read(./**)" Glob Grep \
+       --output-format stream-json --verbose
 ```
 
-Goal: *"Check the workspace for a request from the sales director and complete it."*<br>
-<span class="muted">The agent finds the brief, computes totals, drafts a report and asks before writing.</span>
+The agent finds the brief, reads the data, computes the totals and drafts the report.<br>
+<span class="muted">Read-only by design: our code saves report.md only after a human approves.</span>
 
 ---
 

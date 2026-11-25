@@ -1,0 +1,5 @@
+{
+  "A-1001": {"customer": "Rossi", "status": "shipped", "carrier": "DHL", "eta": "2026-11-28"},
+  "A-1002": {"customer": "Rossi", "status": "processing", "carrier": null, "eta": "2026-12-02"},
+  "A-1003": {"customer": "Bianchi", "status": "delivered", "carrier": "UPS", "eta": "2026-11-20"}
+}
