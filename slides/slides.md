@@ -47,37 +47,25 @@ In media un token è circa ¾ di parola.
 
 <span class="muted">Un problema classico di NLP (Natural Language Processing)</span>
 
-<div class="cols">
-<div>
-
-**Parole intere**
-
-Vocabolario enorme: *dorme, dormiva, dormirebbe…*
-
-Una parola mai vista (un nome, un refuso, un termine nuovo) è **sconosciuta**.
-
-</div>
-<div>
-
-**Caratteri**
-
-Pochi simboli, ma sequenze **lunghissime**.
-
-Una singola lettera porta poco significato.
-
-</div>
-<div>
-
-**Token** (pezzi di parola)
-
-Le parole frequenti sono un token solo, le rare si **spezzano in pezzi noti**.
-
-Nessuna parola è mai sconosciuta.
-
-</div>
+<div class="tok">
+  <div class="tok-row bad">
+    <div class="tok-label">Parole intere</div>
+    <div class="tok-chips"><span>smartworkando</span></div>
+    <div class="tok-note">✗ mai vista: sconosciuta</div>
+  </div>
+  <div class="tok-row bad">
+    <div class="tok-label">Caratteri</div>
+    <div class="tok-chips small"><span>s</span><span>m</span><span>a</span><span>r</span><span>t</span><span>w</span><span>o</span><span>r</span><span>k</span><span>a</span><span>n</span><span>d</span><span>o</span></div>
+    <div class="tok-note">✗ 13 pezzi senza significato</div>
+  </div>
+  <div class="tok-row good">
+    <div class="tok-label">Token</div>
+    <div class="tok-chips"><span>smart</span><span>work</span><span>ando</span></div>
+    <div class="tok-note">✓ 3 pezzi noti</div>
+  </div>
 </div>
 
-<span class="muted">Esempio indicativo: *smartworkando* → `smart` · `work` · `ando`. Tecnica più diffusa: BPE (Byte Pair Encoding).</span>
+<span class="muted">Esempio indicativo. Tecnica più diffusa: BPE (Byte Pair Encoding).</span>
 
 ---
 

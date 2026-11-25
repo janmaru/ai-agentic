@@ -40,3 +40,16 @@
   display: flex; align-items: center; padding: 0 1em; border: 2px dashed var(--muted);
   border-radius: 12px; color: var(--muted); opacity: 0.6;
 }
+.reveal .tok { display: flex; flex-direction: column; gap: 0.7em; margin: 0.8em auto; width: 92%; }
+.reveal .tok-row { display: grid; grid-template-columns: 6.5em 1fr 9.5em; align-items: center; gap: 0.8em; text-align: left; }
+.reveal .tok-label { font-weight: 700; font-size: 0.8em; }
+.reveal .tok-chips { display: flex; flex-wrap: wrap; gap: 0.25em; }
+.reveal .tok-chips span {
+  padding: 0.15em 0.5em; border-radius: 8px; font-family: ui-monospace, monospace; font-size: 0.8em;
+  background: rgba(217, 119, 87, 0.18); border: 2px solid var(--accent);
+}
+.reveal .tok-chips.small span { padding: 0.15em 0.3em; }
+.reveal .tok-row.bad .tok-chips span { background: transparent; border: 2px dashed var(--muted); color: var(--muted); }
+.reveal .tok-note { font-size: 0.75em; }
+.reveal .tok-row.bad .tok-note { color: var(--muted); }
+.reveal .tok-row.good .tok-note { color: var(--accent); font-weight: 700; }
