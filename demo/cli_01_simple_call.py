@@ -7,7 +7,7 @@ from rich.panel import Panel
 
 from claude_cli import console, run_claude, show_answer
 
-PROMPT = "In tre brevi punti: qual è la differenza tra un chatbot e un agente AI?"
+PROMPT = "Spiega in tre brevi punti cos'è la finestra di contesto di un LLM."
 
 
 def main() -> None:

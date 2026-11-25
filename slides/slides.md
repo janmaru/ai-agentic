@@ -11,7 +11,7 @@ Note: Obiettivo: capire cos'è un agente, come funziona dentro, quali trappole h
 ## Di che cosa parleremo
 
 1. Come ragiona un LLM, in breve
-2. Dal chatbot all'agente
+2. Che cos'è un agente
 3. Le trappole: anche l'agente usa euristiche
 4. Claude Code: un agente al lavoro
 5. Demo dal vivo
@@ -164,11 +164,14 @@ non ciò che è vero.
 
 La memoria di lavoro del modello.
 
-<div class="cols">
-<div><span class="tag">istruzioni</span></div>
-<div><span class="tag">documenti</span></div>
-<div><span class="tag">conversazione</span></div>
-<div><span class="tag">risposta</span></div>
+<div class="ctx">
+  <div class="ctx-window">
+    <div>istruzioni</div>
+    <div>documenti</div>
+    <div>conversazione</div>
+    <div>risposta</div>
+  </div>
+  <div class="ctx-outside">…</div>
 </div>
 
 Quello che non ci sta, il modello non lo vede.
@@ -195,18 +198,18 @@ Raddoppi il testo, quadruplichi il lavoro.
 
 ---
 
-# 2. Dal chatbot all'agente
+# 2. Che cos'è un agente
 
 ---
 
-## Chatbot, workflow, agente
+## Workflow o agente?
 
-| | Chatbot | Workflow | Agente |
-|---|---|---|---|
-| Chi decide i passi? | — | Il nostro codice | Il modello |
-| Strumenti | No | Sequenza fissa | Scelti al momento |
-| Ciclo | Un turno | Predefinito | Fino all'obiettivo |
-| Ideale per | Q&A, bozze | Processi ripetibili | Compiti aperti |
+| | Workflow | Agente |
+|---|---|---|
+| Chi decide i passi? | Il nostro codice | Il modello |
+| Strumenti | Sequenza fissa | Scelti al momento |
+| Ciclo | Predefinito | Fino all'obiettivo |
+| Ideale per | Processi ripetibili | Compiti aperti |
 
 ---
 
@@ -575,7 +578,7 @@ Siamo noi a decidere cosa può fare da solo.
 ## Demo 1 — una singola chiamata
 
 ```bash
-claude -p "Qual è la differenza tra un chatbot e un agente AI?" \
+claude -p "Spiega in tre punti cos'è la finestra di contesto di un LLM." \
        --tools ""
 ```
 

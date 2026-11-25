@@ -29,3 +29,14 @@
   text-align: left; font-size: 0.8em; padding: 0.6em 1em;
   background: #272822; border-radius: 8px; font-family: ui-monospace, monospace;
 }
+.reveal .ctx { display: flex; align-items: stretch; justify-content: center; gap: 0.6em; margin: 0.8em 0; }
+.reveal .ctx-window {
+  display: flex; gap: 0.4em; padding: 0.4em; border: 3px solid var(--accent); border-radius: 12px;
+}
+.reveal .ctx-window > div {
+  padding: 0.5em 0.8em; border-radius: 8px; background: rgba(217, 119, 87, 0.18); font-size: 0.8em;
+}
+.reveal .ctx-outside {
+  display: flex; align-items: center; padding: 0 1em; border: 2px dashed var(--muted);
+  border-radius: 12px; color: var(--muted); opacity: 0.6;
+}

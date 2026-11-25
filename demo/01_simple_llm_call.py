@@ -5,7 +5,7 @@ from rich.panel import Panel
 
 from common import REQUEST_DEFAULTS, check_refusal, console, get_client
 
-PROMPT = "In tre brevi punti: qual è la differenza tra un chatbot e un agente AI?"
+PROMPT = "Spiega in tre brevi punti cos'è la finestra di contesto di un LLM."
 
 def main() -> None:
     client = get_client()
