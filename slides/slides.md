@@ -43,6 +43,44 @@ In media un token è circa ¾ di parola.
 
 ---
 
+## Perché token e non parole?
+
+<span class="muted">Un problema classico di NLP (Natural Language Processing)</span>
+
+<div class="cols">
+<div>
+
+**Parole intere**
+
+Vocabolario enorme: *dorme, dormiva, dormirebbe…*
+
+Una parola mai vista (un nome, un refuso, un termine nuovo) è **sconosciuta**.
+
+</div>
+<div>
+
+**Caratteri**
+
+Pochi simboli, ma sequenze **lunghissime**.
+
+Una singola lettera porta poco significato.
+
+</div>
+<div>
+
+**Token** (pezzi di parola)
+
+Le parole frequenti sono un token solo, le rare si **spezzano in pezzi noti**.
+
+Nessuna parola è mai sconosciuta.
+
+</div>
+</div>
+
+<span class="muted">Esempio indicativo: *smartworkando* → `smart` · `work` · `ando`. Tecnica più diffusa: BPE (Byte Pair Encoding).</span>
+
+---
+
 ## Prevedere il token successivo
 
 *Il gatto dorme sul …*
@@ -72,6 +110,22 @@ fino alla fine della risposta
 Bassa: sceglie sempre la parola più probabile.
 
 Alta: osa di più, più creativa e più errori.
+
+---
+
+## Perché "temperatura"?
+
+Un nome preso dalla fisica: freddo = ordinato e prevedibile, caldo = agitato e imprevedibile.
+
+*Il gatto dorme sul …* <span class="muted">(percentuali ricalcolate sulle sole tre parole)</span>
+
+| | Bassa (0,5) | Normale (1) | Alta (2) |
+|---|---|---|---|
+| divano | 71% | 54% | 44% |
+| letto | 23% | 30% | 33% |
+| tetto | 6% | 16% | 24% |
+
+<span class="muted">Non c'entra il calore: è la manopola che regola quanto il modello rischia nella scelta della parola.</span>
 
 ---
 
