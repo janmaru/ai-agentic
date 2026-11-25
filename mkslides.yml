@@ -10,6 +10,10 @@ revealjs:
   transition: slide
   width: 1280
   height: 720
+  mermaid:
+    theme: dark
+    themeVariables:
+      fontSize: 20px
 
 plugins:
   - name: RevealMermaid

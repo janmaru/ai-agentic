@@ -15,7 +15,8 @@
 .reveal .muted { color: var(--muted); font-size: 0.7em; }
 .reveal pre { width: 100%; font-size: 0.5em; box-shadow: none; }
 .reveal pre code { max-height: 560px; border-radius: 8px; }
-.reveal .mermaid { background: transparent; font-size: 0.6em; }
+.reveal .mermaid { background: transparent; display: flex; justify-content: center; }
+.reveal .mermaid svg { width: 100%; max-width: 1000px !important; max-height: 520px; height: auto; }
 .reveal table { font-size: 0.7em; }
 .reveal .cols { display: flex; gap: 2em; text-align: left; }
 .reveal .cols > div { flex: 1; }
