@@ -13,5 +13,5 @@ paths:
 - **Niente cornice "chatbot".** Si parla di LLM e di agenti, senza contrapposizioni con i chatbot.
 - **Lingua:** italiano. Termini tecnici in inglese dove sono d'uso (token, tool, prompt).
 - **Verifica visiva** su `make serve` (http://localhost:8000/#/N): diagrammi Mermaid e codice non devono uscire dalla slide 1280×720.
-- **Palette:** solo i colori definiti in `slides/theme.css` (`--bg`, `--text`, `--accent`, `--accent-soft`, `--muted`, `--surface`), mai colori scritti a mano. Accent pieno = scelta giusta o focus; muted tratteggiato = scartato o fuori. Per i diagrammi Mermaid la palette è in `mkslides.yml`.
+- **Palette:** solo i colori definiti in `slides/theme.css` (`--bg`, `--text`, `--accent`, `--accent-soft`, `--accent-2`, `--accent-2-soft`, `--muted`, `--surface`, `--node`; intersezione con ellycode.com), mai colori scritti a mano. Accent pieno = scelta giusta o focus; muted tratteggiato = scartato o fuori; accent-2 (azzurro) = elementi tecnici. Per i diagrammi Mermaid la palette è in `mkslides.yml`.
 - **Visuale prima del testo:** quando un concetto si può mostrare (confronto, flusso, struttura), meglio un disegno o un diagramma di una lista di punti.

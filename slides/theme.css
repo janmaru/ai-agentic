@@ -1,18 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Manrope:wght@400;600;700&display=swap");
 /* Overrides on top of the reveal.js "black" theme. */
-/* Palette del deck: usare solo queste variabili.
-   accent pieno = scelta giusta / focus · muted tratteggiato = scartato / fuori */
+/* Palette del deck (intersezione con ellycode.com): usare solo queste variabili.
+   accent pieno = scelta giusta / focus · muted tratteggiato = scartato / fuori
+   accent-2 = elementi tecnici (codice inline, strumenti) */
 :root {
-  --bg: #191919;          /* sfondo */
-  --text: #ffffff;        /* testo principale */
+  --bg: #0F2A33;          /* sfondo, blu-petrolio */
+  --text: #F4F7F8;        /* testo principale */
   --accent: #d97757;      /* titoli, enfasi, elemento giusto */
   --accent-soft: rgba(217, 119, 87, 0.18); /* riempimento degli elementi accent */
-  --muted: #9aa0a6;       /* testo secondario, elemento scartato */
-  --surface: #272822;     /* codice e prompt */
+  --accent-2: #10B0E0;    /* azzurro: codice inline, strumenti */
+  --accent-2-soft: rgba(16, 176, 224, 0.18);
+  --muted: #93A6AA;       /* testo secondario, elemento scartato */
+  --surface: #0A1E25;     /* codice e prompt */
+  --node: #163944;        /* riquadri dei diagrammi */
 
   --r-background-color: var(--bg);
   --r-main-color: var(--text);
-  --r-main-font: "Inter", system-ui, sans-serif;
-  --r-heading-font: "Inter", system-ui, sans-serif;
+  --r-main-font: "Manrope", system-ui, sans-serif;
+  --r-heading-font: "Outfit", system-ui, sans-serif;
+  --r-heading-color: var(--text);
   --r-heading-text-transform: none;
   --r-heading-font-weight: 700;
   --r-main-font-size: 34px;
@@ -57,8 +63,11 @@
   padding: 0.15em 0.5em; border-radius: 8px; font-family: ui-monospace, monospace; font-size: 0.8em;
   background: var(--accent-soft); border: 2px solid var(--accent);
 }
-.reveal .tok-chips.small span { padding: 0.15em 0.3em; }
+.reveal .tok-chips.small { flex-wrap: nowrap; gap: 0.15em; }
+.reveal .tok-chips.small span { padding: 0.1em 0.22em; font-size: 0.7em; }
 .reveal .tok-row.bad .tok-chips span { background: transparent; border: 2px dashed var(--muted); color: var(--muted); }
 .reveal .tok-note { font-size: 0.75em; }
 .reveal .tok-row.bad .tok-note { color: var(--muted); }
 .reveal .tok-row.good .tok-note { color: var(--accent); font-weight: 700; }
+.reveal pre code { background: var(--surface); color: var(--text); }
+.reveal :not(pre) > code { color: var(--accent-2); }
