@@ -1,6 +1,6 @@
 # Agentic AI
 
-### Dall'assistente che risponde all'assistente che agisce
+### Che cosa abbiamo imparato
 
 <span class="muted">Blexin · 2026</span>
 
