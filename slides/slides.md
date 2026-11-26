@@ -155,6 +155,20 @@ Alta: osa di più, più creativa e più errori.
 
 ---
 
+## Temperatura ≠ effort
+
+<div class="card solo">
+  <div class="card-title">Temperatura: quanto osa <span class="muted">· esempio indicativo</span></div>
+  <div class="tok-pair"><span class="tok-who">Prompt</span><div class="tok-chips"><span>sum</span><span>add</span><span>plusPair</span></div></div>
+  <div class="card-title sep">Effort: quanto ragiona</div>
+  <div class="tok-pair"><span class="tok-who">Basso</span><div class="tok-chips"><span>risponde</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Alto</span><div class="tok-chips"><span>ragiona</span><span>verifica</span><span>risponde</span></div></div>
+</div>
+
+<p class="below">Effort alto = più token e più tempo, non più fantasia. Su Claude l'effort si imposta (<code>output_config.effort</code>, da <code>low</code> a <code>max</code>). Per la maggior parte dei casi basta il default: su Opus 5.5 è <code>medium</code>. La temperatura no.</p>
+
+---
+
 ## Confabulazioni <span class="muted">(le chiamano allucinazioni)</span>
 
 Una risposta convincente ma falsa.
@@ -195,6 +209,24 @@ Quello che non ci sta, il modello non lo vede.
 
 ---
 
+## Più la chat è lunga, peggio va
+
+<div class="ctx">
+  <div class="ctx-outside">…</div>
+  <div class="ctx-window">
+    <div class="fade">istruzioni</div>
+    <div class="fade">vecchi messaggi</div>
+    <div>messaggi recenti</div>
+    <div>risposta</div>
+  </div>
+</div>
+
+Il modello perde dettagli e confonde le cose.
+
+<p class="below">Esempio: dopo ore di lavoro, una regola data all'inizio non viene più rispettata. Compattare = riassumere le parti vecchie per continuare.</p>
+
+---
+
 ## Niente memoria tra conversazioni
 
 Ogni chat riparte da zero.
@@ -214,6 +246,170 @@ Salvo strumenti che gli ridanno il contesto.
 | 100.000 token | 10 miliardi |
 
 Raddoppi il testo, quadruplichi il lavoro.
+
+---
+
+## Sii più ambizioso
+
+<div class="card solo">
+  <div class="card-title">Stesso lavoro, due modi di chiederlo <span class="muted">· esempio indicativo</span></div>
+  <div class="tok-pair"><span class="tok-who">Prima</span><div class="tok-chips"><span>controller</span><span>test</span><span>doc</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Ora</span><div class="tok-chips"><span>migra l'endpoint, test verdi</span></div></div>
+</div>
+
+I modelli recenti sono addestrati a eseguire compiti lunghi dall'inizio alla fine.
+
+<p class="below">Prima: tre prompt, supervisione a ogni passo. Ora: un incarico solo. Per i compiti complessi si può aggiungere una riga al prompt: «sii ambizioso». Il modello tende a costruire il minimo indispensabile.</p>
+
+---
+
+## Un brief, non un prompt
+
+<div class="card solo">
+  <div class="card-title">Come a un membro del team <span class="muted">· esempio indicativo</span></div>
+  <div class="tok-pair"><span class="tok-who">Compito</span><div class="tok-chips"><span>migra /orders a .NET 10</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Perché</span><div class="tok-chips"><span>il runtime attuale scade</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Limiti</span><div class="tok-chips"><span>non toccare lo schema del DB</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Finito</span><div class="tok-chips"><span>test verdi, nessun warning</span></div></div>
+</div>
+
+<p class="below">Il «perché» aiuta il modello nelle piccole decisioni. «Finito» evita che continui a lavorare e a consumare token.</p>
+
+---
+
+## Idee confuse? Fatti intervistare
+
+<div class="pipe">
+  <div class="pipe-step">Brain dump<br><span class="muted">alla rinfusa</span></div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-step focus">Domande<br><span class="muted">una alla volta</span></div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-step">Brief<br><span class="muted">le quattro parti</span></div>
+</div>
+
+<div class="live" data-demo="8" data-out="150"><code class="live-cmd-src">claude -p "…" --tools ""</code><span class="live-prompt-src">Voglio un report sulle vendite per il direttore. Intervistami una domanda alla volta su qualsiasi cosa sia ambigua: fai solo la prima domanda.</span></div>
+
+<p class="below">Spesso il limite non è cosa sa fare l'IA, ma quanto bene spieghi quello che vuoi.</p>
+
+---
+
+## Rendi l'output visivo
+
+<div class="live" data-demo="4"><code class="live-cmd-src">claude -p "…" --tools ""</code><span class="live-prompt-src">Confronta REST e GraphQL: una tabella di tre righe, niente altro testo.</span></div>
+
+<p class="below">Prova tu: cambia il prompt e chiedi lo stesso in prosa. Quanto ci metti a leggerlo?</p>
+
+---
+
+## Chiedi cinque opzioni, non una
+
+<div class="live" data-demo="5"><code class="live-cmd-src">claude -p "…" --tools ""</code><span class="live-prompt-src">Dammi cinque nomi per un servizio che sincronizza gli ordini con il magazzino, uno per riga.</span></div>
+
+<p class="below">Scegliere costa meno che correggere: con cinque opzioni, una è più vicina a ciò che vuoi.</p>
+
+---
+
+## Riavvolgi, non correggere
+
+<div class="card solo">
+  <div class="card-title">Estrai i clienti che hanno disdetto <span class="muted">· esempio indicativo</span></div>
+  <div class="tok-pair"><span class="tok-who">Correggere</span><div class="tok-chips"><span>prompt</span><span>errore</span><span>correzione</span><span>…</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Riavvolgere</span><div class="tok-chips"><span>prompt + regola</span></div></div>
+</div>
+
+Ogni correzione allunga la chat e lascia l'errore nel contesto.
+
+<p class="below">Esempio: l'estrazione conta anche gli abbonamenti passati. Si torna al primo prompt e si aggiunge: «conta solo gli abbonamenti cancellati».</p>
+
+---
+
+## Come si riavvolge: /rewind
+
+```text
+/rewind        (alias: /undo)
+Esc Esc        (a prompt vuoto)
+```
+
+<div class="card solo">
+  <div class="card-title">Il menu <span class="muted">· checkpointing, dalla documentazione</span></div>
+  <div class="tok-pair"><span class="tok-who">Codice e chat</span><div class="tok-chips"><span>Restore code and conversation</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Solo chat</span><div class="tok-chips"><span>Restore conversation</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Solo codice</span><div class="tok-chips"><span>Restore code</span></div></div>
+</div>
+
+<p class="below">Il prompt scelto torna nella casella, da modificare e rinviare. Non sostituisce Git: le modifiche fatte dai comandi bash non sono tracciate.</p>
+
+---
+
+## Compatta prima che la chat peggiori
+
+```text
+/context                          quanto contesto è usato
+/compact focus on the auth bug    riassume, tenendo il focus
+/autocompact 400k                 compatta da solo a quella soglia
+```
+
+<p class="below">Di default Claude compatta solo quando il contesto è quasi pieno (circa 967K token su una finestra da 1M): prima, la chat può già peggiorare. Per cambiare lavoro conviene <code>/clear</code>.</p>
+
+---
+
+## Compattare non è comprimere
+
+<div class="card solo">
+  <div class="card-title">Due modi di accorciare <span class="muted">· esempio indicativo</span></div>
+  <div class="tok-pair"><span class="tok-who">Zip</span><div class="tok-chips"><span>stesso testo, senza perdite</span></div></div>
+  <div class="tok-pair"><span class="tok-who">/compact</span><div class="tok-chips"><span>un riassunto scritto dal modello</span></div></div>
+</div>
+
+Un riassunto sceglie cosa tenere: un dettaglio può sparire.
+
+<p class="below">Per questo <code>/compact</code> accetta istruzioni su cosa conservare. Dopo la compattazione, <code>CLAUDE.md</code> viene ricaricato da disco: ciò che deve restare sempre va lì.</p>
+
+---
+
+## Chat calda, chat fredda
+
+<div class="card solo">
+  <div class="card-title">Quanto dura la cache <span class="muted">· Claude Code</span></div>
+  <div class="tok-pair"><span class="tok-who">Abbonamento</span><div class="tok-chips"><span>1 ora</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Chiave API</span><div class="tok-chips"><span>5 minuti</span></div></div>
+  <div class="card-title sep">Calda o fredda</div>
+  <div class="tok-pair"><span class="tok-who">Calda</span><div class="tok-chips"><span>legge la copia, 1/20 del prezzo</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Fredda</span><div class="tok-chips"><span>rielabora tutta la chat</span></div></div>
+</div>
+
+<p class="below">Torni dopo una pausa lunga: il primo messaggio è più lento e più costoso. <code>/usage</code> dice se la cache è calda o fredda. Il 1/20 vale per Opus 5.5.</p>
+
+---
+
+## Una domanda a margine: /btw
+
+```text
+/btw come si chiamava il file di configurazione?
+```
+
+<div class="card solo">
+  <div class="card-title">Cosa fa <span class="muted">· dalla documentazione</span></div>
+  <div class="tok-pair"><span class="tok-who">Vede</span><div class="tok-chips"><span>tutta la conversazione</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Strumenti</span><div class="tok-chips"><span>nessuno</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Cronologia</span><div class="tok-chips"><span>la risposta non ci entra</span></div></div>
+</div>
+
+<p class="below">Si usa mentre Claude lavora, senza interromperlo. Per scoprire qualcosa di nuovo serve invece un sotto-agente. Sul desktop: Ctrl+; (Cmd+; su Mac).</p>
+
+---
+
+## Un secondo cervello
+
+<div class="card solo">
+  <div class="card-title">Una cartella di testo <span class="muted">· esempio indicativo</span></div>
+  <div class="tok-pair"><span class="tok-who">Progetto</span><div class="tok-chips"><span>stack.md</span><span>decisioni.md</span><span>ruoli.md</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Squadra</span><div class="tok-chips"><span>convenzioni.md</span><span>storico.md</span></div></div>
+</div>
+
+Il contesto su di te e sul tuo lavoro, sempre a disposizione.
+
+<p class="below">Senza, ogni sessione riparte da zero e tu spieghi, copi e incolli. Con una cartella di file che Claude può leggere, ogni risposta parte dal contesto giusto. Per una squadra, il Claude di ognuno conosce subito come lavora l'azienda.</p>
 
 ---
 
@@ -589,6 +785,14 @@ Regole di dettaglio in `.claude/rules/` (slide e demo).
 
 ---
 
+## Tieni la configurazione essenziale
+
+<div class="live" data-demo="7"><code class="live-cmd-src">claude -p "…" --tools ""</code><span class="live-prompt-src">Rivedi questo CLAUDE.md e dimmi cosa è obsoleto, doppio o contraddittorio, una riga per voce. 1) Usa .NET 6. 2) Il progetto usa .NET 10. 3) Scrivi commenti ovunque. 4) Non scrivere commenti inutili. 5) Per il deploy usa lo script Jenkins (dismesso a marzo). 6) Rispondi in italiano. 7) Rispondi sempre in italiano. Rispondi solo con l'elenco.</span></div>
+
+<p class="below">Il CLAUDE.md viene caricato a ogni sessione: ogni regola vecchia costa token e può confondere il modello. Rivedilo ogni tanto.</p>
+
+---
+
 ## Regole per percorso: .claude/rules/
 
 ```markdown
@@ -656,6 +860,14 @@ Si lancia con `/release-notes`.<br>
 
 ---
 
+## Una skill dal lavoro reale
+
+<div class="live" data-demo="6"><code class="live-cmd-src">claude -p "…" --tools ""</code><span class="live-prompt-src">Ecco tre note di rilascio che mi sono piaciute. 1) Novità: filtro per data negli ordini (#412). Correzioni: IVA arrotondata male (#398). 2) Novità: export CSV dei clienti (#420). Breaking change: rimosso /v1/orders (#431). 3) Correzioni: timeout sul login (#405). Novità: tema scuro (#415). Ricava il file SKILL.md di una skill (frontmatter con name e description, poi le istruzioni) che ne produca di simili dai commit. Rispondi solo con il contenuto del file, senza salvarlo.</span></div>
+
+<p class="below">Le skill migliori nascono da lavoro già fatto: dagli esempi che ti sono piaciuti, o dopo averlo svolto insieme a Claude. In Cowork su Mac si può anche registrare («Record a skill»).</p>
+
+---
+
 ## Un sotto-agente: .claude/agents/code-reviewer.md
 
 ```markdown
@@ -671,6 +883,36 @@ precise e concrete su qualità, sicurezza e buone pratiche.
 ```
 
 Lavora in un contesto separato, con i suoi strumenti: qui solo lettura.
+
+---
+
+## Più sotto-agenti, contesto pulito
+
+<div class="pipe">
+  <div class="pipe-step">Chat principale<br><span class="muted">resta pulita</span></div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-step focus">Sotto-agenti<br><span class="muted">leggono molto</span></div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-step">Riassunto<br><span class="muted">solo quello</span></div>
+</div>
+
+```text
+model: haiku      # in .claude/agents/<nome>.md
+```
+
+<p class="below">Ogni sotto-agente ha il suo contesto e restituisce solo il riassunto finale. Per leggere e cercare bastano i modelli economici: se non lo scrivi, usa lo stesso modello della conversazione. Esempio di prompt: «analizza le 500 proposte con 100 sotto-agenti da cinque ciascuno».</p>
+
+---
+
+## Projects: un coordinatore, tanti thread
+
+<div class="card solo">
+  <div class="card-title">Un progetto coordina <span class="muted">· esempio indicativo</span></div>
+  <div class="tok-pair"><span class="tok-who">Tu</span><div class="tok-chips"><span>migra il modulo ordini</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Thread</span><div class="tok-chips"><span>endpoint</span><span>test</span><span>documentazione</span></div></div>
+</div>
+
+<p class="below">Il progetto avvia un thread per ogni compito. I thread girano in parallelo e condividono repository, istruzioni e memoria. Public beta su Pro, Max e Ultra (non su Team ed Enterprise).</p>
 
 ---
 

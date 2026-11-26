@@ -39,6 +39,21 @@ DEMOS = {
     "1": {"prompt": demo1.PROMPT, "folder": empty_folder, "tools": [""], "allowed": None, "system": None},
     "2": {"prompt": demo2.PROMPT, "folder": lambda: demo2.STORE,
           "tools": demo2.TOOLS, "allowed": demo2.ALLOWED, "system": None},
+    # Demo 4: slide "Rendi ogni output visivo", stessa configurazione della demo 1 (nessuno strumento).
+    "4": {"prompt": "Confronta REST e GraphQL: una tabella di tre righe, niente altro testo.",
+          "folder": empty_folder, "tools": [""], "allowed": None, "system": None},
+    # Demo 5: slide "Chiedi cinque opzioni", stessa configurazione della demo 1 (nessuno strumento).
+    "5": {"prompt": "Dammi cinque nomi per un servizio che sincronizza gli ordini con il magazzino, uno per riga.",
+          "folder": empty_folder, "tools": [""], "allowed": None, "system": None},
+    # Demo 6: slide "Una skill dal lavoro reale", stessa configurazione della demo 1 (nessuno strumento).
+    "6": {"prompt": "Ecco tre note di rilascio che mi sono piaciute. 1) Novità: filtro per data negli ordini (#412). Correzioni: IVA arrotondata male (#398). 2) Novità: export CSV dei clienti (#420). Breaking change: rimosso /v1/orders (#431). 3) Correzioni: timeout sul login (#405). Novità: tema scuro (#415). Ricava il file SKILL.md di una skill (frontmatter con name e description, poi le istruzioni) che ne produca di simili dai commit. Rispondi solo con il contenuto del file, senza salvarlo.",
+          "folder": empty_folder, "tools": [""], "allowed": None, "system": None},
+    # Demo 7: slide "Tieni la configurazione essenziale", stessa configurazione della demo 1 (nessuno strumento).
+    "7": {"prompt": "Rivedi questo CLAUDE.md e dimmi cosa è obsoleto, doppio o contraddittorio, una riga per voce. 1) Usa .NET 6. 2) Il progetto usa .NET 10. 3) Scrivi commenti ovunque. 4) Non scrivere commenti inutili. 5) Per il deploy usa lo script Jenkins (dismesso a marzo). 6) Rispondi in italiano. 7) Rispondi sempre in italiano. Rispondi solo con l'elenco.",
+          "folder": empty_folder, "tools": [""], "allowed": None, "system": None},
+    # Demo 8: slide "Idee confuse? Fatti intervistare", stessa configurazione della demo 1 (nessuno strumento).
+    "8": {"prompt": "Voglio un report sulle vendite per il direttore. Intervistami una domanda alla volta su qualsiasi cosa sia ambigua: fai solo la prima domanda.",
+          "folder": empty_folder, "tools": [""], "allowed": None, "system": None},
     "3": {"prompt": demo3.GOAL, "folder": lambda: demo3.WORKSPACE,
           "tools": demo3.TOOLS, "allowed": demo3.ALLOWED, "system": demo3.SYSTEM},
 }

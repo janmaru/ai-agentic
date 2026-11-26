@@ -33,6 +33,17 @@ window.LiveDemo = {
       const input = el('textarea', 'live-prompt');
       input.value = prompt;
       input.rows = 2;
+      const fit = () => {  // la casella cresce col testo (fino a un massimo), così il prompt si legge tutto
+        if (input.offsetParent === null) return;  // slide non visibile: niente misure
+        input.style.height = 'auto';
+        const twoRows = input.offsetHeight;  // altezza di partenza: rows = 2
+        const height = Math.max(twoRows, Math.min(input.scrollHeight + 2, 190));
+        input.style.height = height + 'px';
+        // se il prompt è lungo, l'area di output si accorcia: la finestra resta della stessa altezza
+        const base = parseInt(box.dataset.out, 10) || 260;  // data-out: altezza dell'output nelle slide con altro sopra
+        out.style.height = Math.max(120, base - (height - twoRows)) + 'px';
+      };
+      input.addEventListener('input', fit);
       const run = el('button', 'live-run', '▶ Esegui');
       const reset = el('button', 'live-reset', 'Nuova');
       reset.hidden = true;
@@ -43,6 +54,9 @@ window.LiveDemo = {
       actions.append(run, reset, save, status);
       const out = el('div', 'live-out');
       box.append(head, input, actions, out);
+      fit();
+      deck.on('slidechanged', fit);
+      deck.on('ready', fit);
 
       let source = null;
       let inConversation = false;  // dopo la prima risposta le domande riprendono la stessa sessione
@@ -63,6 +77,7 @@ window.LiveDemo = {
         inConversation = false;
         out.textContent = '';
         input.value = prompt;
+        fit();
         run.textContent = '▶ Esegui';
         reset.hidden = save.hidden = true;
         status.textContent = '';
@@ -70,7 +85,11 @@ window.LiveDemo = {
 
       run.addEventListener('click', () => {
         const question = input.value.trim();
-        if (inConversation && !question) return;
+        if (inConversation && !question) {
+          status.textContent = 'Scrivi la domanda successiva nella casella, poi premi Continua.';
+          input.focus();
+          return;
+        }
         stop();
         if (!inConversation) out.textContent = '';
         line('live-user', '› ' + (question || prompt));

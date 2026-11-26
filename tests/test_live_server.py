@@ -81,3 +81,48 @@ def test_save_writes_only_the_agent_report(server, tmp_path):
     with request(f"{server}/save-report", method="POST") as res:
         assert res.status == 200
     assert (tmp_path / "report.md").read_text() == "FINAL ANSWER\n"
+
+
+def test_demo_4_is_text_only_and_uses_the_slide_prompt(server):
+    steps = events(f"{server}/run?demo=4&prompt=Spiega%20REST")
+
+    assert steps[-1]["kind"] == "end"
+    cmd = claude_cli_cmd = __import__("test_claude_cli").FakePopen.cmd
+    assert cmd[cmd.index("-p") + 1] == "Spiega REST"
+    assert cmd[cmd.index("--tools") + 1] == ""                        # nessuno strumento
+
+
+def test_demo_5_is_text_only_and_uses_the_slide_prompt(server):
+    steps = events(f"{server}/run?demo=5&prompt=Dammi%20cinque%20nomi")
+
+    assert steps[-1]["kind"] == "end"
+    cmd = claude_cli_cmd = __import__("test_claude_cli").FakePopen.cmd
+    assert cmd[cmd.index("-p") + 1] == "Dammi cinque nomi"
+    assert cmd[cmd.index("--tools") + 1] == ""                        # nessuno strumento
+
+
+def test_demo_6_is_text_only_and_uses_the_slide_prompt(server):
+    steps = events(f"{server}/run?demo=6&prompt=Ricava%20la%20skill")
+
+    assert steps[-1]["kind"] == "end"
+    cmd = __import__("test_claude_cli").FakePopen.cmd
+    assert cmd[cmd.index("-p") + 1] == "Ricava la skill"
+    assert cmd[cmd.index("--tools") + 1] == ""                        # nessuno strumento
+
+
+def test_demo_7_is_text_only_and_uses_the_slide_prompt(server):
+    steps = events(f"{server}/run?demo=7&prompt=Rivedi%20il%20file")
+
+    assert steps[-1]["kind"] == "end"
+    cmd = __import__("test_claude_cli").FakePopen.cmd
+    assert cmd[cmd.index("-p") + 1] == "Rivedi il file"
+    assert cmd[cmd.index("--tools") + 1] == ""                        # nessuno strumento
+
+
+def test_demo_8_is_text_only_and_uses_the_slide_prompt(server):
+    steps = events(f"{server}/run?demo=8&prompt=Intervistami")
+
+    assert steps[-1]["kind"] == "end"
+    cmd = __import__("test_claude_cli").FakePopen.cmd
+    assert cmd[cmd.index("-p") + 1] == "Intervistami"
+    assert cmd[cmd.index("--tools") + 1] == ""                        # nessuno strumento

@@ -55,6 +55,7 @@
 .reveal .ctx-window > div {
   padding: 0.25em 0.8em; border-radius: 8px; background: var(--accent-soft); font-size: 0.7em;
 }
+.reveal .ctx-window > div.fade { opacity: 0.75; border: 1px dashed var(--muted); }
 .reveal .ctx-outside {
   display: flex; align-items: center; justify-content: center; width: 11em; padding: 0.1em 0; border: 2px dashed var(--muted);
   border-radius: 12px; color: var(--muted); opacity: 0.6; font-size: 0.8em;
