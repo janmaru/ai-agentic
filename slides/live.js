@@ -94,6 +94,7 @@ window.LiveDemo = {
         if (!inConversation) out.textContent = '';
         line('live-user', '› ' + (question || prompt));
         input.value = '';
+        fit();  // casella vuota: l'output torna alto per la risposta
         save.hidden = true;
         run.disabled = true;
         status.textContent = 'Claude sta lavorando…';
