@@ -10,18 +10,197 @@ Note: Obiettivo: capire cos'è un agente, come funziona dentro, quali trappole h
 
 ## Di che cosa parleremo
 
-1. Come ragiona un LLM, in breve
-2. Che cos'è un agente
-3. Le trappole: anche l'agente usa euristiche
-4. Claude Code: un agente al lavoro
-5. Demo dal vivo
-6. Rischi, guardrail e responsabilità
+<div class="path">
+  <div><b>1</b>Overview</div>
+  <div><b>2</b>Come funziona dentro</div>
+  <div><b>3</b>Le trappole</div>
+  <div><b>4</b>Un agente dal vivo</div>
+  <div><b>5</b>Rischi e responsabilità</div>
+</div>
 
 ---
 
-# 1. Come ragiona un LLM
+# 1. Overview
 
-<span class="muted">Quello che serve sapere per capire un agente</span>
+<span class="muted">Che cos'è un agente</span>
+
+<div class="path">
+  <div class="here"><b>1</b>Overview</div>
+  <div><b>2</b>Come funziona dentro</div>
+  <div><b>3</b>Le trappole</div>
+  <div><b>4</b>Un agente dal vivo</div>
+  <div><b>5</b>Rischi e responsabilità</div>
+</div>
+
+---
+
+## Overview: che cos'è un agente
+
+<div class="cli-frame">
+  <div class="cli-title">CLI · claude (di default)</div>
+  <div class="agent">
+    <div class="agent-io">Prompt</div>
+    <div class="agent-arrow">→</div>
+    <div class="agent-core">
+      <div class="agent-title">Agente</div>
+      <div class="agent-inner">
+        <div class="agent-box focus llm">
+          <div class="llm-title">Claude · un LLM</div>
+          <div class="llm-step">Contesto<br><span class="muted">prompt, ragionamento, risultati</span></div>
+          <div class="llm-down">↓</div>
+          <div class="llm-step">Transformer<br><span class="muted">attention + strati</span></div>
+          <div class="llm-down">↓</div>
+          <div class="llm-step">Prossimo token</div>
+          <div class="llm-back">↺ e torna nel contesto</div>
+        </div>
+        <div class="agent-loop">⇄</div>
+        <div class="agent-box tools">
+          <div class="tools-title">Strumenti</div>
+          <div class="tool-chip">di default<br><span class="muted">Read · Edit · Bash</span></div>
+          <div class="tool-chip built">costruiti da noi<br><span class="muted">CLI · MCP</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="agent-arrow">→</div>
+    <div class="agent-io out">Output<br><span class="muted">codice,<br>infrastruttura</span></div>
+  </div>
+</div>
+
+---
+
+## Stocastico e deterministico
+
+<div class="cli-frame two">
+  <div class="cli-title">CLI · claude (di default)</div>
+  <div class="agent">
+    <div class="agent-io">Prompt</div>
+    <div class="agent-arrow">→</div>
+    <div class="agent-core">
+      <div class="agent-title">Agente</div>
+      <div class="agent-inner">
+        <div class="agent-box focus llm ring-a">
+          <div class="ring-tag">stocastico</div>
+          <div class="llm-title">Claude · un LLM</div>
+          <div class="llm-step">Contesto<br><span class="muted">prompt, ragionamento, risultati</span></div>
+          <div class="llm-down">↓</div>
+          <div class="llm-step">Transformer<br><span class="muted">attention + strati</span></div>
+          <div class="llm-down">↓</div>
+          <div class="llm-step">Prossimo token</div>
+          <div class="llm-back">↺ e torna nel contesto</div>
+        </div>
+        <div class="agent-loop">⇄</div>
+        <div class="agent-box tools ring-b">
+          <div class="ring-tag">deterministico</div>
+          <div class="tools-title">Strumenti</div>
+          <div class="tool-chip">di default<br><span class="muted">Read · Edit · Bash</span></div>
+          <div class="tool-chip built">costruiti da noi<br><span class="muted">CLI · MCP</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="agent-arrow">→</div>
+    <div class="agent-io out">Output<br><span class="muted">codice,<br>infrastruttura</span></div>
+  </div>
+</div>
+
+---
+
+## Programmazione tradizionale
+
+<div class="ml">
+  <div class="ml-col">
+    <div class="ml-box">Dati</div>
+    <div class="ml-box focus">Programma</div>
+  </div>
+  <div class="agent-arrow">→</div>
+  <div class="ml-box">Computer</div>
+  <div class="agent-arrow">→</div>
+  <div class="ml-box">Risultato</div>
+</div>
+
+Le regole le scrive un dev.
+
+---
+
+## Machine Learning
+
+<div class="ml">
+  <div class="ml-col">
+    <div class="ml-box">Dati</div>
+    <div class="ml-box">Risultati attesi</div>
+  </div>
+  <div class="agent-arrow">→</div>
+  <div class="ml-box">Computer</div>
+  <div class="agent-arrow">→</div>
+  <div class="ml-box focus">Modello</div>
+</div>
+
+Le regole le trova la macchina dagli esempi.
+
+---
+
+## Workflow o agente?
+
+| | Workflow | Agente |
+|---|---|---|
+| Chi decide i passi? | Il nostro codice | Il modello |
+| Strumenti | Sequenza fissa | Scelti al momento |
+| Ciclo | Predefinito | Fino all'obiettivo |
+| Ideale per | Processi ripetibili | Compiti aperti |
+
+---
+
+## La definizione
+
+> Un **agente** è un LLM che **usa strumenti in un ciclo** per raggiungere un **obiettivo**, decidendo da solo il passo successivo.
+
+<div class="cols">
+<div><span class="tag">LLM</span><br>ragiona e decide</div>
+<div><span class="tag">Strumenti</span><br>agiscono sul mondo</div>
+<div><span class="tag">Ciclo</span><br>osserva → corregge</div>
+</div>
+
+---
+
+## Anatomia di un agente
+
+```mermaid
+flowchart LR
+    U([Obiettivo]) --> M[LLM]
+    M -- chiamata strumento --> T[Strumenti<br/>API · file · DB · ricerca]
+    T -- risultato --> M
+    M <--> Mem[(Contesto / memoria)]
+    M -- fatto --> A([Risposta / risultato])
+```
+
+---
+
+## Il ciclo: pensa, agisce, osserva
+
+<div class="seq">
+  <div class="seq-row"><span class="who">Il nostro codice</span><span class="arr">→</span><span class="who ai">Claude</span><span class="msg">obiettivo + definizione strumenti</span></div>
+  <div class="seq-loop">
+    <div class="seq-label">ciclo, finché Claude chiede strumenti (<code>stop_reason: tool_use</code>)</div>
+    <div class="seq-row"><span class="who ai">Claude</span><span class="arr">→</span><span class="who">Il nostro codice</span><span class="msg"><code>tool_use</code> (nome, input)</span></div>
+    <div class="seq-row"><span class="who">Il nostro codice</span><span class="arr">→</span><span class="who">Strumento</span><span class="msg">esegue</span></div>
+    <div class="seq-row"><span class="who">Strumento</span><span class="arr">→</span><span class="who">Il nostro codice</span><span class="msg">risultato</span></div>
+    <div class="seq-row"><span class="who">Il nostro codice</span><span class="arr">→</span><span class="who ai">Claude</span><span class="msg"><code>tool_result</code></span></div>
+  </div>
+  <div class="seq-row"><span class="who ai">Claude</span><span class="arr">→</span><span class="who">Il nostro codice</span><span class="msg">risposta finale</span></div>
+</div>
+
+---
+
+# 2. Come funziona dentro
+
+<span class="muted">Il modello, il contesto, gli strumenti</span>
+
+<div class="path">
+  <div><b>1</b>Overview</div>
+  <div class="here"><b>2</b>Come funziona dentro</div>
+  <div><b>3</b>Le trappole</div>
+  <div><b>4</b>Un agente dal vivo</div>
+  <div><b>5</b>Rischi e responsabilità</div>
+</div>
 
 ---
 
@@ -137,6 +316,42 @@ fino alla fine della risposta
 
 ---
 
+## Parametri
+
+Miliardi di numeri: i pesi.
+
+Come le sinapsi del cervello.
+
+---
+
+## Le dimensioni
+
+Cervello: circa 10<sup>15</sup> connessioni.
+
+Grandi LLM: centinaia o migliaia di miliardi di parametri.
+
+---
+
+## Come impara un LLM
+
+Legge trilioni di token: quasi tutto internet.
+
+Indovina la parola dopo, sbaglia, corregge i pesi.
+
+---
+
+## Da modello ad assistente
+
+<div class="pipe">
+  <div class="pipe-step">Pre-training<br><span class="muted">leggere internet</span></div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-step">Fine-tuning<br><span class="muted">esempi di dialogo</span></div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-step focus">Feedback umano<br><span class="muted">risposte migliori</span></div>
+</div>
+
+---
+
 ## Temperatura
 
 *Dai un nome a una funzione che somma due numeri*
@@ -169,25 +384,103 @@ Alta: osa di più, più creativa e più errori.
 
 ---
 
-## Confabulazioni <span class="muted">(le chiamano allucinazioni)</span>
+## Prima e dopo
 
-Una risposta convincente ma falsa.
-
-```csharp
-if (string.IsNullOrBlank(nome)) return;   // non esiste in .NET
-```
-
-<span class="muted">Esempio: il metodo vero è `string.IsNullOrWhiteSpace`. Il nome inventato è plausibile, quindi convince.</span>
+<div class="cols">
+<div><span class="tag">Prima</span><br>una parola alla volta,<br>in fila</div>
+<div><span class="tag">Transformer</span><br>tutte le parole insieme,<br>in parallelo</div>
+</div>
 
 ---
 
-## Perché succede
+## Embedding
 
-Il modello completa con ciò che è probabile,
+Ogni token diventa una lista di numeri.
 
-invece di dire «non so».
+Parole simili → numeri vicini.
 
-<span class="muted">Per questo: verifica.</span>
+---
+
+## Attention
+
+Ogni parola guarda tutte le altre
+
+e decide quali sono importanti per lei.
+
+---
+
+## Attention: un esempio
+
+<div class="tok-chips center"><span>Il</span><span class="hl">gatto</span><span>non</span><span>salta</span><span>perché</span><span>è</span><span class="hl">stanco</span></div>
+
+«stanco» si riferisce a «gatto».
+
+---
+
+## Query, Key, Value
+
+<div class="pipe">
+  <div class="pipe-step">Query<br><span class="muted">cosa cerco?</span></div>
+  <div class="pipe-step">Key<br><span class="muted">cosa offro?</span></div>
+  <div class="pipe-step">Value<br><span class="muted">cosa passo?</span></div>
+</div>
+
+Come in biblioteca: domanda, etichetta, contenuto.
+
+---
+
+## La matrice di attention
+
+Si ricalcola a ogni domanda.
+
+Dipende dal testo in ingresso.
+
+---
+
+## Teste multiple
+
+Tante attention in parallelo.
+
+Ognuna si specializza: grammatica, posizione, riferimenti.
+
+---
+
+## Strati
+
+Decine di strati uno sopra l'altro.
+
+Ogni strato raffina il significato.
+
+---
+
+## Il transformer in una slide
+
+<div class="pipe center small">
+  <div class="pipe-step">Testo</div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-step">Token</div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-step">Embedding</div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-step focus">Attention<br><span class="muted">+ strati ×N</span></div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-step">Prossimo<br>token</div>
+</div>
+
+---
+
+## Ragionare è scrivere nel contesto
+
+<div class="card solo">
+  <div class="card-title">Tutto passa dal contesto <span class="muted">· esempio indicativo</span></div>
+  <div class="tok-pair"><span class="tok-who">Domanda</span><div class="tok-chips"><span>perché fallisce il test?</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Ragiona</span><div class="tok-chips"><span>restituisce null</span><span>quindi…</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Risposta</span><div class="tok-chips"><span>manca un controllo</span></div></div>
+</div>
+
+Il ragionamento è testo come gli altri: ogni parola entra nel contesto e viene riletta per prevedere la successiva.
+
+<p class="below">Più il modello ragiona, più contesto occupa.</p>
 
 ---
 
@@ -206,24 +499,6 @@ La memoria di lavoro del modello.
 </div>
 
 Quello che non ci sta, il modello non lo vede.
-
----
-
-## Più la chat è lunga, peggio va
-
-<div class="ctx">
-  <div class="ctx-outside">…</div>
-  <div class="ctx-window">
-    <div class="fade">istruzioni</div>
-    <div class="fade">vecchi messaggi</div>
-    <div>messaggi recenti</div>
-    <div>risposta</div>
-  </div>
-</div>
-
-Il modello perde dettagli e confonde le cose.
-
-<p class="below">Esempio: dopo ore di lavoro, una regola data all'inizio non viene più rispettata. Compattare = riassumere le parti vecchie per continuare.</p>
 
 ---
 
@@ -246,226 +521,6 @@ Salvo strumenti che gli ridanno il contesto.
 | 100.000 token | 10 miliardi |
 
 Raddoppi il testo, quadruplichi il lavoro.
-
----
-
-## Sii più ambizioso
-
-<div class="card solo">
-  <div class="card-title">Stesso lavoro, due modi di chiederlo <span class="muted">· esempio indicativo</span></div>
-  <div class="tok-pair"><span class="tok-who">Prima</span><div class="tok-chips"><span>controller</span><span>test</span><span>doc</span></div></div>
-  <div class="tok-pair"><span class="tok-who">Ora</span><div class="tok-chips"><span>migra l'endpoint, test verdi</span></div></div>
-</div>
-
-I modelli recenti sono addestrati a eseguire compiti lunghi dall'inizio alla fine.
-
-<p class="below">Prima: tre prompt, supervisione a ogni passo. Ora: un incarico solo. Per i compiti complessi si può aggiungere una riga al prompt: «sii ambizioso». Il modello tende a costruire il minimo indispensabile.</p>
-
----
-
-## Un brief, non un prompt
-
-<div class="card solo">
-  <div class="card-title">Come a un membro del team <span class="muted">· esempio indicativo</span></div>
-  <div class="tok-pair"><span class="tok-who">Compito</span><div class="tok-chips"><span>migra /orders a .NET 10</span></div></div>
-  <div class="tok-pair"><span class="tok-who">Perché</span><div class="tok-chips"><span>il runtime attuale scade</span></div></div>
-  <div class="tok-pair"><span class="tok-who">Limiti</span><div class="tok-chips"><span>non toccare lo schema del DB</span></div></div>
-  <div class="tok-pair"><span class="tok-who">Finito</span><div class="tok-chips"><span>test verdi, nessun warning</span></div></div>
-</div>
-
-<p class="below">Il «perché» aiuta il modello nelle piccole decisioni. «Finito» evita che continui a lavorare e a consumare token.</p>
-
----
-
-## Idee confuse? Fatti intervistare
-
-<div class="pipe">
-  <div class="pipe-step">Brain dump<br><span class="muted">alla rinfusa</span></div>
-  <div class="pipe-arrow">→</div>
-  <div class="pipe-step focus">Domande<br><span class="muted">una alla volta</span></div>
-  <div class="pipe-arrow">→</div>
-  <div class="pipe-step">Brief<br><span class="muted">le quattro parti</span></div>
-</div>
-
-<div class="live" data-demo="8" data-out="150"><code class="live-cmd-src">claude -p "…" --tools ""</code><span class="live-prompt-src">Voglio un report sulle vendite per il direttore. Intervistami una domanda alla volta su qualsiasi cosa sia ambigua: fai solo la prima domanda.</span></div>
-
-<p class="below">Spesso il limite non è cosa sa fare l'IA, ma quanto bene spieghi quello che vuoi.</p>
-
----
-
-## Rendi l'output visivo
-
-<div class="live" data-demo="4"><code class="live-cmd-src">claude -p "…" --tools ""</code><span class="live-prompt-src">Confronta REST e GraphQL: una tabella di tre righe, niente altro testo.</span></div>
-
-<p class="below">Prova tu: cambia il prompt e chiedi lo stesso in prosa. Quanto ci metti a leggerlo?</p>
-
----
-
-## Chiedi cinque opzioni, non una
-
-<div class="live" data-demo="5"><code class="live-cmd-src">claude -p "…" --tools ""</code><span class="live-prompt-src">Dammi cinque nomi per un servizio che sincronizza gli ordini con il magazzino, uno per riga.</span></div>
-
-<p class="below">Scegliere costa meno che correggere: con cinque opzioni, una è più vicina a ciò che vuoi.</p>
-
----
-
-## Riavvolgi, non correggere
-
-<div class="card solo">
-  <div class="card-title">Estrai i clienti che hanno disdetto <span class="muted">· esempio indicativo</span></div>
-  <div class="tok-pair"><span class="tok-who">Correggere</span><div class="tok-chips"><span>prompt</span><span>errore</span><span>correzione</span><span>…</span></div></div>
-  <div class="tok-pair"><span class="tok-who">Riavvolgere</span><div class="tok-chips"><span>prompt + regola</span></div></div>
-</div>
-
-Ogni correzione allunga la chat e lascia l'errore nel contesto.
-
-<p class="below">Esempio: l'estrazione conta anche gli abbonamenti passati. Si torna al primo prompt e si aggiunge: «conta solo gli abbonamenti cancellati».</p>
-
----
-
-## Come si riavvolge: /rewind
-
-```text
-/rewind        (alias: /undo)
-Esc Esc        (a prompt vuoto)
-```
-
-<div class="card solo">
-  <div class="card-title">Il menu <span class="muted">· checkpointing, dalla documentazione</span></div>
-  <div class="tok-pair"><span class="tok-who">Codice e chat</span><div class="tok-chips"><span>Restore code and conversation</span></div></div>
-  <div class="tok-pair"><span class="tok-who">Solo chat</span><div class="tok-chips"><span>Restore conversation</span></div></div>
-  <div class="tok-pair"><span class="tok-who">Solo codice</span><div class="tok-chips"><span>Restore code</span></div></div>
-</div>
-
-<p class="below">Il prompt scelto torna nella casella, da modificare e rinviare. Non sostituisce Git: le modifiche fatte dai comandi bash non sono tracciate.</p>
-
----
-
-## Compatta prima che la chat peggiori
-
-```text
-/context                          quanto contesto è usato
-/compact focus on the auth bug    riassume, tenendo il focus
-/autocompact 400k                 compatta da solo a quella soglia
-```
-
-<p class="below">Di default Claude compatta solo quando il contesto è quasi pieno (circa 967K token su una finestra da 1M): prima, la chat può già peggiorare. Per cambiare lavoro conviene <code>/clear</code>.</p>
-
----
-
-## Compattare non è comprimere
-
-<div class="card solo">
-  <div class="card-title">Due modi di accorciare <span class="muted">· esempio indicativo</span></div>
-  <div class="tok-pair"><span class="tok-who">Zip</span><div class="tok-chips"><span>stesso testo, senza perdite</span></div></div>
-  <div class="tok-pair"><span class="tok-who">/compact</span><div class="tok-chips"><span>un riassunto scritto dal modello</span></div></div>
-</div>
-
-Un riassunto sceglie cosa tenere: un dettaglio può sparire.
-
-<p class="below">Per questo <code>/compact</code> accetta istruzioni su cosa conservare. Dopo la compattazione, <code>CLAUDE.md</code> viene ricaricato da disco: ciò che deve restare sempre va lì.</p>
-
----
-
-## Chat calda, chat fredda
-
-<div class="card solo">
-  <div class="card-title">Quanto dura la cache <span class="muted">· Claude Code</span></div>
-  <div class="tok-pair"><span class="tok-who">Abbonamento</span><div class="tok-chips"><span>1 ora</span></div></div>
-  <div class="tok-pair"><span class="tok-who">Chiave API</span><div class="tok-chips"><span>5 minuti</span></div></div>
-  <div class="card-title sep">Calda o fredda</div>
-  <div class="tok-pair"><span class="tok-who">Calda</span><div class="tok-chips"><span>legge la copia, 1/20 del prezzo</span></div></div>
-  <div class="tok-pair"><span class="tok-who">Fredda</span><div class="tok-chips"><span>rielabora tutta la chat</span></div></div>
-</div>
-
-<p class="below">Torni dopo una pausa lunga: il primo messaggio è più lento e più costoso. <code>/usage</code> dice se la cache è calda o fredda. Il 1/20 vale per Opus 5.5.</p>
-
----
-
-## Una domanda a margine: /btw
-
-```text
-/btw come si chiamava il file di configurazione?
-```
-
-<div class="card solo">
-  <div class="card-title">Cosa fa <span class="muted">· dalla documentazione</span></div>
-  <div class="tok-pair"><span class="tok-who">Vede</span><div class="tok-chips"><span>tutta la conversazione</span></div></div>
-  <div class="tok-pair"><span class="tok-who">Strumenti</span><div class="tok-chips"><span>nessuno</span></div></div>
-  <div class="tok-pair"><span class="tok-who">Cronologia</span><div class="tok-chips"><span>la risposta non ci entra</span></div></div>
-</div>
-
-<p class="below">Si usa mentre Claude lavora, senza interromperlo. Per scoprire qualcosa di nuovo serve invece un sotto-agente. Sul desktop: Ctrl+; (Cmd+; su Mac).</p>
-
----
-
-## Un secondo cervello
-
-<div class="card solo">
-  <div class="card-title">Una cartella di testo <span class="muted">· esempio indicativo</span></div>
-  <div class="tok-pair"><span class="tok-who">Progetto</span><div class="tok-chips"><span>stack.md</span><span>decisioni.md</span><span>ruoli.md</span></div></div>
-  <div class="tok-pair"><span class="tok-who">Squadra</span><div class="tok-chips"><span>convenzioni.md</span><span>storico.md</span></div></div>
-</div>
-
-Il contesto su di te e sul tuo lavoro, sempre a disposizione.
-
-<p class="below">Senza, ogni sessione riparte da zero e tu spieghi, copi e incolli. Con una cartella di file che Claude può leggere, ogni risposta parte dal contesto giusto. Per una squadra, il Claude di ognuno conosce subito come lavora l'azienda.</p>
-
----
-
-# 2. Che cos'è un agente
-
----
-
-## Workflow o agente?
-
-| | Workflow | Agente |
-|---|---|---|
-| Chi decide i passi? | Il nostro codice | Il modello |
-| Strumenti | Sequenza fissa | Scelti al momento |
-| Ciclo | Predefinito | Fino all'obiettivo |
-| Ideale per | Processi ripetibili | Compiti aperti |
-
----
-
-## La definizione
-
-> Un **agente** è un LLM che **usa strumenti in un ciclo** per raggiungere un **obiettivo**, decidendo da solo il passo successivo.
-
-<div class="cols">
-<div><span class="tag">LLM</span><br>ragiona e decide</div>
-<div><span class="tag">Strumenti</span><br>agiscono sul mondo</div>
-<div><span class="tag">Ciclo</span><br>osserva → corregge</div>
-</div>
-
----
-
-## Anatomia di un agente
-
-```mermaid
-flowchart LR
-    U([Obiettivo]) --> M[LLM]
-    M -- chiamata strumento --> T[Strumenti<br/>API · file · DB · ricerca]
-    T -- risultato --> M
-    M <--> Mem[(Contesto / memoria)]
-    M -- fatto --> A([Risposta / risultato])
-```
-
----
-
-## Il ciclo: pensa, agisce, osserva
-
-<div class="seq">
-  <div class="seq-row"><span class="who">Il nostro codice</span><span class="arr">→</span><span class="who ai">Claude</span><span class="msg">obiettivo + definizione strumenti</span></div>
-  <div class="seq-loop">
-    <div class="seq-label">ciclo, finché Claude chiede strumenti (<code>stop_reason: tool_use</code>)</div>
-    <div class="seq-row"><span class="who ai">Claude</span><span class="arr">→</span><span class="who">Il nostro codice</span><span class="msg"><code>tool_use</code> (nome, input)</span></div>
-    <div class="seq-row"><span class="who">Il nostro codice</span><span class="arr">→</span><span class="who">Strumento</span><span class="msg">esegue</span></div>
-    <div class="seq-row"><span class="who">Strumento</span><span class="arr">→</span><span class="who">Il nostro codice</span><span class="msg">risultato</span></div>
-    <div class="seq-row"><span class="who">Il nostro codice</span><span class="arr">→</span><span class="who ai">Claude</span><span class="msg"><code>tool_result</code></span></div>
-  </div>
-  <div class="seq-row"><span class="who ai">Claude</span><span class="arr">→</span><span class="who">Il nostro codice</span><span class="msg">risposta finale</span></div>
-</div>
 
 ---
 
@@ -554,6 +609,54 @@ flowchart LR
 # 3. Le trappole
 
 ### Anche l'agente usa euristiche
+
+<div class="path">
+  <div><b>1</b>Overview</div>
+  <div><b>2</b>Come funziona dentro</div>
+  <div class="here"><b>3</b>Le trappole</div>
+  <div><b>4</b>Un agente dal vivo</div>
+  <div><b>5</b>Rischi e responsabilità</div>
+</div>
+
+---
+
+## Confabulazioni <span class="muted">(le chiamano allucinazioni)</span>
+
+Una risposta convincente ma falsa.
+
+```csharp
+if (string.IsNullOrBlank(nome)) return;   // non esiste in .NET
+```
+
+<span class="muted">Esempio: il metodo vero è `string.IsNullOrWhiteSpace`. Il nome inventato è plausibile, quindi convince.</span>
+
+---
+
+## Perché succede
+
+Il modello completa con ciò che è probabile,
+
+invece di dire «non so».
+
+<span class="muted">Per questo: verifica.</span>
+
+---
+
+## Più la chat è lunga, peggio va
+
+<div class="ctx">
+  <div class="ctx-outside">…</div>
+  <div class="ctx-window">
+    <div class="fade">istruzioni</div>
+    <div class="fade">vecchi messaggi</div>
+    <div>messaggi recenti</div>
+    <div>risposta</div>
+  </div>
+</div>
+
+Il modello perde dettagli e confonde le cose.
+
+<p class="below">Esempio: dopo ore di lavoro, una regola data all'inizio non viene più rispettata. Compattare = riassumere le parti vecchie per continuare.</p>
 
 ---
 
@@ -742,9 +845,17 @@ E come noi eredita i pregiudizi dai dati.
 
 ---
 
-# 4. Claude Code
+# 4. Un agente dal vivo
 
-### Un agente al lavoro sul codice
+### Claude Code al lavoro
+
+<div class="path">
+  <div><b>1</b>Overview</div>
+  <div><b>2</b>Come funziona dentro</div>
+  <div><b>3</b>Le trappole</div>
+  <div class="here"><b>4</b>Un agente dal vivo</div>
+  <div><b>5</b>Rischi e responsabilità</div>
+</div>
 
 ---
 
@@ -793,6 +904,20 @@ Regole di dettaglio in `.claude/rules/` (slide e demo).
 
 ---
 
+## Un secondo cervello
+
+<div class="card solo">
+  <div class="card-title">Una cartella di testo <span class="muted">· esempio indicativo</span></div>
+  <div class="tok-pair"><span class="tok-who">Progetto</span><div class="tok-chips"><span>stack.md</span><span>decisioni.md</span><span>ruoli.md</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Squadra</span><div class="tok-chips"><span>convenzioni.md</span><span>storico.md</span></div></div>
+</div>
+
+Il contesto su di te e sul tuo lavoro, sempre a disposizione.
+
+<p class="below">Senza, ogni sessione riparte da zero e tu spieghi, copi e incolli. Con una cartella di file che Claude può leggere, ogni risposta parte dal contesto giusto. Per una squadra, il Claude di ognuno conosce subito come lavora l'azienda.</p>
+
+---
+
 ## Regole per percorso: .claude/rules/
 
 ```markdown
@@ -838,6 +963,156 @@ progetto/
 ```
 
 <span class="muted">Le stesse cartelle esistono in `~/.claude/` per le impostazioni personali.</span>
+
+---
+
+## Sii più ambizioso
+
+<div class="card solo">
+  <div class="card-title">Stesso lavoro, due modi di chiederlo <span class="muted">· esempio indicativo</span></div>
+  <div class="tok-pair"><span class="tok-who">Prima</span><div class="tok-chips"><span>controller</span><span>test</span><span>doc</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Ora</span><div class="tok-chips"><span>migra l'endpoint, test verdi</span></div></div>
+</div>
+
+I modelli recenti sono addestrati a eseguire compiti lunghi dall'inizio alla fine.
+
+<p class="below">Prima: tre prompt, supervisione a ogni passo. Ora: un incarico solo. Per i compiti complessi si può aggiungere una riga al prompt: «sii ambizioso». Il modello tende a costruire il minimo indispensabile.</p>
+
+---
+
+## Un brief, non un prompt
+
+<div class="card solo">
+  <div class="card-title">Come a un membro del team <span class="muted">· esempio indicativo</span></div>
+  <div class="tok-pair"><span class="tok-who">Compito</span><div class="tok-chips"><span>migra /orders a .NET 10</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Perché</span><div class="tok-chips"><span>il runtime attuale scade</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Limiti</span><div class="tok-chips"><span>non toccare lo schema del DB</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Finito</span><div class="tok-chips"><span>test verdi, nessun warning</span></div></div>
+</div>
+
+<p class="below">Il «perché» aiuta il modello nelle piccole decisioni. «Finito» evita che continui a lavorare e a consumare token.</p>
+
+---
+
+## Idee confuse? Fatti intervistare
+
+<div class="pipe">
+  <div class="pipe-step">Brain dump<br><span class="muted">alla rinfusa</span></div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-step focus">Domande<br><span class="muted">una alla volta</span></div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-step">Brief<br><span class="muted">le quattro parti</span></div>
+</div>
+
+<div class="live" data-demo="8" data-out="150"><code class="live-cmd-src">claude -p "…" --tools ""</code><span class="live-prompt-src">Voglio un report sulle vendite per il direttore. Intervistami una domanda alla volta su qualsiasi cosa sia ambigua: fai solo la prima domanda.</span></div>
+
+<p class="below">Spesso il limite non è cosa sa fare l'IA, ma quanto bene spieghi quello che vuoi.</p>
+
+---
+
+## Rendi l'output visivo
+
+<div class="live" data-demo="4"><code class="live-cmd-src">claude -p "…" --tools ""</code><span class="live-prompt-src">Confronta REST e GraphQL: una tabella di tre righe, niente altro testo.</span></div>
+
+<p class="below">Prova tu: cambia il prompt e chiedi lo stesso in prosa. Quanto ci metti a leggerlo?</p>
+
+---
+
+## Chiedi cinque opzioni, non una
+
+<div class="live" data-demo="5"><code class="live-cmd-src">claude -p "…" --tools ""</code><span class="live-prompt-src">Dammi cinque nomi per un servizio che sincronizza gli ordini con il magazzino, uno per riga.</span></div>
+
+<p class="below">Scegliere costa meno che correggere: con cinque opzioni, una è più vicina a ciò che vuoi.</p>
+
+---
+
+## Riavvolgi, non correggere
+
+<div class="card solo">
+  <div class="card-title">Estrai i clienti che hanno disdetto <span class="muted">· esempio indicativo</span></div>
+  <div class="tok-pair"><span class="tok-who">Correggere</span><div class="tok-chips"><span>prompt</span><span>errore</span><span>correzione</span><span>…</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Riavvolgere</span><div class="tok-chips"><span>prompt + regola</span></div></div>
+</div>
+
+Ogni correzione allunga la chat e lascia l'errore nel contesto.
+
+<p class="below">Esempio: l'estrazione conta anche gli abbonamenti passati. Si torna al primo prompt e si aggiunge: «conta solo gli abbonamenti cancellati».</p>
+
+---
+
+## Come si riavvolge: /rewind
+
+```text
+/rewind        (alias: /undo)
+Esc Esc        (a prompt vuoto)
+```
+
+<div class="card solo">
+  <div class="card-title">Il menu <span class="muted">· checkpointing, dalla documentazione</span></div>
+  <div class="tok-pair"><span class="tok-who">Codice e chat</span><div class="tok-chips"><span>Restore code and conversation</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Solo chat</span><div class="tok-chips"><span>Restore conversation</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Solo codice</span><div class="tok-chips"><span>Restore code</span></div></div>
+</div>
+
+<p class="below">Il prompt scelto torna nella casella, da modificare e rinviare. Non sostituisce Git: le modifiche fatte dai comandi bash non sono tracciate.</p>
+
+---
+
+## Compatta prima che la chat peggiori
+
+```text
+/context                          quanto contesto è usato
+/compact focus on the auth bug    riassume, tenendo il focus
+/autocompact 400k                 compatta da solo a quella soglia
+```
+
+<p class="below">Di default Claude compatta solo quando il contesto è quasi pieno (circa 967K token su una finestra da 1M): prima, la chat può già peggiorare. Per cambiare lavoro conviene <code>/clear</code>.</p>
+
+---
+
+## Compattare non è comprimere
+
+<div class="card solo">
+  <div class="card-title">Due modi di accorciare <span class="muted">· esempio indicativo</span></div>
+  <div class="tok-pair"><span class="tok-who">Zip</span><div class="tok-chips"><span>stesso testo, senza perdite</span></div></div>
+  <div class="tok-pair"><span class="tok-who">/compact</span><div class="tok-chips"><span>un riassunto scritto dal modello</span></div></div>
+</div>
+
+Un riassunto sceglie cosa tenere: un dettaglio può sparire.
+
+<p class="below">Per questo <code>/compact</code> accetta istruzioni su cosa conservare. Dopo la compattazione, <code>CLAUDE.md</code> viene ricaricato da disco: ciò che deve restare sempre va lì.</p>
+
+---
+
+## Chat calda, chat fredda
+
+<div class="card solo">
+  <div class="card-title">Quanto dura la cache <span class="muted">· Claude Code</span></div>
+  <div class="tok-pair"><span class="tok-who">Abbonamento</span><div class="tok-chips"><span>1 ora</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Chiave API</span><div class="tok-chips"><span>5 minuti</span></div></div>
+  <div class="card-title sep">Calda o fredda</div>
+  <div class="tok-pair"><span class="tok-who">Calda</span><div class="tok-chips"><span>legge la copia, 1/20 del prezzo</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Fredda</span><div class="tok-chips"><span>rielabora tutta la chat</span></div></div>
+</div>
+
+<p class="below">Torni dopo una pausa lunga: il primo messaggio è più lento e più costoso. <code>/usage</code> dice se la cache è calda o fredda. Il 1/20 vale per Opus 5.5.</p>
+
+---
+
+## Una domanda a margine: /btw
+
+```text
+/btw come si chiamava il file di configurazione?
+```
+
+<div class="card solo">
+  <div class="card-title">Cosa fa <span class="muted">· dalla documentazione</span></div>
+  <div class="tok-pair"><span class="tok-who">Vede</span><div class="tok-chips"><span>tutta la conversazione</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Strumenti</span><div class="tok-chips"><span>nessuno</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Cronologia</span><div class="tok-chips"><span>la risposta non ci entra</span></div></div>
+</div>
+
+<p class="below">Si usa mentre Claude lavora, senza interromperlo. Per scoprire qualcosa di nuovo serve invece un sotto-agente. Sul desktop: Ctrl+; (Cmd+; su Mac).</p>
 
 ---
 
@@ -1018,6 +1293,14 @@ while True:
 ---
 
 # 5. Rischi e responsabilità
+
+<div class="path">
+  <div><b>1</b>Overview</div>
+  <div><b>2</b>Come funziona dentro</div>
+  <div><b>3</b>Le trappole</div>
+  <div><b>4</b>Un agente dal vivo</div>
+  <div class="here"><b>5</b>Rischi e responsabilità</div>
+</div>
 
 ---
 

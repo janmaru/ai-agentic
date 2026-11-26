@@ -69,6 +69,9 @@
   background: var(--accent-soft); border: 2px solid var(--accent);
 }
 .reveal .tok-chips.small { flex-wrap: nowrap; gap: 0.15em; }
+.reveal .tok-chips span.hl { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.reveal .tok-chips.center { justify-content: center; }
+.reveal .tok-chips.center:has(.hl) span:not(.hl) { opacity: 0.45; }
 .reveal .tok-chips.small span { padding: 0.1em 0.22em; font-size: 0.7em; }
 .reveal .tok-row.bad .tok-chips span { background: transparent; border: 2px dashed var(--muted); color: var(--muted); }
 .reveal .tok-note { font-size: 0.75em; }
@@ -149,3 +152,62 @@
 .reveal .backgrounds .decor { position: absolute; opacity: 0.35; pointer-events: none; mix-blend-mode: multiply; } /* multiply: il fondo quasi bianco delle immagini sparisce */
 .reveal .backgrounds .decor-top-right { top: 1.5vw; right: 1.5vw; }
 .reveal .backgrounds .decor-bottom-left { bottom: 1.5vw; left: 1.5vw; }
+
+/* Agenda: righe di passi centrate, senza allargarsi a tutta la larghezza */
+.reveal .pipe.center { justify-content: center; gap: 0.6em; margin: 0.6em auto; }
+
+/* Percorso a cinque tappe: agenda e divisori di sezione ("sei qui") */
+.reveal .path { display: flex; gap: 0.4em; max-width: 1000px; margin: 0.9em auto; }
+.reveal .path > div { flex: 1; text-align: center; padding: 0.5em 0.3em; border: 2px solid var(--muted); border-radius: 10px; background: var(--node); font-size: 0.6em; line-height: 1.25; color: var(--text); }
+.reveal .path > div > b { display: block; font-size: 2em; color: var(--accent-2); }
+.reveal .path > div.here { border-color: var(--accent); background: var(--accent-soft); }
+.reveal .path > div.here > b { color: var(--accent); }
+.reveal .path:has(.here) > div:not(.here) { opacity: 0.5; }
+
+/* Overview: schema grande, leggibile da lontano */
+.reveal .agent { display: flex; align-items: center; justify-content: center; gap: 0.3em; max-width: 1180px; margin: 0.8em auto; }
+.reveal .agent-io { flex: none; width: 4.6em; text-align: center; padding: 0.6em 0.3em; border: 3px solid var(--muted); border-radius: 14px; background: var(--node); font-size: 0.85em; line-height: 1.2; }
+.reveal .agent-arrow { flex: none; font-size: 1.6em; color: var(--muted); }
+.reveal .agent-core { flex: 1; padding: 0.4em 0.5em 0.6em; border: 3px solid var(--accent); border-radius: 16px; background: var(--surface); }
+.reveal .agent-title { color: var(--accent); font-weight: 700; font-size: 0.7em; margin-bottom: 0.4em; }
+.reveal .agent-inner { display: flex; align-items: center; justify-content: center; gap: 0.3em; }
+.reveal .agent-box { flex: 1; text-align: center; padding: 0.5em 0.3em; border: 2px solid var(--muted); border-radius: 12px; background: var(--bg); font-size: 0.85em; line-height: 1.2; }
+.reveal .agent-box.focus { border-color: var(--accent); background: var(--accent-soft); }
+.reveal .agent-loop { flex: none; font-size: 1.5em; color: var(--accent-2); }
+.reveal .agent-io.out { width: 6.4em; }
+.reveal .cli-frame { max-width: 1180px; margin: 0.5em auto 0.4em; padding: 0.2em 0.5em 0.4em; border: 3px dashed var(--muted); border-radius: 18px; }
+.reveal .cli-title { text-align: left; color: var(--muted); font-weight: 700; font-size: 0.65em; }
+.reveal .cli-frame .agent { margin: 0.2em auto 0; }
+.reveal .agent-tools { display: flex; justify-content: center; gap: 0.6em; max-width: 1180px; margin: 0.4em auto; }
+.reveal .agent-tools > div { flex: 1; text-align: center; padding: 0.4em 0.3em; border: 2px solid var(--muted); border-radius: 12px; background: var(--node); font-size: 0.75em; line-height: 1.2; }
+.reveal .agent-tools > div.built { border-color: var(--accent); background: var(--accent-soft); }
+.reveal .agent-box.llm { display: flex; flex-direction: column; gap: 0.1em; padding: 0.3em 0.4em; font-size: 0.7em; }
+.reveal .llm-title { color: var(--accent); font-weight: 700; }
+.reveal .llm-step { padding: 0.15em 0.3em; border: 1px solid var(--muted); border-radius: 8px; background: var(--bg); line-height: 1.15; }
+.reveal .llm-step .muted { font-size: 0.75em; }
+.reveal .llm-down { color: var(--muted); line-height: 0.9; }
+.reveal .llm-back { color: var(--accent-2); font-size: 0.8em; }
+.reveal .agent-box.llm { flex: 1.25; }
+.reveal .agent-box.tools { display: flex; flex-direction: column; gap: 0.25em; padding: 0.3em 0.4em; font-size: 0.7em; }
+.reveal .tools-title { font-size: 1.15em; }
+.reveal .tool-chip { padding: 0.2em 0.3em; border: 1px solid var(--muted); border-radius: 8px; background: var(--node); line-height: 1.15; }
+.reveal .tool-chip.built { border-color: var(--accent); background: var(--accent-soft); }
+.reveal .tool-chip .muted { font-size: 0.8em; }
+
+/* Programmazione tradizionale e Machine Learning: dati in ingresso, computer, uscita */
+.reveal .ml { display: flex; align-items: center; justify-content: center; gap: 0.4em; max-width: 1000px; margin: 0.8em auto; }
+.reveal .ml-col { display: flex; flex-direction: column; gap: 0.3em; }
+.reveal .ml-box { padding: 0.45em 0.9em; border: 3px solid var(--muted); border-radius: 12px; background: var(--node); text-align: center; font-size: 0.9em; }
+.reveal .ml-box.focus { border-color: var(--accent); background: var(--accent-soft); }
+
+/* Stocastico e deterministico: stesso schema dell'Overview, con le due parti cerchiate */
+.reveal .cli-frame.two .agent-io, .reveal .cli-frame.two .agent-arrow { opacity: 0.35; }
+.reveal .agent-box.ring-a { outline: 5px solid var(--accent); outline-offset: 5px; }
+.reveal .agent-box.ring-b { outline: 5px solid var(--accent-2); outline-offset: 5px; }
+.reveal .ring-tag { align-self: center; padding: 0 0.7em; border-radius: 999px; font-size: 1.05em; font-weight: 700; color: var(--bg); }
+.reveal .ring-a .ring-tag { background: var(--accent); }
+.reveal .ring-b .ring-tag { background: var(--accent-2); }
+.reveal .cli-frame.two { font-size: 0.88em; }
+.reveal .pipe.small { gap: 0.2em; }
+.reveal .pipe.small .pipe-step { font-size: 0.68em; padding: 0.35em 0.5em; }
+.reveal .pipe.small .pipe-arrow { font-size: 0.9em; }
