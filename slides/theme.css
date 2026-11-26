@@ -211,3 +211,13 @@
 .reveal .pipe.small { gap: 0.2em; }
 .reveal .pipe.small .pipe-step { font-size: 0.68em; padding: 0.35em 0.5em; }
 .reveal .pipe.small .pipe-arrow { font-size: 0.9em; }
+
+
+/* La gabbia e il genio: immagine con le etichette ai lati */
+.reveal .genio { display: flex; align-items: stretch; justify-content: center; gap: 0.6em; margin: 0.2em auto; }
+.reveal .genio img { width: 640px; height: 420px; object-fit: cover; margin: 0; border: 0; box-shadow: none; background: transparent; mix-blend-mode: multiply; filter: brightness(1.08) contrast(1.12); }
+.reveal .genio-label { display: flex; flex-direction: column; justify-content: flex-start; font-size: 0.8em; line-height: 1.1; text-align: left; min-width: 4.5em; }
+.reveal .genio-label.bottom { justify-content: flex-end; text-align: right; padding-bottom: 1em; }
+.reveal .genio-label.top { padding-top: 1em; }
+.reveal .genio-label b { font-size: 1.3em; color: var(--text); }
+.reveal .genio-label b.hot { color: var(--accent); }

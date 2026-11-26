@@ -104,6 +104,17 @@ Note: Obiettivo: capire cos'è un agente, come funziona dentro, quali trappole h
 
 ---
 
+## La gabbia e il genio
+
+<div class="genio">
+  <div class="genio-label bottom"><span class="muted">agente</span><br><b>deterministico</b></div>
+  <img src="img/gabbia-genio.jpg" alt="Un genio di fumo a fil di ferro sorretto da una gabbia di metallo">
+  <div class="genio-label top"><span class="muted">agente</span><br><b class="hot">stocastico</b></div>
+</div>
+
+
+---
+
 ## Programmazione tradizionale
 
 <div class="ml">
@@ -1140,6 +1151,32 @@ Si lancia con `/release-notes`.<br>
 <div class="live" data-demo="6"><code class="live-cmd-src">claude -p "…" --tools ""</code><span class="live-prompt-src">Ecco tre note di rilascio che mi sono piaciute. 1) Novità: filtro per data negli ordini (#412). Correzioni: IVA arrotondata male (#398). 2) Novità: export CSV dei clienti (#420). Breaking change: rimosso /v1/orders (#431). 3) Correzioni: timeout sul login (#405). Novità: tema scuro (#415). Ricava il file SKILL.md di una skill (frontmatter con name e description, poi le istruzioni) che ne produca di simili dai commit. Rispondi solo con il contenuto del file, senza salvarlo.</span></div>
 
 <p class="below">Le skill migliori nascono da lavoro già fatto: dagli esempi che ti sono piaciuti, o dopo averlo svolto insieme a Claude. In Cowork su Mac si può anche registrare («Record a skill»).</p>
+
+---
+
+## La stessa regola, tre barre
+
+<div class="card solo">
+  <div class="card-title">«Mai completare una PR» <span class="muted">· esempio indicativo</span></div>
+  <div class="tok-pair"><span class="tok-who">Skill</span><div class="tok-chips"><span>testo: la regola</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Script</span><div class="tok-chips"><span>codice: rifiuta</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Permessi</span><div class="tok-chips"><span>deny: bloccato</span></div></div>
+</div>
+
+<p class="below">Una regola scritta in una skill è solo testo, e il modello può sbagliare. Lo script e i permessi sono codice: la rispettano sempre.</p>
+
+---
+
+## Gabbia e harness
+
+<div class="card solo">
+  <div class="card-title">Non sono la stessa cosa <span class="muted">· esempio indicativo</span></div>
+  <div class="tok-pair"><span class="tok-who">Solo gabbia</span><div class="tok-chips"><span>libreria OCR</span><span>test</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Entrambi</span><div class="tok-chips"><span>script</span><span>hook</span><span>deny</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Solo harness</span><div class="tok-chips"><span>CLAUDE.md</span><span>regole</span></div></div>
+</div>
+
+<p class="below">Harness: ciò che governa Claude in <code>.claude/</code>. Gabbia: ciò che è deterministico. Il testo delle regole è harness, ma non è gabbia.</p>
 
 ---
 
