@@ -48,16 +48,16 @@
   text-align: left; font-size: 0.8em; padding: 0.6em 1em;
   background: var(--surface); border-radius: 8px; font-family: ui-monospace, monospace;
 }
-.reveal .ctx { display: flex; align-items: stretch; justify-content: center; gap: 0.6em; margin: 0.8em 0; }
+.reveal .ctx { display: flex; flex-direction: column; align-items: center; gap: 0.3em; margin: 0.4em 0; }
 .reveal .ctx-window {
-  display: flex; gap: 0.4em; padding: 0.4em; border: 3px solid var(--accent); border-radius: 12px;
+  display: flex; flex-direction: column; gap: 0.25em; padding: 0.3em; width: 11em; border: 3px solid var(--accent); border-radius: 12px;
 }
 .reveal .ctx-window > div {
-  padding: 0.5em 0.8em; border-radius: 8px; background: var(--accent-soft); font-size: 0.8em;
+  padding: 0.25em 0.8em; border-radius: 8px; background: var(--accent-soft); font-size: 0.7em;
 }
 .reveal .ctx-outside {
-  display: flex; align-items: center; padding: 0 1em; border: 2px dashed var(--muted);
-  border-radius: 12px; color: var(--muted); opacity: 0.6;
+  display: flex; align-items: center; justify-content: center; width: 11em; padding: 0.1em 0; border: 2px dashed var(--muted);
+  border-radius: 12px; color: var(--muted); opacity: 0.6; font-size: 0.8em;
 }
 .reveal .tok { display: flex; flex-direction: column; gap: 0.7em; margin: 0.8em auto; width: 92%; }
 .reveal .tok-row { display: grid; grid-template-columns: 6.5em 1fr 11.5em; align-items: center; gap: 0.8em; text-align: left; }

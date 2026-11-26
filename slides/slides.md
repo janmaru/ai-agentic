@@ -155,7 +155,7 @@ Alta: osa di più, più creativa e più errori.
 
 ---
 
-## Allucinazioni
+## Confabulazioni <span class="muted">(le chiamano allucinazioni)</span>
 
 Una risposta convincente ma falsa.
 
@@ -169,9 +169,11 @@ if (string.IsNullOrBlank(nome)) return;   // non esiste in .NET
 
 ## Perché succede
 
-Il modello cerca ciò che è probabile,
+Il modello completa con ciò che è probabile,
 
-non ciò che è vero.
+invece di dire «non so».
+
+<span class="muted">Per questo: verifica.</span>
 
 ---
 
@@ -180,13 +182,13 @@ non ciò che è vero.
 La memoria di lavoro del modello.
 
 <div class="ctx">
+  <div class="ctx-outside">…</div>
   <div class="ctx-window">
     <div>istruzioni</div>
     <div>documenti</div>
     <div>conversazione</div>
     <div>risposta</div>
   </div>
-  <div class="ctx-outside">…</div>
 </div>
 
 Quello che non ci sta, il modello non lo vede.
