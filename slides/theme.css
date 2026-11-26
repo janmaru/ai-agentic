@@ -221,3 +221,6 @@
 .reveal .genio-label.top { padding-top: 1em; }
 .reveal .genio-label b { font-size: 1.3em; color: var(--text); }
 .reveal .genio-label b.hot { color: var(--accent); }
+.reveal .pipe.narrow { gap: 0.15em; max-width: 1040px; }
+.reveal .pipe.narrow .pipe-step { font-size: 0.78em; padding: 0.35em 0.6em; }
+.reveal .pipe.narrow .pipe-arrow { font-size: 1em; }

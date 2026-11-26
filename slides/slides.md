@@ -149,14 +149,145 @@ Le regole le trova la macchina dagli esempi.
 
 ---
 
-## Workflow o agente?
+## Un esempio: la skill azdo
 
-| | Workflow | Agente |
-|---|---|---|
-| Chi decide i passi? | Il nostro codice | Il modello |
-| Strumenti | Sequenza fissa | Scelti al momento |
-| Ciclo | Predefinito | Fino all'obiettivo |
-| Ideale per | Processi ripetibili | Compiti aperti |
+<div class="pipe center narrow">
+  <div class="pipe-step">azdo get<br><span class="muted">legge il work item</span><br><span class="tag">deterministico</span></div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-step focus">Claude<br><span class="muted">legge i documenti,<br>prepara piano e testo</span><br><span class="tag">stocastico</span></div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-step">Tu<br><span class="muted">approvi cosa<br>verrà scritto</span></div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-step">azdo send<br><span class="muted">controlla, scrive,<br>rilegge e confronta</span><br><span class="tag">deterministico</span></div>
+</div>
+
+Lo script rifiuta ciò che il modello non deve fare, anche se la skill non lo dicesse.
+
+---
+
+## La skill: il testo che legge Claude
+
+```text
+---
+name: azdo
+description: Legge e scrive su Azure DevOps (work item, PR).
+  Usala al posto di az repos / az boards.
+allowed-tools: Read, Write, Bash(python .claude/skills/azdo/scripts/azdo.py get:*)
+---
+
+## Leggere
+python .claude/skills/azdo/scripts/azdo.py get 'wit/workitems/1234'
+
+## Scrivere
+1. Scrivi il payload con Write in .temp/azdo/
+2. Mostra all'utente cosa verrà pubblicato e aspetta il suo sì
+3. python .claude/skills/azdo/scripts/azdo.py send POST '…' .temp/azdo/task.json
+
+## Mai
+Approvare, votare, completare o fare merge di una PR.
+```
+
+<p class="below">Le letture sono già autorizzate in <code>allowed-tools</code>, le scritture chiedono conferma. Tutto il resto è testo: Claude lo legge e può sbagliare.</p>
+
+---
+
+## Lo script: il codice che non si discute
+
+```text
+azdo.py get  <percorso>
+azdo.py send <POST|PATCH|PUT> <percorso> <file.json> [--dry-run]
+
+Si rifiuta di scrivere (nulla è partito) se:
+  • il file ha un BOM o escape \uXXXX
+  • la descrizione di una PR supera 4000 caratteri
+  • si tenta di votare o completare una PR
+  • si riscrive il testo di un work item già rilasciato
+
+Dopo ogni scrittura: rilegge l'oggetto e confronta le parole accentate.
+```
+
+<p class="below">La regola «mai completare una PR» è nella skill e anche qui. Qui non dipende dal modello.</p>
+
+---
+
+## Python: i controlli prima di scrivere
+
+```python
+def check_body(raw, path):
+    if raw.startswith(b"\xef\xbb\xbf"):
+        fail("il file ha il BOM: va salvato UTF-8 senza BOM")
+    text = raw.decode("utf-8")
+    if NON_ASCII_ESCAPE.search(text):
+        fail("il payload contiene escape \\uXXXX: servono i caratteri veri")
+    body = json.loads(text)
+    ...
+    if keys & REVIEWER_DECISIONS:
+        fail("voto e approvazione delle PR restano manuali")
+    ...
+    if key == "status" and status not in PR_STATUS_ALLOWED:
+        fail("il completamento della PR resta manuale")
+    return body
+```
+
+<p class="below">Estratto: i controlli girano prima di ogni scrittura. Le regole non stanno nel prompt.</p>
+
+---
+
+## Python: il lavoro rilasciato non si riscrive
+
+```python
+RELEASED_STATES = {"internal test", "closed", "removed"}
+
+def released_reason(item, pr_statuses):
+    state = item["fields"].get("System.State", "")
+    if state.lower() in RELEASED_STATES:
+        return f"è in stato {state}"
+    completed = [pr for pr, s in pr_statuses.items() if s == "completed"]
+    if completed:
+        return "ha la PR " + ", ".join(completed) + " completata"
+    return None
+
+# in check_released():
+reason = released_reason(item, statuses)
+if reason:
+    fail(f"il work item {reason}: il lavoro rilasciato non si riscrive. "
+         "Una precisazione va in un commento")
+```
+
+<p class="below">Estratto semplificato. Anche il messaggio d'errore dice al modello cosa fare invece.</p>
+
+---
+
+## Codici di uscita scritti per il modello
+
+```text
+0   ok
+1   errore: nulla è stato scritto
+3   scritto, ma la rilettura non è riuscita
+    → non ripetere la scrittura: rileggi con get
+4   scritto, ma il testo riletto non coincide
+    → fermati e mostra la differenza
+5   esito incerto (timeout, errore del server)
+    → non ripetere: rileggi e verifica se esiste già
+```
+
+<p class="below">Chi chiama lo script è un modello: ogni codice gli dice anche cosa fare dopo.</p>
+
+---
+
+## Python: un errore che istruisce
+
+```python
+def fail(message):
+    if written:   # la scrittura è già partita
+        print(f"ERRORE DOPO LA SCRITTURA (eseguita, non ripeterla): {message}",
+              file=sys.stderr)
+        sys.exit(3)
+    print(f"ERRORE: {message}", file=sys.stderr)
+    sys.exit(1)
+```
+
+<p class="below">Il messaggio è un'istruzione per chi lo legge: qui, un modello che altrimenti ripeterebbe la scrittura.</p>
 
 ---
 
@@ -1351,6 +1482,17 @@ while True:
 | Numeri inventati | Strumenti deterministici per i calcoli esatti |
 | Dati che escono dall'azienda | Scegliere cosa entra nel contesto, policy chiare |
 | Difficile da capire cosa è successo | Tracciare ogni chiamata a strumento, valutazioni (eval) |
+
+---
+
+## Workflow o agente?
+
+| | Workflow | Agente |
+|---|---|---|
+| Chi decide i passi? | Il nostro codice | Il modello |
+| Strumenti | Sequenza fissa | Scelti al momento |
+| Ciclo | Predefinito | Fino all'obiettivo |
+| Ideale per | Processi ripetibili | Compiti aperti |
 
 ---
 
