@@ -95,6 +95,8 @@
 .reveal .card.solo .tok-chips { flex-wrap: nowrap; }
 .reveal .card.solo .tok-pair .tok-chips span { font-size: 0.85em; }
 .reveal .card.solo .tok-pair b { font-size: 1em; }
+/* Testo sotto la card (slide #/6 e #/7): più piccolo */
+.reveal .below { font-size: 0.7em; }
 .reveal .card-title.sep { margin-top: 0.5em; padding-top: 0.4em; border-top: 1px solid var(--node); }
 /* Slide #/6: righe della card più compatte */
 .reveal .card.solo .tok-pair { margin: 0.12em 0; }

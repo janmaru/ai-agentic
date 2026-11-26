@@ -88,7 +88,24 @@ In media un token è circa ¾ di parola.
   <div class="tok-pair"><span class="tok-who">Prompt IT</span><div class="tok-chips"><span>Cor</span><span>reggi</span><span>il</span><span>bug</span><span>del</span><span>login</span></div><b>6</b></div>
 </div>
 
-Cambiare tokenizer = riaddestrare il modello.
+<p class="below">Cambiare tokenizer = riaddestrare il modello.</p>
+
+---
+
+## E il cinese? Niente spazi, niente lettere
+
+<div class="card solo">
+  <div class="card-title">Dove finisce una parola? <span class="muted">· esempi indicativi</span></div>
+  <div class="tok-pair"><span class="tok-who">Italiano</span><div class="tok-chips"><span>Il</span><span>gatto</span><span>dorme</span></div><b>3</b></div>
+  <div class="tok-pair"><span class="tok-who">Cinese</span><div class="tok-chips"><span>猫</span><span>在</span><span>睡觉</span></div><b>3</b></div>
+  <div class="card-title sep">Lo stesso prompt</div>
+  <div class="tok-pair"><span class="tok-who">Prompt EN</span><div class="tok-chips"><span>Fix</span><span>the</span><span>login</span><span>bug</span></div><b>4</b></div>
+  <div class="tok-pair"><span class="tok-who">Prompt ZH</span><div class="tok-chips"><span>修复</span><span>登录</span><span>错误</span></div><b>3</b></div>
+  <div class="card-title sep">Carattere raro: si scende ai byte</div>
+  <div class="tok-pair"><span class="tok-who">鱻</span><div class="tok-chips small"><span>E9</span><span>B1</span><span>BB</span></div><b>3</b></div>
+</div>
+
+<p class="below">Il training è identico: statistiche sui pezzi più frequenti. Cambia solo da dove si parte: byte, non lettere.</p>
 
 ---
 
@@ -109,34 +126,32 @@ Cambiare tokenizer = riaddestrare il modello.
 
 ```mermaid
 flowchart LR
-    T[Testo] --> P[Prevedi un token] --> A[Aggiungilo al testo] --> T
+    T[Testo] --> P[Prevedi un token] --> E{Il più probabile è «fine»?}
+    E -- no --> A[Aggiungilo al testo] --> T
+    E -- sì --> F[Fine]
 ```
 
 fino alla fine della risposta
+
+<span class="muted">«Fine» è un token come gli altri: il modello l'ha imparato dai testi di esempio, che a un certo punto finiscono.</span>
 
 ---
 
 ## Temperatura
 
+*Dai un nome a una funzione che somma due numeri*
+
+<div class="card solo">
+  <div class="card-title">Tre esecuzioni, stesso prompt <span class="muted">· esempio indicativo</span></div>
+  <div class="tok-pair"><span class="tok-who">Bassa</span><div class="tok-chips"><span>sum</span><span>sum</span><span>sum</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Alta</span><div class="tok-chips"><span>add</span><span>computeTotal</span><span>plusPair</span></div></div>
+</div>
+
 Bassa: sceglie sempre la parola più probabile.
 
 Alta: osa di più, più creativa e più errori.
 
----
-
-## Perché "temperatura"?
-
-Un nome preso dalla fisica: freddo = ordinato e prevedibile, caldo = agitato e imprevedibile.
-
-*Il gatto dorme sul …* <span class="muted">(stesse proporzioni della slide precedente, riportate su 100)</span>
-
-| | Bassa (0,5) | Normale (1) | Alta (2) |
-|---|---|---|---|
-| divano | 71% | 54% | 44% |
-| letto | 23% | 30% | 33% |
-| tetto | 6% | 16% | 24% |
-
-<span class="muted">Non c'entra il calore: è la manopola che regola quanto il modello rischia nella scelta della parola.</span>
+<p class="below">Un nome preso dalla fisica: freddo = ordinato e prevedibile, caldo = agitato e imprevedibile.<br>La sceglie chi chiama il modello (parametro API), non chi chatta. Nei modelli Claude attuali non è più regolabile.</p>
 
 ---
 
