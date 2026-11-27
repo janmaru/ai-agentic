@@ -66,3 +66,6 @@ plugins:
   - name: Decor   # disegni negli angoli delle slide (slides/decor.js, img/sprite/)
     extra_javascript:
       - decor.js
+  - name: CodeColors   # separa tipi e funzioni predefinite nel codice (slides/codecolors.js)
+    extra_javascript:
+      - codecolors.js

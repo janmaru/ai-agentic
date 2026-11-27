@@ -250,5 +250,9 @@
 .reveal pre code.hljs .hljs-keyword, .reveal pre code.hljs .hljs-literal { color: #0000FF; font-weight: 400; }
 .reveal pre code.hljs .hljs-string { color: #A31515; }
 .reveal pre code.hljs .hljs-number { color: #098658; font-weight: 400; }
-.reveal pre code.hljs .hljs-title, .reveal pre code.hljs .hljs-title.function_, .reveal pre code.hljs .hljs-built_in { color: #795E26; font-weight: 400; }
+.reveal pre code.hljs .hljs-title, .reveal pre code.hljs .hljs-title.function_, .reveal pre code.hljs .hljs-meta { color: #795E26; font-weight: 400; }
+.reveal pre code.hljs .hljs-built_in { color: #267F99; font-weight: 400; } /* tipi (str, string); le chiamate (print) le separa codecolors.js */
+.reveal pre code.hljs .hljs-attr { color: #0451A5; font-weight: 400; } /* chiavi JSON */
 .reveal pre code.hljs .hljs-comment { color: #008000; font-style: normal; }
+.reveal pre code.hljs .hljs-built_in.hljs-builtin-fn { color: #795E26; } /* funzioni predefinite: ocra come le altre funzioni */
+.reveal pre code.hljs .hljs-built_in.hljs-builtin-attr { color: inherit; } /* attributo (b.type): non è un tipo */
