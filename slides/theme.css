@@ -15,6 +15,7 @@
   --muted: #475569;       /* grigio-blu: testo secondario, elemento scartato (7.6) */
   --surface: #EEF3FA;     /* grigio-blu chiaro: codice e prompt */
   --node: #F5F8FD;        /* grigio-blu chiarissimo: riquadri dei diagrammi */
+  --mark: #DC2626;        /* rosso: solo per cerchiare un dettaglio da mostrare (rettangolo di evidenziazione), mai come significato */
 
   --r-background-color: var(--bg);
   --r-main-color: var(--text);
@@ -261,3 +262,43 @@
 /* tag nelle colonne: stocastico arancione, deterministico blu (come ring-tag e pipe) */
 .reveal .cols .tag.sto { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 700; }
 .reveal .cols .tag.det { background: var(--accent-2); border-color: var(--accent-2); color: var(--bg); font-weight: 700; }
+
+
+/* Mock di Azure DevOps (slide "Il prompt" e "La user story"): superfici e bordi derivati dalla palette */
+.reveal .azb { --line: color-mix(in srgb, var(--muted) 30%, transparent); max-width: 1040px; margin: 0 auto; border: 1px solid var(--muted); border-radius: 8px; background: var(--surface); overflow: hidden; font-size: 0.66em; text-align: left; }
+.reveal .azb-bar { padding: 0.45em 0.9em; background: var(--bg); border-bottom: 1px solid var(--line); color: var(--muted); }
+.reveal .azb-bar b { color: var(--text); }
+.reveal .azb-proj { float: right; }
+.reveal .azb-cols { display: flex; gap: 0.7em; padding: 0.8em; align-items: flex-start; }
+.reveal .azb-col { flex: 1 1 0; min-width: 0; }
+.reveal .azb-h { font-weight: 700; padding: 0 0.2em 0.45em; color: var(--muted); }
+.reveal .azb-h i { font-style: normal; font-weight: 500; opacity: 0.7; margin-left: 0.3em; }
+.reveal .azb-card { background: var(--bg); border: 1px solid var(--line); border-left: 5px solid var(--muted); border-radius: 4px; padding: 0.5em 0.6em; margin-bottom: 0.5em; font-weight: 600; line-height: 1.25; }
+.reveal .azb-card small { display: block; margin-top: 0.3em; font-size: 0.8em; font-weight: 500; color: var(--muted); }
+.reveal .azb-card.sel { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+/* Work item (slide "La user story"): Description in evidenza, Priority e storie correlate con il rettangolo di evidenziazione */
+.reveal .azb.azw { font-size: 0.56em; }
+.reveal .azw-head { padding: 0.6em 0.9em; background: var(--bg); border-bottom: 1px solid var(--line); }
+.reveal .azw-head b { display: block; font-size: 1.15em; }
+.reveal .azw-id { display: block; font-size: 0.8em; font-weight: 700; color: var(--muted); letter-spacing: 0.04em; }
+.reveal .azw-body { display: flex; gap: 0.8em; padding: 0.8em; align-items: flex-start; }
+.reveal .azw-main { flex: 2 1 0; min-width: 0; }
+.reveal .azw-side { flex: 1.3 1 0; min-width: 0; }
+.reveal .azw-sec { background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 0.5em 0.7em; margin-bottom: 0.6em; line-height: 1.5; }
+.reveal .azw-sec.ac { border-left: 5px solid var(--accent); line-height: 1.35; }
+.reveal .azw-sec b, .reveal .azw-d b { color: var(--accent); font-weight: 800; }
+.reveal .azw-sec.ac b { color: var(--text); }
+.reveal .azw-label { font-size: 0.8em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin-bottom: 0.3em; }
+.reveal .azw-d { line-height: 1.3; padding: 0.1em 0; }
+.reveal .azw-d b { margin-right: 0.4em; }
+.reveal .azw-side > .azw-label, .reveal .azw-side > .azw-f { background: var(--bg); padding-left: 0.7em; padding-right: 0.7em; }
+.reveal .azw-side > .azw-label { margin: 0; padding-top: 0.5em; border-radius: 4px 4px 0 0; }
+.reveal .azw-f.last { border-radius: 0 0 4px 4px; }
+.reveal .azw-f { padding: 0.3em 0; border-top: 1px solid var(--line); font-weight: 600; }
+.reveal .azw-f span { display: block; font-size: 0.8em; font-weight: 500; color: var(--muted); }
+.reveal .azw-f.hl { outline: 3px solid var(--mark); outline-offset: -3px; border-radius: 3px; }
+.reveal .azw-rel { margin-top: 0.6em; padding: 0.4em 0.7em 0.5em; background: var(--bg); border: 3px solid var(--mark); border-radius: 4px; }
+.reveal .azw-r { padding: 0.12em 0; line-height: 1.25; }
+.reveal .azw-r b { color: var(--muted); margin-right: 0.4em; }
+.reveal .azw-r small { display: block; font-size: 0.85em; color: var(--muted); }

@@ -175,6 +175,74 @@ Istruzioni scritte una volta, che Claude usa quando servono.
 
 ---
 
+## Il prompt e la skill
+
+<img src="img/creazione.jpg" alt="La creazione di Adamo, a rete arancione" style="width:80%; aspect-ratio:1200/540; object-fit:cover; object-position:center 52%; mix-blend-mode:multiply; display:block; margin:0 auto;">
+
+> «Sia la luce.» E la luce fu.
+> <small>Genesi 1,3</small>
+
+---
+
+## Il prompt: una US su Azure DevOps
+
+<div class="azb">
+  <div class="azb-bar"><b>Boards</b> <span>›</span> Stories <span class="azb-proj">Progetto demo</span></div>
+  <div class="azb-cols">
+    <div class="azb-col"><div class="azb-h">New <i>1</i></div>
+      <div class="azb-card">Picking: numero ordine ricavato dal codice scansionato<small>User Story · 1003</small></div>
+    </div>
+    <div class="azb-col"><div class="azb-h">Active <i>2</i></div>
+      <div class="azb-card sel">Picking: selezione della missione per scansione del numero ordine<small>User Story · <b>1000</b></small></div>
+      <div class="azb-card">Picking: la missione presa in carico resta in elenco agli altri operatori<small>Bug · 1004</small></div>
+    </div>
+    <div class="azb-col"><div class="azb-h">Resolved <i>1</i></div>
+      <div class="azb-card">Picking: regole di selezione della missione per processo<small>User Story · 1002</small></div>
+    </div>
+    <div class="azb-col"><div class="azb-h">Closed <i>1</i></div>
+      <div class="azb-card">Mobile: input nascosto per lo scanner nelle pagine del palmare<small>User Story · 1005</small></div>
+    </div>
+  </div>
+</div>
+
+<p class="below">Il prompt non è una frase: è un work item, con il suo ID.</p>
+
+---
+
+## La user story: cosa contiene
+
+<div class="azb azw">
+  <div class="azw-head"><span class="azw-id">USER STORY 1000</span><b>Picking: selezione della missione per scansione del numero ordine</b></div>
+  <div class="azw-body">
+    <div class="azw-main">
+      <div class="azw-sec"><div class="azw-label">Description</div>
+        <b>Come</b> operatore di magazzino<br><b>voglio</b> scegliere la missione scansionando il numero ordine<br><b>così che</b> non debba cercarla a mano
+        <div class="azw-d"><b>Contesto</b> l'elenco è lungo e si avvia la missione sbagliata</div>
+        <div class="azw-d"><b>Descrizione</b> con <code>OrderScan</code> un campo di scansione sostituisce l'elenco</div>
+        <div class="azw-d"><b>Decisioni già prese</b> sostituisce, non affianca: toccavano la riga</div>
+        <div class="azw-d"><b>Fuori perimetro</b> barcode composto: US 1003</div></div>
+      <div class="azw-sec ac"><div class="azw-label">Acceptance Criteria</div>
+        <b>AC1 — Missione unica</b><br>☐ scansionando un ordine con una sola missione, viene presa in carico e si apre</div>
+    </div>
+    <div class="azw-side">
+      <div class="azw-label">Campi</div>
+      <div class="azw-f"><span>Value Area</span>Business</div>
+      <div class="azw-f hl"><span>Priority</span>1</div>
+      <div class="azw-f last"><span>Tag</span>mobile · api</div>
+      <div class="azw-rel">
+        <div class="azw-label">Related Work</div>
+        <div class="azw-r"><b>Parent</b> Feature 1001<small>avvio della missione dal palmare</small></div>
+        <div class="azw-r"><b>Predecessor</b> US 1002<small>regole di selezione per processo</small></div>
+        <div class="azw-r"><b>Successor</b> US 1003<small>numero ordine da codice scansionato</small></div>
+        <div class="azw-r"><b>Related</b> Bug 1004<small>missione ancora in elenco</small></div>
+        <div class="azw-r"><b>Pull Request</b> PR 2000<small>selezione per scansione (bozza)</small></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
 ## Un esempio: la skill azdo
 
 <div class="pipe center narrow">
