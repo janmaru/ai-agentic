@@ -68,7 +68,7 @@ Note: Obiettivo: capire cos'è un agente, come funziona dentro, quali trappole h
 
 ---
 
-## Stocastico e deterministico
+## Deterministico e stocastico
 
 <div class="cli-frame two">
   <div class="cli-title">CLI · claude (di default)</div>
@@ -104,7 +104,7 @@ Note: Obiettivo: capire cos'è un agente, come funziona dentro, quali trappole h
 
 ---
 
-## La gabbia e il genio
+## Il genio della gabbia
 
 <div class="genio">
   <div class="genio-label bottom"><span class="muted">agente</span><br><b>deterministico</b></div>
@@ -115,12 +115,14 @@ Note: Obiettivo: capire cos'è un agente, come funziona dentro, quali trappole h
 
 ---
 
-## Programmazione tradizionale
+## Sistemi deterministici
+
+<p class="below muted">programmazione tradizionale</p>
 
 <div class="ml">
   <div class="ml-col">
     <div class="ml-box">Dati</div>
-    <div class="ml-box focus">Programma</div>
+    <div class="ml-box focus det">Programma</div>
   </div>
   <div class="agent-arrow">→</div>
   <div class="ml-box">Computer</div>
@@ -132,7 +134,9 @@ Le regole le scrive un dev.
 
 ---
 
-## Machine Learning
+## Sistemi stocastici
+
+<p class="below muted">machine learning</p>
 
 <div class="ml">
   <div class="ml-col">
@@ -149,16 +153,40 @@ Le regole le trova la macchina dagli esempi.
 
 ---
 
+# Skill
+
+---
+
+## Che cos'è una skill
+
+Istruzioni scritte una volta, che Claude usa quando servono.
+
+```text
+.claude/skills/azdo/
+├── SKILL.md       frontmatter (name, description) + istruzioni in Markdown
+└── scripts/       codice che la skill può far eseguire
+```
+
+<div class="cols">
+<div><span class="tag">Sempre in contesto</span><br>solo la <code>description</code></div>
+<div><span class="tag">Quando serve</span><br>Claude carica il testo intero</div>
+<div><span class="tag">A comando</span><br>tu la chiami con <code>/azdo</code></div>
+</div>
+
+---
+
 ## Un esempio: la skill azdo
 
 <div class="pipe center narrow">
-  <div class="pipe-step det"><b class="actor">azdo.py get</b><br><span class="muted">script Python:<br>scarica il work item<br>da Azure DevOps</span><br><span class="tag">deterministico</span></div>
+  <div class="pipe-step det"><b class="actor">azdo.py get</b><br><span class="muted">scarica la US</span><br><span class="tag">deterministico</span></div>
   <div class="pipe-arrow">→</div>
-  <div class="pipe-step focus"><b class="actor">Claude</b><br><span class="muted">legge i documenti,<br>prepara piano e testo</span><br><span class="tag">stocastico</span></div>
+  <div class="pipe-step focus"><b class="actor">Claude</b><br><span class="muted">legge i documenti e scrive il piano</span><br><span class="tag">stocastico</span></div>
   <div class="pipe-arrow">→</div>
-  <div class="pipe-step"><b class="actor">Tu</b><br><span class="muted">approvi cosa<br>verrà scritto</span></div>
+  <div class="pipe-step"><b class="actor">Tu</b><br><span class="muted">approvi il piano</span></div>
   <div class="pipe-arrow">→</div>
-  <div class="pipe-step det"><b class="actor">azdo.py send</b><br><span class="muted">script Python:<br>controlla, scrive,<br>rilegge e confronta</span><br><span class="tag">deterministico</span></div>
+  <div class="pipe-step focus"><b class="actor">Claude</b><br><span class="muted">implementa e fa la review</span><br><span class="tag">stocastico</span></div>
+  <div class="pipe-arrow">→</div>
+  <div class="pipe-step det"><b class="actor">azdo.py pr-open</b><br><span class="muted">apre la PR, il piano va nel thread</span><br><span class="tag">deterministico</span></div>
 </div>
 
 Lo script rifiuta ciò che il modello non deve fare, anche se la skill non lo dicesse.
@@ -283,7 +311,10 @@ def fail(message):
     sys.exit(1)
 ```
 
-<p class="below">Il messaggio è un'istruzione per chi lo legge: qui, un modello che altrimenti ripeterebbe la scrittura.</p>
+<div class="cols">
+<div><span class="tag sto">stocastico</span><br>Davanti a un errore il modello riprova. E riprova. Non sa quando fermarsi, con il rischio di un duplicato.</div>
+<div><span class="tag det">deterministico</span><br>Lo script fissa la regola: esce al primo errore (o al massimo 3 tentativi) e dice cosa fare.</div>
+</div>
 
 ---
 

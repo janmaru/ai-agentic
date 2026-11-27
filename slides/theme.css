@@ -198,7 +198,8 @@
 .reveal .ml { display: flex; align-items: center; justify-content: center; gap: 0.4em; max-width: 1000px; margin: 0.8em auto; }
 .reveal .ml-col { display: flex; flex-direction: column; gap: 0.3em; }
 .reveal .ml-box { padding: 0.45em 0.9em; border: 3px solid var(--muted); border-radius: 12px; background: var(--node); text-align: center; font-size: 0.9em; }
-.reveal .ml-box.focus { border-color: var(--accent); background: var(--accent-soft); }
+.reveal .ml-box.focus { border-width: 6px; border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 700; }
+.reveal .ml-box.focus.det { border-color: var(--accent-2); background: var(--accent-2-soft); color: var(--accent-2); } /* deterministico = blu */
 
 /* Stocastico e deterministico: stesso schema dell'Overview, con le due parti cerchiate */
 .reveal .cli-frame.two .agent-io, .reveal .cli-frame.two .agent-arrow { opacity: 0.35; }
@@ -224,18 +225,18 @@
 /* riquadri a intestazione: il nome dell'attore è la fascia in alto, tutti alti uguali */
 .reveal .pipe.narrow { align-items: stretch; }
 .reveal .pipe.narrow .pipe-arrow { align-self: center; }
-.reveal .pipe.narrow .pipe-step { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 0.6em 0.4em; overflow: hidden; }
+.reveal .pipe.narrow .pipe-step { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 0.5em 0.4em; overflow: hidden; flex: 1 1 0; min-width: 0; }
 .reveal .pipe.narrow .pipe-step > br { display: none; }
-.reveal .pipe.narrow .actor { align-self: stretch; margin: 0 -0.6em 0.35em; padding: 0.25em 0.6em; font-weight: 800; font-size: 1em; color: var(--bg); background: var(--muted); }
+.reveal .pipe.narrow .actor { align-self: stretch; margin: 0 -0.5em 0.35em; padding: 0.25em 0.5em; font-weight: 800; font-size: 0.85em; color: var(--bg); background: var(--muted); }
 .reveal .pipe.narrow .pipe-step.focus .actor { background: var(--accent); }
 .reveal .pipe.narrow .pipe-step .tag { margin-top: auto; }
 .reveal .pipe.narrow .pipe-step .tag { background: var(--accent-2); border-color: var(--accent-2); color: var(--bg); font-weight: 700; } /* come ring-tag: deterministico blu, stocastico arancione */
 .reveal .pipe.narrow .pipe-step.focus .tag { background: var(--accent); border-color: var(--accent); }
 .reveal .pipe.narrow .pipe-step.det .actor { background: var(--accent-2); }
 .reveal .pipe.narrow .pipe-step .muted { margin-bottom: 0.4em; }
-.reveal .pipe.narrow .muted { font-weight: 500; opacity: 0.85; }
-.reveal .pipe.narrow { gap: 0.15em; max-width: 1040px; }
-.reveal .pipe.narrow .pipe-step { font-size: 0.78em; padding: 0 0.6em 0.4em; }
+.reveal .pipe.narrow .muted { font-weight: 500; opacity: 0.85; white-space: normal; }
+.reveal .pipe.narrow { gap: 0.15em; max-width: 100%; }
+.reveal .pipe.narrow .pipe-step { font-size: 0.7em; padding: 0 0.5em 0.4em; }
 .reveal .pipe.narrow .pipe-arrow { font-size: 1em; }
 
 /* La skill: blu = ciò che esegue o autorizza il codice (deterministico), arancione = testo che Claude interpreta (stocastico) */
@@ -256,3 +257,7 @@
 .reveal pre code.hljs .hljs-comment { color: #008000; font-style: normal; }
 .reveal pre code.hljs .hljs-built_in.hljs-builtin-fn { color: #795E26; } /* funzioni predefinite: ocra come le altre funzioni */
 .reveal pre code.hljs .hljs-built_in.hljs-builtin-attr { color: inherit; } /* attributo (b.type): non è un tipo */
+
+/* tag nelle colonne: stocastico arancione, deterministico blu (come ring-tag e pipe) */
+.reveal .cols .tag.sto { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 700; }
+.reveal .cols .tag.det { background: var(--accent-2); border-color: var(--accent-2); color: var(--bg); font-weight: 700; }
