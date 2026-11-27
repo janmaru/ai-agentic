@@ -152,13 +152,13 @@ Le regole le trova la macchina dagli esempi.
 ## Un esempio: la skill azdo
 
 <div class="pipe center narrow">
-  <div class="pipe-step">azdo get<br><span class="muted">legge il work item</span><br><span class="tag">deterministico</span></div>
+  <div class="pipe-step det"><b class="actor">azdo.py get</b><br><span class="muted">script Python:<br>scarica il work item<br>da Azure DevOps</span><br><span class="tag">deterministico</span></div>
   <div class="pipe-arrow">→</div>
-  <div class="pipe-step focus">Claude<br><span class="muted">legge i documenti,<br>prepara piano e testo</span><br><span class="tag">stocastico</span></div>
+  <div class="pipe-step focus"><b class="actor">Claude</b><br><span class="muted">legge i documenti,<br>prepara piano e testo</span><br><span class="tag">stocastico</span></div>
   <div class="pipe-arrow">→</div>
-  <div class="pipe-step">Tu<br><span class="muted">approvi cosa<br>verrà scritto</span></div>
+  <div class="pipe-step"><b class="actor">Tu</b><br><span class="muted">approvi cosa<br>verrà scritto</span></div>
   <div class="pipe-arrow">→</div>
-  <div class="pipe-step">azdo send<br><span class="muted">controlla, scrive,<br>rilegge e confronta</span><br><span class="tag">deterministico</span></div>
+  <div class="pipe-step det"><b class="actor">azdo.py send</b><br><span class="muted">script Python:<br>controlla, scrive,<br>rilegge e confronta</span><br><span class="tag">deterministico</span></div>
 </div>
 
 Lo script rifiuta ciò che il modello non deve fare, anche se la skill non lo dicesse.
@@ -167,25 +167,23 @@ Lo script rifiuta ciò che il modello non deve fare, anche se la skill non lo di
 
 ## La skill: il testo che legge Claude
 
-```text
----
+<pre class="skill"><code class="nohighlight" data-noescape>---
 name: azdo
-description: Legge e scrive su Azure DevOps (work item, PR).
-  Usala al posto di az repos / az boards.
-allowed-tools: Read, Write, Bash(python .claude/skills/azdo/scripts/azdo.py get:*)
+<span class="o">description: Legge e scrive su Azure DevOps (work item, PR).
+  Usala al posto di az repos / az boards.</span>
+<span class="b">allowed-tools: Read, Write, Bash(python .claude/skills/azdo/scripts/azdo.py get:*)</span>
 ---
-
-## Leggere
-python .claude/skills/azdo/scripts/azdo.py get 'wit/workitems/1234'
-
-## Scrivere
-1. Scrivi il payload con Write in .temp/azdo/
-2. Mostra all'utente cosa verrà pubblicato e aspetta il suo sì
-3. python .claude/skills/azdo/scripts/azdo.py send POST '…' .temp/azdo/task.json
-
-## Mai
-Approvare, votare, completare o fare merge di una PR.
-```
+<span class="sp"> </span>
+<span class="h">## Leggere</span>
+<span class="b">python .claude/skills/azdo/scripts/azdo.py get 'wit/workitems/1234'</span>
+<span class="sp"> </span>
+<span class="h">## Scrivere</span>
+<span class="o">1. Scrivi il payload con Write in .temp/azdo/
+2. Mostra all'utente cosa verrà pubblicato e aspetta il suo sì</span>
+<span class="b">3. python .claude/skills/azdo/scripts/azdo.py send POST '…' .temp/azdo/task.json</span>
+<span class="sp"> </span>
+<span class="h">## Mai</span>
+<span class="o">Approvare, votare, completare o fare merge di una PR.</span></code></pre>
 
 <p class="below">Le letture sono già autorizzate in <code>allowed-tools</code>, le scritture chiedono conferma. Tutto il resto è testo: Claude lo legge e può sbagliare.</p>
 
@@ -193,18 +191,16 @@ Approvare, votare, completare o fare merge di una PR.
 
 ## Lo script: il codice che non si discute
 
-```text
-azdo.py get  <percorso>
-azdo.py send <POST|PATCH|PUT> <percorso> <file.json> [--dry-run]
-
-Si rifiuta di scrivere (nulla è partito) se:
-  • il file ha un BOM o escape \uXXXX
+<pre class="skill"><code class="nohighlight" data-noescape><span class="b">azdo.py get  &amp;lt;percorso&amp;gt;
+azdo.py send &amp;lt;POST|PATCH|PUT&amp;gt; &amp;lt;percorso&amp;gt; &amp;lt;file.json&amp;gt; [--dry-run]</span>
+<span class="sp"> </span>
+<span class="h">Si rifiuta di scrivere (nulla è partito) se:</span>
+<span class="d">  • il file ha un BOM o escape \uXXXX
   • la descrizione di una PR supera 4000 caratteri
   • si tenta di votare o completare una PR
-  • si riscrive il testo di un work item già rilasciato
-
-Dopo ogni scrittura: rilegge l'oggetto e confronta le parole accentate.
-```
+  • si riscrive il testo di un work item già rilasciato</span>
+<span class="sp"> </span>
+<span class="h">Dopo ogni scrittura:</span> <span class="d">rilegge l'oggetto e confronta le parole accentate.</span></code></pre>
 
 <p class="below">La regola «mai completare una PR» è nella skill e anche qui. Qui non dipende dal modello.</p>
 
