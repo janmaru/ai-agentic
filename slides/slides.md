@@ -90,20 +90,72 @@ Le regole le scrive un dev.
 
 ## Sistemi stocastici
 
-<p class="below muted">machine learning</p>
+<p class="below muted">machine learning (ML) · deep learning: una rete neurale, un LLM</p>
 
 <div class="ml">
   <div class="ml-col">
-    <div class="ml-box">Dati</div>
-    <div class="ml-box">Risultati attesi</div>
+    <div class="ml-box">Testi<div class="ml-sub">Fix the login …</div></div>
+    <div class="ml-box">Testo atteso<div class="ml-sub">token successivo: bug</div></div>
   </div>
   <div class="agent-arrow">→</div>
-  <div class="ml-box">Computer</div>
+  <div class="ml-box">Rete neurale</div>
   <div class="agent-arrow">→</div>
-  <div class="ml-box focus">Modello</div>
+  <div class="ml-box focus">Modello (LLM)</div>
 </div>
 
-Le regole le trova la macchina dagli esempi.
+Il modello ha appreso dall'esperienza: le regole le trova la macchina dagli esempi.
+
+---
+
+## Imparare è un ciclo
+
+<div class="ml">
+  <div class="ml-box"><div class="tok-chips"><span>Fix</span><span>the</span><span>login</span></div></div>
+  <div class="agent-arrow">→</div>
+  <div class="ml-box focus">Strato 1*</div>
+  <div class="agent-arrow">→</div>
+  <div class="ml-box focus">Strato 2</div>
+  <div class="agent-arrow">→</div>
+  <div class="ml-box focus">Strato 3</div>
+  <div class="agent-arrow">→</div>
+  <div class="ml-col ml-out">
+    <div class="ml-box"><div class="tok-chips"><span>issue</span></div><span class="cross">✗</span></div>
+    <div class="agent-arrow down">↓</div>
+    <div class="ml-box"><div class="tok-chips"><span>bug</span></div><span class="muted">atteso</span></div>
+  </div>
+</div>
+
+<div class="ml">
+  <div class="ml-box">Pesi corretti</div>
+  <div class="agent-arrow">←</div>
+  <div class="ml-box">Errore: distanza dall'atteso</div>
+</div>
+
+Ripetuto milioni di volte, sugli esempi.
+
+<p class="below muted">* Un grafo di calcolo, come quello che costruiscono framework tipo TensorFlow.</p>
+
+---
+
+## Il token successivo
+
+*Fix the login …*
+
+<div class="ml">
+  <div class="ml-box">Contesto</div>
+  <div class="agent-arrow">→</div>
+  <div class="ml-box focus">LLM</div>
+  <div class="agent-arrow">→</div>
+  <div class="ml-col">
+    <div class="ml-box">bug · 62%</div>
+    <div class="ml-box">issue · 21%</div>
+    <div class="ml-box">error · 9%</div>
+  </div>
+</div>
+
+Il modello non decide: assegna probabilità, e il token viene estratto.
+
+<p class="below muted">esempio indicativo</p>
 
 ---
 

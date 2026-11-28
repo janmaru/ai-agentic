@@ -199,6 +199,7 @@
 .reveal .ml { display: flex; align-items: center; justify-content: center; gap: 0.4em; max-width: 1000px; margin: 0.8em auto; }
 .reveal .ml-col { display: flex; flex-direction: column; gap: 0.3em; }
 .reveal .ml-box { padding: 0.45em 0.9em; border: 3px solid var(--muted); border-radius: 12px; background: var(--node); text-align: center; font-size: 0.9em; }
+.reveal .ml-sub { margin-top: 0.3em; padding: 0.1em 0.5em; border: 2px solid var(--muted); border-radius: 8px; background: var(--bg); font-size: 0.6em; }
 .reveal .ml-box.focus { border-width: 6px; border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 700; }
 .reveal .ml-box.focus.det { border-color: var(--accent-2); background: var(--accent-2-soft); color: var(--accent-2); } /* deterministico = blu */
 
@@ -328,3 +329,6 @@
 .reveal .dict-field { font-family: var(--r-main-font, sans-serif); font-variant: small-caps; font-weight: 700; font-size: 0.8em; color: var(--muted); margin-right: 0.4em; letter-spacing: 0.04em; }
 /* Titolo a due colori: contiene sia il testo per il genio (arancione) sia il codice (blu) */
 .reveal h1 .duo { background: linear-gradient(90deg, var(--accent) 50%, var(--accent-2) 50%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
+.reveal .ml-out { align-items: center; gap: 0.1em; }
+.reveal .ml-out .agent-arrow.down { line-height: 1; font-size: 1.2em; }
+.reveal .ml-box .cross { color: var(--accent); font-weight: 700; margin-left: 0.3em; }
