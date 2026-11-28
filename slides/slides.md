@@ -1442,16 +1442,16 @@ Si lancia con `/release-notes`.<br>
 
 ---
 
-## Gabbia e harness
+## Jailing e harness
 
 <div class="card solo">
   <div class="card-title">Non sono la stessa cosa <span class="muted">· esempio indicativo</span></div>
-  <div class="tok-pair"><span class="tok-who">Solo gabbia</span><div class="tok-chips"><span>libreria OCR</span><span>test</span></div></div>
+  <div class="tok-pair"><span class="tok-who">Solo jailing</span><div class="tok-chips"><span>libreria OCR</span><span>test</span></div></div>
   <div class="tok-pair"><span class="tok-who">Entrambi</span><div class="tok-chips"><span>script</span><span>hook</span><span>deny</span></div></div>
   <div class="tok-pair"><span class="tok-who">Solo harness</span><div class="tok-chips"><span>CLAUDE.md</span><span>regole</span></div></div>
 </div>
 
-<p class="below">Harness: ciò che governa Claude in <code>.claude/</code>. Gabbia: ciò che è deterministico. Il testo delle regole è harness, ma non è gabbia.</p>
+<p class="below">Harness: ciò che governa Claude in <code>.claude/</code>. Jailing: ciò che è deterministico. Il testo delle regole è harness, ma non è jailing.</p>
 
 ---
 
