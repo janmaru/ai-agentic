@@ -11,8 +11,8 @@ Note: Obiettivo: capire cos'è un agente, come funziona dentro, quali trappole h
 ## Di che cosa parleremo
 
 <div class="path">
-  <div><b>1</b>Overview</div>
-  <div><b>2</b>Come funziona dentro</div>
+  <div><b>1</b>Che cos'è</div>
+  <div><b>2</b>Come funziona</div>
   <div><b>3</b>Le trappole</div>
   <div><b>4</b>Un agente dal vivo</div>
   <div><b>5</b>Rischi e responsabilità</div>
@@ -20,13 +20,11 @@ Note: Obiettivo: capire cos'è un agente, come funziona dentro, quali trappole h
 
 ---
 
-# 1. Overview
-
-<span class="muted">Che cos'è un agente</span>
+# 1. Che cos'è un agente?
 
 <div class="path">
-  <div class="here"><b>1</b>Overview</div>
-  <div><b>2</b>Come funziona dentro</div>
+  <div class="here"><b>1</b>Che cos'è</div>
+  <div><b>2</b>Come funziona</div>
   <div><b>3</b>Le trappole</div>
   <div><b>4</b>Un agente dal vivo</div>
   <div><b>5</b>Rischi e responsabilità</div>
@@ -34,35 +32,17 @@ Note: Obiettivo: capire cos'è un agente, come funziona dentro, quali trappole h
 
 ---
 
-## Overview: che cos'è un agente
+## L'agente come black box
 
 <div class="cli-frame">
-  <div class="cli-title">CLI · claude (di default)</div>
   <div class="agent">
-    <div class="agent-io">Prompt</div>
+    <div class="agent-io">prompt</div>
     <div class="agent-arrow">→</div>
-    <div class="agent-core">
-      <div class="agent-title">Agente</div>
-      <div class="agent-inner">
-        <div class="agent-box focus llm">
-          <div class="llm-title">Claude · un LLM</div>
-          <div class="llm-step">Contesto<br><span class="muted">prompt, ragionamento, risultati</span></div>
-          <div class="llm-down">↓</div>
-          <div class="llm-step">Transformer<br><span class="muted">attention + strati</span></div>
-          <div class="llm-down">↓</div>
-          <div class="llm-step">Prossimo token</div>
-          <div class="llm-back">↺ e torna nel contesto</div>
-        </div>
-        <div class="agent-loop">⇄</div>
-        <div class="agent-box tools">
-          <div class="tools-title">Strumenti</div>
-          <div class="tool-chip">di default<br><span class="muted">Read · Edit · Bash</span></div>
-          <div class="tool-chip built">costruiti da noi<br><span class="muted">CLI · MCP</span></div>
-        </div>
-      </div>
+    <div class="agent-core black">
+      <div class="black-q">Agente<br><span class="black-sub">(Claude Code)</span></div>
     </div>
     <div class="agent-arrow">→</div>
-    <div class="agent-io out">Output<br><span class="muted">codice,<br>infrastruttura</span></div>
+    <div class="agent-io out">&amp;lt;code&amp;gt;</div>
   </div>
 </div>
 
@@ -70,48 +50,22 @@ Note: Obiettivo: capire cos'è un agente, come funziona dentro, quali trappole h
 
 ## Deterministico e stocastico
 
-<div class="cli-frame two">
-  <div class="cli-title">CLI · claude (di default)</div>
+<div class="cli-frame">
   <div class="agent">
-    <div class="agent-io">Prompt</div>
+    <div class="agent-io">prompt</div>
     <div class="agent-arrow">→</div>
     <div class="agent-core">
       <div class="agent-title">Agente</div>
       <div class="agent-inner">
-        <div class="agent-box focus llm ring-a">
-          <div class="ring-tag">stocastico</div>
-          <div class="llm-title">Claude · un LLM</div>
-          <div class="llm-step">Contesto<br><span class="muted">prompt, ragionamento, risultati</span></div>
-          <div class="llm-down">↓</div>
-          <div class="llm-step">Transformer<br><span class="muted">attention + strati</span></div>
-          <div class="llm-down">↓</div>
-          <div class="llm-step">Prossimo token</div>
-          <div class="llm-back">↺ e torna nel contesto</div>
-        </div>
+        <div class="agent-box fill-a">stocastico</div>
         <div class="agent-loop">⇄</div>
-        <div class="agent-box tools ring-b">
-          <div class="ring-tag">deterministico</div>
-          <div class="tools-title">Strumenti</div>
-          <div class="tool-chip">di default<br><span class="muted">Read · Edit · Bash</span></div>
-          <div class="tool-chip built">costruiti da noi<br><span class="muted">CLI · MCP</span></div>
-        </div>
+        <div class="agent-box fill-b">deterministico</div>
       </div>
     </div>
     <div class="agent-arrow">→</div>
-    <div class="agent-io out">Output<br><span class="muted">codice,<br>infrastruttura</span></div>
+    <div class="agent-io out">&amp;lt;code&amp;gt;</div>
   </div>
 </div>
-
----
-
-## Il genio della gabbia
-
-<div class="genio">
-  <div class="genio-label bottom"><span class="muted">agente</span><br><b>deterministico</b></div>
-  <img src="img/gabbia-genio.jpg" alt="Un genio di fumo a fil di ferro sorretto da una gabbia di metallo">
-  <div class="genio-label top"><span class="muted">agente</span><br><b class="hot">stocastico</b></div>
-</div>
-
 
 ---
 
@@ -153,7 +107,104 @@ Le regole le trova la macchina dagli esempi.
 
 ---
 
-# Skill
+## Che cos'è Claude Code?
+
+<div class="cli-frame">
+  <div class="cli-title">CLI · claude (di default)</div>
+  <div class="agent">
+    <div class="agent-io">Prompt</div>
+    <div class="agent-arrow">→</div>
+    <div class="agent-core">
+      <div class="agent-title">Agente</div>
+      <div class="agent-inner">
+        <div class="agent-box focus llm">
+          <div class="llm-title">Claude · un LLM</div>
+          <div class="llm-step">Contesto<br><span class="muted">prompt, ragionamento, risultati</span></div>
+          <div class="llm-down">↓</div>
+          <div class="llm-step">Transformer<br><span class="muted">attention + strati</span></div>
+          <div class="llm-down">↓</div>
+          <div class="llm-step">Prossimo token</div>
+          <div class="llm-back">↺ e torna nel contesto</div>
+        </div>
+        <div class="agent-loop">⇄</div>
+        <div class="agent-box tools">
+          <div class="tools-title">Strumenti</div>
+          <div class="tool-chip">default<br><span class="muted">Read · Edit · Bash</span></div>
+          <div class="tool-chip built">custom<br><span class="muted">CLI · MCP</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="agent-arrow">→</div>
+    <div class="agent-io out">Output<br><span class="muted">codice,<br>infrastruttura</span></div>
+  </div>
+</div>
+
+---
+
+## Il genio della lampada
+
+<svg class="genio-svg" viewBox="0 0 1000 440" role="img" aria-label="Il genio che esce dalla lampada: la lampada è deterministica, il genio è il modello stocastico">
+  <defs>
+    <marker id="gh-b2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="gh-fill-b"/></marker>
+    <marker id="gh-a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="gh-fill-a"/></marker>
+  </defs>
+  <image href="img/lampada-genio.jpg" x="220" y="10" width="560" height="418" class="gh-img"/>
+  <ellipse cx="506" cy="362" rx="125" ry="62" class="gh-ring-b"/>
+  <ellipse cx="500" cy="125" rx="95" ry="115" class="gh-ring-a"/>
+  <line x1="300" y1="392" x2="395" y2="392" class="gh-line-b" marker-end="url(#gh-b2)"/>
+  <line x1="790" y1="125" x2="608" y2="125" class="gh-line-a" marker-end="url(#gh-a2)"/>
+  <text x="10" y="310" class="gh-t gh-t-b">Jailing</text>
+  <text x="10" y="346" class="gh-s">sostiene il genio (deterministico)</text>
+  <text x="10" y="378" class="gh-s">CLI · script · permessi · hook</text>
+  <text x="800" y="97" class="gh-t gh-t-a">Harness</text>
+  <text x="800" y="133" class="gh-s">contiene il genio (stocastico)</text>
+  <text x="800" y="165" class="gh-s">CLAUDE.md · regole · skill</text>
+</svg>
+
+<p class="below">Il jailing da solo non basta: bisogna lavorare anche sul genio per contenerlo.</p>
+
+---
+
+## Il genio della gabbia
+
+<svg class="genio-svg" viewBox="0 0 1000 440" role="img" aria-label="Il genio che esce dalla gabbia: la gabbia è deterministica, il genio è il modello stocastico">
+  <defs>
+    <marker id="gh-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="gh-fill-b"/></marker>
+    <marker id="gh-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="gh-fill-a"/></marker>
+  </defs>
+  <image href="img/gabbia-genio.jpg" x="220" y="10" width="560" height="418" class="gh-img"/>
+  <ellipse cx="499" cy="338" rx="72" ry="96" class="gh-ring-b"/>
+  <ellipse cx="507" cy="125" rx="95" ry="112" class="gh-ring-a"/>
+  <line x1="300" y1="392" x2="432" y2="392" class="gh-line-b" marker-end="url(#gh-b)"/>
+  <line x1="790" y1="125" x2="608" y2="125" class="gh-line-a" marker-end="url(#gh-a)"/>
+  <text x="10" y="310" class="gh-t gh-t-b">Jailing</text>
+  <text x="10" y="346" class="gh-s">sostiene il genio (deterministico)</text>
+  <text x="10" y="378" class="gh-s">CLI · script · permessi · hook</text>
+  <text x="800" y="97" class="gh-t gh-t-a">Harness</text>
+  <text x="800" y="133" class="gh-s">contiene il genio (stocastico)</text>
+  <text x="800" y="165" class="gh-s">CLAUDE.md · regole · skill</text>
+</svg>
+
+<p class="below">Il jailing da solo non basta: bisogna lavorare anche sul genio per contenerlo.</p>
+
+---
+
+# <span class="duo">Skill</span>
+
+---
+
+<div class="dict">
+  <div class="dict-head">
+    <span class="dict-word duo">skill</span>
+    <span class="dict-pron">/skɪl/</span>
+    <span class="dict-pos">sostantivo</span>
+  </div>
+  <div class="dict-ety">dall'antico norreno <i>skil</i>: discernimento, capacità di distinguere</div>
+  <ol class="dict-senses">
+    <li>Abilità acquisita con lo studio e la pratica, che permette di eseguire bene un compito.</li>
+    <li><span class="dict-field">Claude Code</span> Cartella che contiene le istruzioni per un compito, un file <code class="dict-o">SKILL.md</code>, e, se serve, gli <span class="dict-b">script da eseguire</span>. Claude la carica quando serve, oppure la si chiama con <code>/nome</code>.</li>
+  </ol>
+</div>
 
 ---
 
@@ -161,11 +212,9 @@ Le regole le trova la macchina dagli esempi.
 
 Istruzioni scritte una volta, che Claude usa quando servono.
 
-```text
-.claude/skills/azdo/
-├── SKILL.md       frontmatter (name, description) + istruzioni in Markdown
-└── scripts/       codice che la skill può far eseguire
-```
+<pre class="skill"><code class="nohighlight" data-noescape>.claude/skills/azdo/
+├── <span class="o">SKILL.md       frontmatter (name, description) + istruzioni in Markdown</span>
+└── <span class="b">scripts/       codice che la skill può far eseguire</span></code></pre>
 
 <div class="cols">
 <div><span class="tag">Sempre in contesto</span><br>solo la <code>description</code></div>
@@ -427,13 +476,13 @@ flowchart LR
 
 ---
 
-# 2. Come funziona dentro
+# 2. Come funziona
 
 <span class="muted">Il modello, il contesto, gli strumenti</span>
 
 <div class="path">
-  <div><b>1</b>Overview</div>
-  <div class="here"><b>2</b>Come funziona dentro</div>
+  <div><b>1</b>Che cos'è</div>
+  <div class="here"><b>2</b>Come funziona</div>
   <div><b>3</b>Le trappole</div>
   <div><b>4</b>Un agente dal vivo</div>
   <div><b>5</b>Rischi e responsabilità</div>
@@ -848,8 +897,8 @@ flowchart LR
 ### Anche l'agente usa euristiche
 
 <div class="path">
-  <div><b>1</b>Overview</div>
-  <div><b>2</b>Come funziona dentro</div>
+  <div><b>1</b>Che cos'è</div>
+  <div><b>2</b>Come funziona</div>
   <div class="here"><b>3</b>Le trappole</div>
   <div><b>4</b>Un agente dal vivo</div>
   <div><b>5</b>Rischi e responsabilità</div>
@@ -1087,8 +1136,8 @@ E come noi eredita i pregiudizi dai dati.
 ### Claude Code al lavoro
 
 <div class="path">
-  <div><b>1</b>Overview</div>
-  <div><b>2</b>Come funziona dentro</div>
+  <div><b>1</b>Che cos'è</div>
+  <div><b>2</b>Come funziona</div>
   <div><b>3</b>Le trappole</div>
   <div class="here"><b>4</b>Un agente dal vivo</div>
   <div><b>5</b>Rischi e responsabilità</div>
@@ -1558,8 +1607,8 @@ while True:
 # 5. Rischi e responsabilità
 
 <div class="path">
-  <div><b>1</b>Overview</div>
-  <div><b>2</b>Come funziona dentro</div>
+  <div><b>1</b>Che cos'è</div>
+  <div><b>2</b>Come funziona</div>
   <div><b>3</b>Le trappole</div>
   <div><b>4</b>Un agente dal vivo</div>
   <div class="here"><b>5</b>Rischi e responsabilità</div>
